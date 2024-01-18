@@ -11,8 +11,7 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
-@SuperBuilder
-@Builder(toBuilder = true)
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class SiteUser extends BaseEntity {
