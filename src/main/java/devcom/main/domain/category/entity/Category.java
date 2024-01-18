@@ -17,4 +17,5 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class Category extends BaseEntity {
     private String categoryName;
+
 }

@@ -4,10 +4,9 @@ import devcom.main.domain.category.entity.Category;
 import devcom.main.domain.img.entity.Img;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.global.jpa.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,17 +27,18 @@ public class Article extends BaseEntity {
     private String content;
 
     // 조회수
-    private int hit;
+    @Column
+    private Integer hit;
 
     // 좋아요
-    private int like;
+    @Column
+    private Integer likes;
 
     @OneToOne
+    @JoinColumn
     private Category category;
 
-    @OneToMany
-    private Img img_url;
-
     @ManyToOne
+    @JoinColumn(name = "author_id")
     private SiteUser author;
 }
