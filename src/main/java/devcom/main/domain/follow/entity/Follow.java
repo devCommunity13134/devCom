@@ -20,13 +20,11 @@ import java.util.List;
 public class Follow extends BaseEntity {
     //    상속
     //    private Long id;
-    //    follow 고유 id는 멤버 고유 id와 동일하게 해야함
 
-    private List<Integer> followerId;
+    private String followerUser;
     // 나를 팔로우 하는 사람의 고유 아이디
 
-
-    private List<Integer> followingId;
+    private String followingUser;
     // 내가 팔로우 하는 사람의 고유 아이디
 
 
