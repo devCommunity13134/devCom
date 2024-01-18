@@ -17,4 +17,18 @@ import lombok.experimental.SuperBuilder;
 public class SiteUser extends BaseEntity {
 
     private String username;
+
+    private String password;
+
+    private String email;
+
+    private char sex;
+
+    private Integer age;
+
+    private Integer salary;
+
+    private String authorization;
+
+    private String profileImg;
 }

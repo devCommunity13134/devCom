@@ -1,7 +1,7 @@
 package devcom.main.domain.article.controller;
 
 
-import devcom.main.domain.article.service.ArticleService;
+import devcom.main.domain.article.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
@@ -9,5 +9,5 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 public class ArticleController {
 
-    private final ArticleService articleService;
+    private final ArticleRepository articleRepository;
 }

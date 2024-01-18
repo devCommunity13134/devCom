@@ -2,7 +2,7 @@ package devcom.main.domain.article.service;
 
 
 import devcom.main.domain.article.entity.Article;
-import devcom.main.domain.article.repository.ArticleRepositoy;
+import devcom.main.domain.article.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +12,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class ArticleService {
 
-    private final ArticleRepositoy articleRepositoy;
-
+    private final ArticleRepository articleRepository;
 
 
     public void create(String subject, String content) {
@@ -22,7 +21,7 @@ public class ArticleService {
                                     .content(content)
                                     .build();
 
-        this.articleRepositoy.save(article);
+        this.articleRepository.save(article);
     }
 
 }
