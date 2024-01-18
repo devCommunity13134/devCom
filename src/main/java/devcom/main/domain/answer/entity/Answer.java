@@ -17,8 +17,11 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Answer extends BaseEntity {
+
     private String content;
+
     private int like;
+
     @ManyToOne
     private Article originalArticle;
 
