@@ -1,10 +1,10 @@
-package devcom.main.domain.skill.entity;
+package devcom.main.domain.category.entity;
 
-
-import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.global.jpa.BaseEntity;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,11 +15,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Skill extends BaseEntity {
-
-    @ManyToOne
-    private SiteUser user;
-
-    private String skill;
-
+public class Category extends BaseEntity {
+    private String categoryName;
 }
