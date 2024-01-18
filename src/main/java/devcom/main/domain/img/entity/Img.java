@@ -1,5 +1,6 @@
 package devcom.main.domain.img.entity;
 
+import devcom.main.domain.answer.entity.Answer;
 import devcom.main.domain.article.entity.Article;
 import devcom.main.global.jpa.BaseEntity;
 import jakarta.persistence.*;
@@ -17,4 +18,7 @@ public class Img extends BaseEntity {
 
     private String img_url;
 
+    @ManyToOne
+    @JoinColumn
+    private Article originalArticle;
 }
