@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,8 +37,8 @@ public class Article extends BaseEntity {
     @OneToOne
     private Category category;
 
-    @OneToMany
-    private Img img_url;
+    @OneToMany(mappedBy = "img_url")
+    private List<Img> img_url;
 
     @ManyToOne
     private SiteUser author;

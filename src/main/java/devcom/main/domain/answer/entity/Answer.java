@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Entity
 @Getter
 @SuperBuilder(toBuilder = true)
@@ -25,6 +27,7 @@ public class Answer extends BaseEntity {
     @ManyToOne
     private Article originalArticle;
 
-    @OneToMany
-    private Reply reply;
+    @OneToMany(mappedBy = "content")
+    private List<Reply> reply;
+
 }

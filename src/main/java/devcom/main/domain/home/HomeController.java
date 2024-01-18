@@ -10,6 +10,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String root() {
-        return "/user/login";
+        return "layout";
     }
 }

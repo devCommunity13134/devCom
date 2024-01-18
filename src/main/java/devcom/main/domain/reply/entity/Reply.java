@@ -13,5 +13,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Reply extends BaseEntity {
+
     private String content;
+
 }
