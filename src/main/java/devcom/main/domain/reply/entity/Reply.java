@@ -12,6 +12,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Reply {
-
     private String content;
 }
