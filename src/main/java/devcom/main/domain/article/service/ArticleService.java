@@ -6,11 +6,15 @@ import devcom.main.domain.article.repository.ArticleRepositoy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
 
     private final ArticleRepositoy articleRepositoy;
+
+
 
     public void create(String subject, String content) {
         Article article = Article.builder()
@@ -20,4 +24,5 @@ public class ArticleService {
 
         this.articleRepositoy.save(article);
     }
+
 }
