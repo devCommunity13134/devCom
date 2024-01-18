@@ -1,5 +1,4 @@
-package devcom.main.domain.user.entity;
-
+package devcom.main.domain.article.entity;
 
 import devcom.main.global.jpa.BaseEntity;
 import jakarta.persistence.Entity;
@@ -9,26 +8,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class SiteUser extends BaseEntity {
+public class Article extends BaseEntity {
 
-    private String username;
+    private String subject;
 
-    private String password;
+    private String content;
 
-    private String email;
-
-    private char sex;
-
-    private Integer age;
-
-    private Integer salary;
-
-    private String authorization;
-
-    private String profileImg;
 }
