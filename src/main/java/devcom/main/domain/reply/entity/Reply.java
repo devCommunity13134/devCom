@@ -1,5 +1,6 @@
 package devcom.main.domain.reply.entity;
 
+import devcom.main.global.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +12,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reply {
+public class Reply extends BaseEntity {
     private String content;
 }
