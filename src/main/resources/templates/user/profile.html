@@ -1,5 +1,5 @@
 <html layout:decorate="~{layout}">
-<div layout:fragment="content" class="container my-3" style="width:800px;">
+<div layout:fragment="content" class="container my-3" style="display:flex;">
 <div class="card" style="width: 18rem;">
     <img th:src="${user.profileImg}" alt="프로필사진">
     <div class="card-body">
@@ -16,5 +16,13 @@
         <a href="#" class="card-link">팀 초대하기</a>
     </div>
 </div>
+    <div class="card" style="margin-left:30px;">
+        <h5 class="card-header">Featured</h5>
+        <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
 </div>
 </html>
