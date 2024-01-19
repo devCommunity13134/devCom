@@ -38,7 +38,7 @@ public class SiteUser extends BaseEntity {
 
     @Column(length = 1)
     private char sex;
-    // '남' , '여'
+
 
     @Column
     private Integer age;
@@ -48,17 +48,11 @@ public class SiteUser extends BaseEntity {
     private Integer salary;
 
 
-    @Column
-    private String authorization;
-    // 회원 권한 (일반, 관리자)
-
-
     @Column(columnDefinition = "varchar(255)")
     private String profileImg;
     // 이미지 URL 문자열 저장
 
 
-    @OneToMany(mappedBy = "skill", cascade = CascadeType.REMOVE)
-    private List<Skill> skillList;
-
+    @Column(columnDefinition = "varchar(255)")
+    private String skill;
 }
