@@ -5,43 +5,48 @@ import devcom.main.domain.skill.entity.Skill;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 public class UserCreateForm {
 
-    @NotEmpty
+    // String username, String password, String email, char sex, Integer age, Integer salary, String profileImg
+
+    @NotEmpty(message = "ID는 필수항목 입니다.")
     private String username;
 
-    @NotEmpty
-    private String password;
+    @NotEmpty(message = "비밀번호는 필수항목 입니다.")
+    private String password1;
 
-    @NotEmpty
+    @NotEmpty(message = "비밀번호 확인은 필수항목 입니다.")
+    private String password2;
+
+    @NotEmpty(message = "이메일은 필수항목 입니다.")
+    @Email
     private String email;
 
-    @NotEmpty
+    @NotNull(message = "성별은 필수항목 입니다.")
     private char sex;
-    // '남' , '여'
 
-    @NotEmpty
+    @NotNull(message = "나이는 필수항목 입니다.")
     private Integer age;
 
 
-    @NotEmpty
     private Integer salary;
 
 
-    @NotEmpty
-    private String authorization;
-    // 회원 권한 (일반, 관리자)
-
-    @NotEmpty
     private String profileImg;
-    // 이미지 URL 문자열 저장
 
-    @NotEmpty
-    private List<Skill> skillList;
+
+    @NotEmpty(message = "보유 기술은 필수항목 입니다.")
+    private String skill;
 
 
 }
