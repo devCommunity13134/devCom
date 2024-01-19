@@ -33,6 +33,9 @@
                     <a class="nav-link disabled" aria-disabled="true">Link</a>
                 </li>
             </ul>
+            <div>
+                <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/profile}">나의정보</a>
+            </div>
             <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>

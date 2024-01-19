@@ -7,15 +7,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
-    public void signup(String username, String password, String email, char sex, Integer age, Integer salary, String profileImg, String skill) {
+    public void signup(String username, String nickname, String password, String email, char sex, Integer age, Integer salary, String profileImg, String skill) {
         SiteUser user = SiteUser.builder()
                 .username(username)
+                .nickname(nickname)
                 .password(passwordEncoder.encode(password))
                 .email(email)
                 .sex(sex)
@@ -26,6 +29,22 @@ public class UserService {
                 .build();
 
         this.userRepository.save(user);
+    }
+
+    public SiteUser findByusername(String username) {
+        Optional<SiteUser> user = this.userRepository.findByusername(username);
+        if(user.isEmpty()) {
+            throw new RuntimeException("존재하지 않은 사용자입니다.");
+        }
+        return user.get();
+    }
+
+    public SiteUser findById(Long id) {
+        Optional<SiteUser> user = this.userRepository.findById(id);
+        if(user.isEmpty()) {
+            throw new RuntimeException("존재하지 않은 사용자입니다.");
+        }
+        return user.get();
     }
 }
 

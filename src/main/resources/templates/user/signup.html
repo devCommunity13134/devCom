@@ -6,10 +6,14 @@
         </div>
     </div>
     <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post">
-<!--        <div th:replace="~{form_errors :: formErrorsFragment}"></div>-->
+        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
         <div class="mb-3">
             <label for="username" class="form-label">사용자ID</label>
             <input type="text" th:field="*{username}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="nickname" class="form-label">닉네임</label>
+            <input type="text" th:field="*{nickname}" class="form-control">
         </div>
         <div class="mb-3">
             <label for="password1" class="form-label">비밀번호</label>
