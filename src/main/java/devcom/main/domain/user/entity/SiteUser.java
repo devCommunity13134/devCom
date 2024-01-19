@@ -31,6 +31,9 @@ public class SiteUser extends BaseEntity {
     private String username;
 
     @Column(columnDefinition = "varchar(100)")
+    private String nickname;
+
+    @Column(columnDefinition = "varchar(100)")
     private String password;
 
     @Column(columnDefinition = "varchar(100)")
@@ -48,7 +51,7 @@ public class SiteUser extends BaseEntity {
     private Integer salary;
 
 
-    @Column(columnDefinition = "varchar(255)")
+    @Column(columnDefinition = "TEXT")
     private String profileImg;
     // 이미지 URL 문자열 저장
 

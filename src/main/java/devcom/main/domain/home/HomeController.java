@@ -10,6 +10,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String root() {
+
         return "layout";
     }
 }
