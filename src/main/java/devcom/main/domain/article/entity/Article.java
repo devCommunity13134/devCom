@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -37,6 +38,7 @@ public class Article extends BaseEntity {
     @OneToOne
     @JoinColumn
     private Category category;
+
 
     @ManyToOne
     @JoinColumn(name = "author_id")
