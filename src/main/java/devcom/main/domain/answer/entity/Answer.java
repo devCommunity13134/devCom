@@ -1,11 +1,15 @@
 package devcom.main.domain.answer.entity;
 
+
 import devcom.main.domain.article.entity.Article;
-import devcom.main.domain.reply.entity.Reply;
 import devcom.main.global.jpa.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,13 +25,11 @@ import java.util.List;
 public class Answer extends BaseEntity {
 
     private String content;
-
-    private int like;
+    @Column
+    private Integer likes;
 
     @ManyToOne
+    @JoinColumn
     private Article originalArticle;
-
-    @OneToMany(mappedBy = "content")
-    private List<Reply> reply;
 
 }
