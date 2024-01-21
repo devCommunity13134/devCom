@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class ImgService {
     private final ImgRepository imgRepository;
 
-    //category create
+    //img create
     public void create(String imgUrl){
         Img img = Img.builder()
                 .img_url(imgUrl)
@@ -20,7 +20,7 @@ public class ImgService {
         this.imgRepository.save(img);
     }
 
-    //category modify
+    //img modify
     public void modify(Img img, String imgUrl){
         Img img1 = img.toBuilder()
                 .img_url(imgUrl)
@@ -29,7 +29,7 @@ public class ImgService {
         this.imgRepository.save(img1);
     }
 
-    //category delete
+    //img delete
     public void delete(Img img){
         this.imgRepository.delete(img);
     }
