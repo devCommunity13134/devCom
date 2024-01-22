@@ -1,0 +1,45 @@
+<html layout:decorate="~{layout}">
+
+<div layout:fragment="content">
+
+<script th:inline="javascript">
+    $(document).ready(function(){
+
+        var teamList = [[${teamList}]];
+
+        var htmlCode = '<div class="row mt-4">';
+
+        var i;
+        for (i = 0; i < teamList.length; i++) {
+
+            htmlCode = htmlCode + '<div class="col-3">'+
+                                        '<div class="card shadow forClick" id='+teamList[i].id+' style="cursor:pointer; height:200px;">' +
+                                            '<div class="card-body"> ' +
+                                                '<h5 class="card-title">'+teamList[i].name+'</h5> ' +
+                                                '<div class="card-text" style="height:100px; text-overflow:ellipsis; white-space: wrap; overflow: hidden;">'+ teamList[i].description +'</div> ' +
+                                            '</div>' +
+                                        '</div>' +
+                                '</div>';
+
+            if( (i+1)%4 == 0 ){
+                htmlCode = htmlCode + '</div><div class="row mt-2">'
+            }
+
+        }
+        htmlCode = htmlCode + '</div>'
+
+        console.log(htmlCode);
+
+        $("#teamArea").append(htmlCode);
+    });
+</script>
+
+    <h4>
+        My Team
+    </h4>
+
+    <div id="teamArea">
+
+    </div>
+</div>
+
