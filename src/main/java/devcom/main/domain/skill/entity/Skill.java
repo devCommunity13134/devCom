@@ -20,6 +20,5 @@ public class Skill extends BaseEntity {
     @ManyToOne
     private SiteUser user;
 
-    private String skill;
-
+    private String skillName;
 }

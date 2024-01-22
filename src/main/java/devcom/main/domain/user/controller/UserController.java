@@ -1,6 +1,8 @@
 package devcom.main.domain.user.controller;
 
 
+import devcom.main.domain.skill.entity.Skill;
+import devcom.main.domain.skill.service.SkillService;
 import devcom.main.domain.user.UserCreateForm;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
@@ -11,11 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,8 +29,12 @@ public class UserController {
 
     private final UserService userService;
 
+    private final SkillService skillService;
+
     @GetMapping("/signup")
-    public String signup(UserCreateForm userCreateForm) {
+    public String signup(Model model, UserCreateForm userCreateForm) {
+        List<Skill> skillList = this.skillService.findAll();
+        model.addAttribute("skillList",skillList);
         return "user/signup";
     }
 
@@ -42,7 +51,7 @@ public class UserController {
         try {
             this.userService.signup(userCreateForm.getUsername(), userCreateForm.getNickname(),userCreateForm.getPassword2()
                     ,userCreateForm.getEmail(),userCreateForm.getSex(),userCreateForm.getAge(),userCreateForm.getSalary()
-                    ,userCreateForm.getProfileImg(),userCreateForm.getSkill());
+                    ,userCreateForm.getProfileImg(),userCreateForm.getPhoneNumber());
         } catch(DataIntegrityViolationException e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
@@ -71,5 +80,24 @@ public class UserController {
         model.addAttribute("user",user);
         return "/user/profile";
     }
+
+    @GetMapping("/findaccount")
+    public String findAccount() {
+        return "/user/find_account";
+    }
+
+    private Map<String, String> skillList() {
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("HTML", "HTML");
+        map.put("CSS", "CSS");
+        map.put("JS", "JS");
+        map.put("C", "C");
+        map.put("C++", "C++");
+        map.put("Java", "Java");
+        map.put("Python", "Python");
+        map.put("SQL", "SQL");
+        return map;
+    }
+
 
 }

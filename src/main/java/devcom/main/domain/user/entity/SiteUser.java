@@ -12,6 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,23 +40,22 @@ public class SiteUser extends BaseEntity {
     @Column(columnDefinition = "varchar(100)")
     private String email;
 
+    @Column
+    private Integer phoneNumber;
+
     @Column(length = 1)
     private char sex;
-
 
     @Column
     private Integer age;
 
-
     @Column
     private Integer salary;
-
 
     @Column(columnDefinition = "TEXT")
     private String profileImg;
     // 이미지 URL 문자열 저장
 
-
-    @Column(columnDefinition = "varchar(255)")
-    private String skill;
+    @OneToMany(mappedBy = "skillName", cascade = CascadeType.REMOVE)
+    private List<Skill> skillList;
 }

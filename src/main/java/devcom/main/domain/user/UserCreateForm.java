@@ -35,6 +35,9 @@ public class UserCreateForm {
     @Email
     private String email;
 
+    @NotNull(message = "전화번호는 필수항목 입니다.")
+    private Integer phoneNumber;
+
     @NotNull(message = "성별은 필수항목 입니다.")
     private char sex;
 
@@ -46,10 +49,5 @@ public class UserCreateForm {
 
 
     private String profileImg;
-
-
-    @NotEmpty(message = "보유 기술은 필수항목 입니다.")
-    private String skill;
-
 
 }
