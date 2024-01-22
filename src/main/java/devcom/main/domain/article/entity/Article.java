@@ -35,7 +35,7 @@ public class Article extends BaseEntity {
     @Column
     private Integer likes;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn
     private Category category;
 

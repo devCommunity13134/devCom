@@ -8,6 +8,8 @@ import devcom.main.domain.user.entity.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ReplyService {
@@ -36,5 +38,13 @@ public class ReplyService {
     public void delete(Reply reply){
         // need delete reply
         this.replyRepository.delete(reply);
+    }
+
+    public Reply getReply(long id){
+        Optional<Reply> optionalReply = this.replyRepository.findById(id);
+        if(optionalReply.isEmpty()){
+            throw new RuntimeException();
+        }
+        return optionalReply.get();
     }
 }

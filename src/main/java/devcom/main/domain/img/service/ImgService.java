@@ -6,6 +6,8 @@ import devcom.main.domain.img.repository.ImgRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ImgService {
@@ -32,5 +34,13 @@ public class ImgService {
     //img delete
     public void delete(Img img){
         this.imgRepository.delete(img);
+    }
+
+    public Img getImg(long id){
+        Optional<Img> optionalImg = this.imgRepository.findById(id);
+        if(optionalImg.isEmpty()){
+            throw new RuntimeException();
+        }
+        return optionalImg.get();
     }
 }
