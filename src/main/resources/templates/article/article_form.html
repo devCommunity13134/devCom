@@ -1,0 +1,22 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+    <form th:action="@{/article/create}" method="post">
+        <div class="mb-3">
+            <label for="subject" class="form-label">제목</label>
+            <input type="text" name="subject" id="subject" class="form-control">
+        </div>
+        <div class="mb-3">
+            <select name="categoryName" class=" w-full p-2 rounded-md
+             "><option value="placeholder">
+                카테고리 고르기</option><option value="front">#front</option><option value="back">#back</option>
+                <option value="AI">#AI</option><option value="html_css">#html_css</option><option value="side_projects">#side_projects</option><option value="ask">#ask</option><option value="bla-bla">#bla-bla</option><option value="react">#react</option><option value="python">#python</option><option value="to_do_list">#to_do_list</option><option value="music_player">#music_player</option><option value="twitter_clone">#twitter_clone</option><option value="jobs">#jobs</option><option value="tips">#tips</option><option value="ssul">#ssul</option><option value="portfolio">#portfolio</option><option value="mobile_app">#mobile_app</option><option value="flutter">#flutter</option><option value="mbti">#mbti</option><option value="instaclone">#insta_clone</option><option value="jobs_scraper">#jobs_scraper</option><option value="uber_eats">#uber_eats</option><option value="carrot_market">#carrot_market</option><option value="zoom_clone">#zoom_clone</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">내용</label>
+            <textarea name="content" id="content" cols="30" rows="10" class="form-control"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">등록하기</button>
+    </form>
+</div>
+</html>

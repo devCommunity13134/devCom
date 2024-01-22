@@ -5,6 +5,8 @@ import devcom.main.domain.category.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -32,4 +34,14 @@ public class CategoryService {
     public void delete(Category category){
         this.categoryRepository.delete(category);
     }
+
+    public Category getCategory(String category){
+        Optional<Category> optionalCategory = this.categoryRepository.findByCategoryName(category);
+        if(optionalCategory.isEmpty()){
+            throw new RuntimeException();
+        }
+        return optionalCategory.get();
+    }
+
+
 }
