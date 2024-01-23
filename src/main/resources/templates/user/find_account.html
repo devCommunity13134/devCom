@@ -1,60 +1,33 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3" style="width:500px;">
     <div class="my-3 border-bottom">
-        <div>
-            <h4>ID/PW 찾기</h4>
-        </div>
+        <h4>ID 찾기</h4>
     </div>
-    <form th:action="@{/user/findaccount}" th:object="${userCreateForm}" method="post">
-        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+    <form th:action="@{/user/findid}" method="post">
         <div class="mb-3">
-            <label for="username" class="form-label">사용자ID</label>
-            <input type="text" th:field="*{username}" class="form-control">
+            <label for="username" class="form-label">이름</label>
+            <input type="text" id="username" class="form-control">
         </div>
         <div class="mb-3">
-            <label for="nickname" class="form-label">닉네임</label>
-            <input type="text" th:field="*{nickname}" class="form-control">
+            <label for="emailid" class="form-label">이메일</label>
+            <input type="email" id="emailid" class="form-control" placeholder="'회원가입 시 등록한 이메일 주소 입력'">
+        </div>
+        <button type="submit" class="btn btn-primary">ID찾기</button>
+    </form>
+    <div style="height:50px;"></div>
+    <div class="my-3 border-bottom">
+        <h4>비밀번호 찾기</h4>
+    </div>
+    <form th:action="@{/user/findid}" method="post">
+        <div class="mb-3">
+            <label for="userid" class="form-label">사용자ID</label>
+            <input type="text" id="userid" class="form-control">
         </div>
         <div class="mb-3">
-            <label for="password1" class="form-label">비밀번호</label>
-            <input type="password" th:field="*{password1}" class="form-control">
+            <label for="emailpw" class="form-label">이메일</label>
+            <input type="email" id="emailpw" class="form-control" placeholder="'회원가입 시 등록한 이메일 주소 입력'">
         </div>
-        <div class="mb-3">
-            <label for="password2" class="form-label">비밀번호 확인</label>
-            <input type="password" th:field="*{password2}" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">이메일</label>
-            <input type="email" th:field="*{email}" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="sex" class="form-label">성별</label>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="sex" id="sex" value="남">
-                <label class="form-check-label" for="inlineRadio1">남</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="sex" id="sex" value="여">
-                <label class="form-check-label" for="inlineRadio2">여</label>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label for="age" class="form-label">나이</label>
-            <input type="text" th:field="*{age}" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="salary" class="form-label">연봉</label>
-            <input type="text" th:field="*{salary}" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="profileImg" class="form-label">프로필사진</label>
-            <input type="file" th:field="*{profileImg}" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="skill" class="form-label">보유스킬</label>
-            <input type="text" th:field="*{skill}" class="form-control">
-        </div>
-        <button type="submit" class="btn btn-primary">회원가입</button>
+        <button type="submit" class="btn btn-primary">비밀번호 찾기</button>
     </form>
 </div>
 </html>

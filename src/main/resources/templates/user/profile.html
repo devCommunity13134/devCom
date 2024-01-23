@@ -1,27 +1,61 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3" style="display:flex;">
 <div class="card" style="width: 18rem;">
-    <img th:src="${user.profileImg}" alt="프로필사진">
+    <img th:src="${user.profileImg}" alt="프로필사진" style="width:280px; height:280px;">
     <div class="card-body">
         <h5 class="card-title" th:text="${user.nickname}"></h5>
         <p class="card-text" th:text="${user.sex}"></p>
     </div>
     <ul class="list-group list-group-flush">
         <li class="list-group-item" th:text="|나이 : ${user.age}|"></li>
-        <li class="list-group-item" th:text="|스킬 : ${user.skill}|"></li>
+        <li class="list-group-item">보유스킬
+            <span class="btn btn-success btn-sm" th:each="skill : ${user.skillList}" th:text="${skill.skillName}" style="margin-right:10px;"></span>
+        </li>
         <li class="list-group-item" th:text="|이메일 : ${user.email}|"></li>
     </ul>
-    <div class="card-body">
-        <a href="#" class="card-link">쪽지 보내기</a>
-        <a href="#" class="card-link">팀 초대하기</a>
+    <div class="card-body" style="text-align:center;">
+        <a href="#" class="btn btn-success btn-sm">쪽지 보내기</a>
+        <a href="#" class="btn btn-success btn-sm">팀 초대하기</a>
     </div>
 </div>
-    <div class="card" style="margin-left:30px;">
-        <h5 class="card-header">Featured</h5>
+    <div class="card" style="margin-left:30px; width:650px;">
+        <h5 class="card-header">작성한 게시글</h5>
         <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <div class="my-3 border-bottom">
+                <a href="#">
+                    <h5 class="card-title">게시글 제목</h5>
+                </a>
+                <p class="card-text">어쩌구 저쩌구....</p>
+            </div>
+            <div class="my-3 border-bottom">
+                <a href="#">
+                    <h5 class="card-title">게시글 제목</h5>
+                </a>
+                <p class="card-text">어쩌구 저쩌구....</p>
+            </div>
+            <div class="my-3 border-bottom">
+                <a href="#">
+                    <h5 class="card-title">게시글 제목</h5>
+                </a>
+                <p class="card-text">어쩌구 저쩌구....</p>
+            </div>
+            <a href="#" class="btn btn-secondary btn-sm">전체보기</a>
+        </div>
+        <h5 class="card-header">팔로워</h5>
+        <div class="card-body">
+            <a href="#">
+                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                <strong>팔로워1</strong>
+            </a>
+            <a href="#">
+                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                <strong>팔로워2</strong>
+            </a>
+            <a href="#">
+                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                <strong>팔로워3</strong>
+            </a>
+            <a href="#" class="btn btn-secondary btn-sm">전체보기</a>
         </div>
     </div>
 </div>

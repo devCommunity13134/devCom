@@ -3,10 +3,7 @@ package devcom.main.domain.user.entity;
 
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.global.jpa.BaseEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -56,6 +53,6 @@ public class SiteUser extends BaseEntity {
     private String profileImg;
     // 이미지 URL 문자열 저장
 
-    @OneToMany(mappedBy = "skillName", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Skill> skillList;
 }

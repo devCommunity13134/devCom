@@ -17,7 +17,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
-    public void signup(String username, String nickname, String password, String email, char sex, Integer age, Integer salary, String profileImg, Integer phoneNumber) {
+    public void signup(String username, String nickname, String password, String email, char sex, Integer age, Integer salary, String profileImg, Integer phoneNumber, List<Skill> skillList) {
         SiteUser user = SiteUser.builder()
                 .username(username)
                 .nickname(nickname)
@@ -28,13 +28,14 @@ public class UserService {
                 .age(age)
                 .salary(salary)
                 .profileImg(profileImg)
+                .skillList(skillList)
                 .build();
 
         this.userRepository.save(user);
     }
 
-    public SiteUser findByusername(String username) {
-        Optional<SiteUser> user = this.userRepository.findByusername(username);
+    public SiteUser findByUsername(String username) {
+        Optional<SiteUser> user = this.userRepository.findByUsername(username);
         if(user.isEmpty()) {
             throw new RuntimeException("존재하지 않은 사용자입니다.");
         }

@@ -3,9 +3,12 @@ package devcom.main;
 import devcom.main.domain.article.service.ArticleService;
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.domain.skill.service.SkillService;
+import devcom.main.domain.user.entity.SiteUser;
+import devcom.main.domain.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 class MainApplicationTests {
@@ -14,6 +17,9 @@ class MainApplicationTests {
     ArticleService articleService;
     @Autowired
     SkillService skillService;
+
+    @Autowired
+    UserService userService;
 
     @Test
     void contextLoads() {
@@ -55,6 +61,19 @@ class MainApplicationTests {
         this.skillService.save(skills6);
         this.skillService.save(skills7);
         this.skillService.save(skills8);
+    }
+
+    @Test
+    @Transactional
+    void userSkillList() {
+        SiteUser user = this.userService.findById(2L);
+        if (user.getSkillList() == null) {
+            System.out.println("======================skillList 저장안됨");
+        }
+        for(int i = 0; i < user.getSkillList().size(); i++) {
+            System.out.println(user.getSkillList().get(i).getSkillName());
+            System.out.println("test : "+i);
+        }
     }
 
 

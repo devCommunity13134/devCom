@@ -20,7 +20,7 @@ public class HomeController {
     @GetMapping("/")
     public String root(Model model, Principal principal) {
         if(principal != null) {
-            SiteUser user = this.userService.findByusername(principal.getName());
+            SiteUser user = this.userService.findByUsername(principal.getName());
             model.addAttribute("user",user);
         }
         return "layout";

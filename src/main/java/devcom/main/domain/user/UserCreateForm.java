@@ -44,10 +44,10 @@ public class UserCreateForm {
     @NotNull(message = "나이는 필수항목 입니다.")
     private Integer age;
 
-
     private Integer salary;
 
-
     private String profileImg;
+
+    private List<Skill> skillList;
 
 }
