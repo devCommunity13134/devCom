@@ -12,23 +12,29 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class TeamMemberService {
 
     private final TeamMemberRepository teamMemberRepository;
-    private final UserService userService;
 
     @Transactional
     public void createTeamMemberAdmin(Team team, SiteUser teamAdminUser) {
 
-        // 최초 팀 생성시 만든사람은 팀관리자
         TeamMember tm = TeamMember.builder()
                 .team(team)
                 .siteUser(teamAdminUser)
-                .authority("teamAdmin").build();
+                .build();
 
         teamMemberRepository.save(tm);
+    }
+
+    public boolean isRegisteredMember(Team team, SiteUser siteUser){
+
+        Optional<TeamMember> teamMember = teamMemberRepository.findByTeamAndSiteUser(team,siteUser);
+
+        return teamMember.isPresent();
     }
 }

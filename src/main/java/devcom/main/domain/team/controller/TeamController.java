@@ -4,15 +4,15 @@ import devcom.main.domain.team.TeamCreateForm;
 import devcom.main.domain.team.dto.TeamDtoForList;
 import devcom.main.domain.team.entity.Team;
 import devcom.main.domain.team.service.TeamService;
+import devcom.main.domain.teamMember.service.TeamMemberService;
+import devcom.main.domain.user.entity.SiteUser;
+import devcom.main.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -22,12 +22,29 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/team")
 public class TeamController {
+
     private final TeamService teamService;
+
+    private final UserService userService;
+
+    @GetMapping("/detail/{id}")
+    public String teamDetail(@PathVariable("id") Long teamId,Principal principal, Model model){
+
+        SiteUser siteUser = userService.findByusername(principal.getName());
+
+        Team team = teamService.getTeamById(teamId,siteUser);
+
+        model.addAttribute("team", team);
+
+        return "/team/detail";
+    }
 
     @GetMapping("/list")
     public String teamList(Principal principal, Model model){
 
-        List<Team> teamList = teamService.getTeamListByUser(principal);
+        SiteUser siteUser = userService.findByusername(principal.getName());
+
+        List<Team> teamList = teamService.getTeamListByUser(siteUser);
         List<TeamDtoForList> teamDtoList = new ArrayList<>();
         for(Team team : teamList){
             TeamDtoForList teamDto = TeamDtoForList.builder()
@@ -53,7 +70,10 @@ public class TeamController {
     @PostMapping("/create")
     public String createTeam(@Valid TeamCreateForm teamCreateForm, BindingResult bindingResult, Principal principal){
 
-        bindingResult = teamService.create(teamCreateForm,bindingResult,principal);
+        SiteUser siteUser = userService.findByusername(principal.getName());
+
+        bindingResult = teamService.create(teamCreateForm,bindingResult,siteUser);
+
 
         if(bindingResult.hasErrors()){
             return "/team/create";

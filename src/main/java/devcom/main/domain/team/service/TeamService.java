@@ -3,10 +3,12 @@ package devcom.main.domain.team.service;
 import devcom.main.domain.team.TeamCreateForm;
 import devcom.main.domain.team.entity.Team;
 import devcom.main.domain.team.repository.TeamRepository;
+import devcom.main.domain.teamMember.entity.TeamMember;
 import devcom.main.domain.teamMember.service.TeamMemberService;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -20,12 +22,10 @@ import java.util.Optional;
 public class TeamService {
 
     private final TeamRepository teamRepository;
-
     private final TeamMemberService teamMemberService;
-    private final UserService userService;
 
     @Transactional
-    public BindingResult create(TeamCreateForm teamCreateForm, BindingResult bindingResult, Principal principal) {
+    public BindingResult create(TeamCreateForm teamCreateForm, BindingResult bindingResult, SiteUser siteUser) {
 
         // input validation
         if(bindingResult.hasErrors()){
@@ -38,17 +38,15 @@ public class TeamService {
             return bindingResult;
         }
 
-        SiteUser teamAdminUser = userService.findByusername(principal.getName());
-
         Team NewTeam = Team.builder()
                 .name(teamCreateForm.getName())
                 .description(teamCreateForm.getDescription())
-                .teamAdmin(teamAdminUser)
+                .teamAdmin(siteUser)
                 .build();
 
         teamRepository.save(NewTeam);
 
-        teamMemberService.createTeamMemberAdmin(NewTeam,teamAdminUser);
+        teamMemberService.createTeamMemberAdmin(NewTeam,siteUser);
 
         return bindingResult;
     }
@@ -59,8 +57,23 @@ public class TeamService {
     }
 
     @Transactional(readOnly = true)
-    public List<Team> getTeamListByUser(Principal principal) {
-        SiteUser siteUser = userService.findByusername(principal.getName());
+    public List<Team> getTeamListByUser(SiteUser siteUser) {
         return teamRepository.findByUser(siteUser.getId());
+    }
+
+    @SneakyThrows
+    public Team getTeamById(Long teamId, SiteUser siteUser) {
+
+        Optional<Team> team = teamRepository.findById(teamId);
+
+        if(team.isEmpty()){
+            throw new Exception("존재하지 않는 팀입니다.");
+        }
+
+        if(!teamMemberService.isRegisteredMember(team.get(),siteUser)){
+            throw new Exception("권한이 없습니다.");
+        }
+
+        return team.get();
     }
 }

@@ -24,8 +24,6 @@ public class TeamMember extends BaseEntity {
     @ManyToOne
     private SiteUser siteUser;
 
-    private String authority;
-
     @ManyToOne
     private Team team;
 }

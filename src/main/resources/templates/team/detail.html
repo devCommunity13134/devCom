@@ -1,0 +1,67 @@
+<html layout:decorate="~{layout}">
+
+<div layout:fragment="content">
+
+<script th:inline="javascript">
+
+<!--    $(document).ready(function(){-->
+
+<!--        var teamList = [[${teamList}]];-->
+
+<!--        var htmlCode = '<div class="row mt-3">';-->
+
+<!--        var i;-->
+<!--        for (i = 0; i < teamList.length; i++) {-->
+
+<!--            htmlCode = htmlCode + '<div class="col-3">'+-->
+<!--                                        '<div class="card shadow forClick bg-white" id='+teamList[i].id+' style="cursor:pointer; height:220px;">' +-->
+<!--                                            '<h5 class="card-header bg-white" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">'+teamList[i].name+'</h5>'+-->
+<!--                                            '<div class="card-body">'+-->
+<!--                                                '<div style="height:100px; text-overflow:ellipsis; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 4; display: -webkit-box;">'+-->
+<!--                                                    teamList[i].description +-->
+<!--                                                '</div>'+-->
+<!--                                            '</div>'+-->
+<!--                                            '<div class="card-footer bg-white" style="height:43px;">'+-->
+<!--                                                '<div class="row">'+-->
+<!--                                                    '<p class="col-6">'+ teamList[i].teamAdminName +'</p> ' +-->
+<!--                                                    '<p class="col-6 text-end">'+ moment(teamList[i].createDate).format('YYYY-MM-DD') +'</p> ' +-->
+<!--                                                '</div>'+-->
+<!--                                            '</div>'+-->
+<!--                                        '</div>'+-->
+<!--                                    '</div>';-->
+
+<!--            if( (i+1)%4 == 0 ){-->
+<!--                htmlCode = htmlCode + '</div><div class="row mt-3">'-->
+<!--            }-->
+
+<!--        };-->
+<!--        htmlCode = htmlCode + '</div>';-->
+
+<!--        $("#teamArea").append(htmlCode);-->
+
+
+<!--        $(".forClick").on( "click", function() {-->
+<!--          location.href="/team/detail/"+$(this).attr("id");-->
+<!--        });-->
+<!--    });-->
+</script>
+
+    <h4>
+        [[${team.name}]]
+    </h4>
+
+    <div class="row">
+        <div class="col-8">
+            팀
+        </div>
+        <div class="col-4">
+            멤버
+        </div>
+    </div>
+
+    <div>
+        프로젝트
+    </div>
+
+</div>
+
