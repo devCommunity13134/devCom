@@ -11,6 +11,6 @@ public class HomeController {
     @GetMapping("/")
     public String root() {
 
-        return "home/index_ex3";
+        return "home/index";
     }
 }
