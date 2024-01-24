@@ -51,7 +51,7 @@
     </div>
     <!-- comment form-->
     <form action="#" style="max-width: 1200px;" class="mb-3">
-        <textarea style="width:100%;" name="comment" id="comment" cols="30" rows="10"></textarea>
+        <textarea style="width:100%; resize: none;" name="comment" id="comment" cols="30" rows="10"></textarea>
         <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary fw-bold mt-2">Post</button>
         </div>
@@ -98,17 +98,20 @@
         </div>
         <!-- reply button -->
         <div style="width: 100%;" class="d-flex my-1 mx-1 justify-content-end">
-            <button class="btn btn-primary mx-3">Reply</button>
+            <button class="btn btn-primary btn-sm fw-bold mx-3">Reply</button>
         </div>
 
     </div>
     <!-- reply form (hidden in usual, appear when push reply button above -->
     <div class="ps-5">
         <form action="#" style="max-width: 1200px;" class="mb-3">
-            <textarea style="width:100%;" name="reply" id="reply" cols="30" rows="5"></textarea>
-            <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary fw-bold mt-2">Post</button>
+            <textarea style="width:100%; resize: none;" name="reply" id="reply" cols="30" rows="5"></textarea>
+            <div class="d-flex justify-content-end align-items-center mt-2">
+                <button type="submit" class="btn btn-primary fw-bold ">Post</button>
+                <!-- button click => (reply form shrink) -->
+                <button type="reset" class="btn fw-bold">Cancel</button>
             </div>
+
         </form>
     </div>
     <!-- reply list (if reply is null > hidden) -->
@@ -147,7 +150,7 @@
             </div>
             <!-- reply button -->
             <div style="width: 100%;" class="d-flex my-1 mx-1 justify-content-end">
-                <button class="btn btn-primary mx-3">Reply</button>
+                <button class="btn btn-primary btn-sm fw-bold mx-3">Reply</button>
             </div>
 
         </div>
