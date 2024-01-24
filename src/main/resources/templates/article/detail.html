@@ -1,5 +1,157 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3">
- <h1>article_detail</h1>
+
+    <div style="max-width:1200px" class="shadow py-4 px-3 mb-3 w-100 bg-body">
+        <!-- top-section subject,item_box(author,createDate,comment,like,hit) profile img -->
+        <div class="d-flex justify-content-between flex-wrap">
+            <!-- subject,item_box container  -->
+            <div>
+                <span class="fs-3 fw-bold">[Subject1]</span>
+                <div style="font-size: 14px;" class="d-flex flex-grow-1 text-secondary flex-wrap">
+                    <div>by <a href="#" style="text-decoration:none; color: gray;" class="fw-bold">author</a> <span
+                            class="mx-2">•</span></div>
+                    <!--   createDate  -->
+                    <div>2024-01-24<span class="mx-2">•</span></div>
+                    <!--  if comment is null no comment -->
+                    <div><span>💬</span>1 <span class="mx-2">•</span></div>
+                    <!--    like       -->
+                    <div><span>👍</span>7 <span class="mx-2">•</span></div>
+                    <!--   hit    -->
+                    <div><span>👀</span>777</div>
+                </div>
+            </div>
+            <!-- img-box container -->
+            <div>
+                <a href="#">
+                    <div style="width: 90px; height: 90px; border-radius: 70%; overflow: hidden; "
+                         class="border border-black">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSToCu3S6GQE6FFDA1NT5bw4O7vHiWctYcbhg&usqp=CAU"
+                             alt="testImg">
+                    </div>
+                </a>
+            </div>
+
+        </div>
+        <!-- content -->
+        <div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut cumque delectus dolore dolorum error
+                esse exercitationem inventore, laudantium modi officia pariatur qui reiciendis repudiandae suscipit
+                tempore veniam vitae voluptas voluptatum! Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Aut
+                cumque delectus dolore dolorum error
+                esse exercitationem inventore, laudantium modi officia pariatur qui reiciendis repudiandae suscipit
+                tempore veniam vitae voluptas voluptatum!</p>
+        </div>
+        <!-- like button js_need-->
+        <a href="#" style="text-decoration: none;" class=" fs-4 btn btn-outline-secondary">
+            <span>Like</span>
+        </a>
+
+
+    </div>
+    <!-- comment form-->
+    <form action="#" style="max-width: 1200px;" class="mb-3">
+        <textarea style="width:100%;" name="comment" id="comment" cols="30" rows="10"></textarea>
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary fw-bold mt-2">Post</button>
+        </div>
+    </form>
+
+    <!-- comment list -->
+    <div style="max-width:1200px" class="shadow py-4 px-3 mb-3 w-100 bg-body">
+        <!-- like, profile-box(profile img, name, CommentCreateDate) -->
+        <div class="d-flex">
+            <!-- like button js_need-->
+            <a href="#" style="text-decoration: none;" class=" fs-5 btn btn-outline-secondary">
+                <span>Like</span>
+            </a>
+
+            <!-- img, profile-box -->
+            <div class="ms-2 d-flex align-items-center">
+                <!-- img-box -->
+                <div>
+                    <a href="#">
+                        <div style="width: 32px; height: 32px; border-radius: 70%; overflow: hidden; "
+                             class="border border-secondary">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSToCu3S6GQE6FFDA1NT5bw4O7vHiWctYcbhg&usqp=CAU"
+                                 alt="testImg">
+                        </div>
+                    </a>
+                </div>
+                <!-- profile -->
+                <div class="d-flex ms-1">
+                    <!--name-->
+                    <span style="font-size:14px;" class="fw-bold">commentAuthor</span>
+                    <span class="fw-bold mx-1">|</span>
+                    <!--commentCreateDate-->
+                    <span>24-01-24</span>
+                </div>
+            </div>
+        </div>
+        <!-- comment-content -->
+        <div style="margin-left: 75px;">
+            <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Ad aliquid architecto consectetur esse eum fugit ipsum, ita
+                que iusto maxime minus modi necessitatibus neque, nesciunt n
+                ihil non nostrum odio, officiis quasi?
+            </span>
+        </div>
+        <!-- reply button -->
+        <div style="width: 100%;" class="d-flex my-1 mx-1 justify-content-end">
+            <button class="btn btn-primary mx-3">Reply</button>
+        </div>
+
+    </div>
+    <!-- reply form (hidden in usual, appear when push reply button above -->
+    <div class="ps-5">
+        <form action="#" style="max-width: 1200px;" class="mb-3">
+            <textarea style="width:100%;" name="reply" id="reply" cols="30" rows="5"></textarea>
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary fw-bold mt-2">Post</button>
+            </div>
+        </form>
+    </div>
+    <!-- reply list (if reply is null > hidden) -->
+    <div class="ps-5">
+        <div style="max-width:1200px" class="shadow py-4 px-3 mb-3 w-100 bg-body">
+            <!-- like, profile-box(profile img, name, replyCreateDate) -->
+            <div class="d-flex">
+
+                <!-- img, profile-box -->
+                <div class="ms-2 d-flex align-items-center">
+                    <!-- img-box -->
+                    <div>
+                        <a href="#">
+                            <div style="width: 32px; height: 32px; border-radius: 70%; overflow: hidden; "
+                                 class="border border-secondary">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSToCu3S6GQE6FFDA1NT5bw4O7vHiWctYcbhg&usqp=CAU"
+                                     alt="testImg">
+                            </div>
+                        </a>
+                    </div>
+                    <!-- profile -->
+                    <div class="d-flex ms-1">
+                        <!--name-->
+                        <span style="font-size:14px;" class="fw-bold">replyAuthor</span>
+                        <span class="fw-bold mx-1">|</span>
+                        <!--replyCreateDate-->
+                        <span>24-01-24</span>
+                    </div>
+                </div>
+            </div>
+            <!-- reply-content -->
+            <div style="margin-left: 10px;">
+            <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Ad aliquid architecto consectetur esse eum fugit ipsum.
+            </span>
+            </div>
+            <!-- reply button -->
+            <div style="width: 100%;" class="d-flex my-1 mx-1 justify-content-end">
+                <button class="btn btn-primary mx-3">Reply</button>
+            </div>
+
+        </div>
+    </div>
+
 </div>
 </html>

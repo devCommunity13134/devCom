@@ -14,15 +14,22 @@ public class ArticleController {
 
     private final ArticleRepository articleRepository;
 
+    // article list getMapping_fix_need
     @GetMapping("/list")
     public String articleList(){
 
         return "article/list";
     }
-
+    // create article
     @GetMapping("/create")
     public String articleCreate(){
 
         return "article/form";
+    }
+    // detail getMapping_fix_need
+    @GetMapping("/detail/1")
+    public String articleDetail(){
+
+        return "article/detail";
     }
 }
