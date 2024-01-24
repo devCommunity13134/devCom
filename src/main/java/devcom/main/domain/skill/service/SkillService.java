@@ -24,7 +24,6 @@ public class SkillService {
         return this.skillRepository.findAll();
     }
 
-    public Skill findByskillName(String skillName) { return this.skillRepository.findByskillName(skillName);}
 
     public void create(List<String> skills, SiteUser user) {
         for(int i = 0; i < skills.size(); i++) {
@@ -40,7 +39,9 @@ public class SkillService {
     public List<Skill> findByskillList(List<String> skills) {
         List<Skill> skillList = new ArrayList<>();
         for(int i = 0; i < skills.size(); i++) {
-            Skill skill = this.findByskillName(skills.get(i));
+            Skill skill = Skill.builder()
+                    .skillName(skills.get(i))
+                    .build();
             skillList.add(skill);
         }
         return skillList;

@@ -10,6 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.*;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.util.Properties;
+
 @SpringBootTest
 class MainApplicationTests {
 
@@ -25,44 +31,6 @@ class MainApplicationTests {
     void contextLoads() {
 
     }
-
-    @Test
-    void createSkills() {
-        Skill skills1 = Skill.builder()
-                .skillName("HTML")
-                .build();
-        Skill skills2 = Skill.builder()
-                .skillName("CSS")
-                .build();
-        Skill skills3 = Skill.builder()
-                .skillName("JS")
-                .build();
-        Skill skills4 = Skill.builder()
-                .skillName("C")
-                .build();
-        Skill skills5 = Skill.builder()
-                .skillName("C++")
-                .build();
-        Skill skills6 = Skill.builder()
-                .skillName("Java")
-                .build();
-        Skill skills7 = Skill.builder()
-                .skillName("Python")
-                .build();
-        Skill skills8 = Skill.builder()
-                .skillName("SQL")
-                .build();
-
-        this.skillService.save(skills1);
-        this.skillService.save(skills2);
-        this.skillService.save(skills3);
-        this.skillService.save(skills4);
-        this.skillService.save(skills5);
-        this.skillService.save(skills6);
-        this.skillService.save(skills7);
-        this.skillService.save(skills8);
-    }
-
     @Test
     @Transactional
     void userSkillList() {
@@ -75,6 +43,5 @@ class MainApplicationTests {
             System.out.println("test : "+i);
         }
     }
-
 
 }

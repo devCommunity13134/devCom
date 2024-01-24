@@ -48,6 +48,6 @@ public class UserCreateForm {
 
     private String profileImg;
 
-    private List<Skill> skillList;
+    private List<String> skill;
 
 }
