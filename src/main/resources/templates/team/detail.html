@@ -1,6 +1,25 @@
 <html layout:decorate="~{layout}">
 
 <div layout:fragment="content">
+<style>
+
+
+    /* 스크롤바의 폭 너비 */
+    .customScroll::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .customScroll::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0,.8); /* 스크롤바 색상 */
+        border-radius: 10px; /* 스크롤바 둥근 테두리 */
+    }
+
+    .customScroll::-webkit-scrollbar-track {
+        background: rgba(45, 45, 45, .45);  /*스크롤바 뒷 배경 색상*/
+    }
+</style>
+
+
 
 <script th:inline="javascript">
 
@@ -46,22 +65,93 @@
 <!--    });-->
 </script>
 
+
     <h4>
-        [[${team.name}]]
+        Team Details
     </h4>
 
-    <div class="row">
-        <div class="col-8">
-            팀
+    <div class="row mt-3">
+        <div class="col-9">
+            <div class="card shadow">
+                <div class="card-header text-bold">
+                    <i class="fa-solid fa-house-chimney"></i>
+                    [[${team.name}]]
+
+                    <div class="float-end d-inline dropstart" th:if="${team.teamAdmin.username} == ${#authentication.getPrincipal().getUsername()}">
+                        <a class="text-dark" href="#" role="button" id="teamDropDown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-gear"></i>
+                        </a>
+
+                        <ul class="dropdown-menu text-center" aria-labelledby="teamDropDown">
+                            <li><a  class="text-dark dropdown-item" th:href="@{|/team/modifyTeam/${team.id}|}">수정</a></li>
+                            <li class="mt-1"><a  class="text-dark dropdown-item" th:href="@{|/team/delete/${team.id}|}">삭제</a></li>
+                        </ul>
+
+
+
+                    </div>
+
+                </div>
+                <div class="card-body">
+
+                    <div style="height:126px; overflow-y:auto;" class="customScroll">
+                        [[${team.description}]]
+                    </div>
+                    <div>
+                        <span>[[${team.teamAdmin.nickname}]]</span>
+                        <span class="float-end" th:text="${#temporals.format(team.createDate,'yy-MM-dd')}"></span>
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <div class="col-4">
-            멤버
+        <div class="col-3">
+            <div class="card shadow">
+                <div class="card-header">
+                    <span>
+                        <i class="fa-solid fa-people-group"></i>
+                        Member
+                        &nbsp;
+                    </span>
+
+<!--                    <div class=" d-inline dropdown" th:if="${team.teamAdmin.username} == ${#authentication.getPrincipal().getUsername()}">-->
+<!--                        <a class="dropdown-toggle text-dark" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                            <i class="fa-solid fa-gear"></i>-->
+<!--                        </a>-->
+
+<!--                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">-->
+<!--                            <li><a  class="float-end text-dark" th:href="@{|/team/modifyTeam/${team.id}|}">수정</a></li>-->
+<!--                            <li><a  class="float-end text-dark" th:href="@{|/team/delete/${team.id}|}">삭제</a></li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+
+                </div>
+                <div class="card-body">
+                    <div style="height:150px; overflow-y:auto;" class="customScroll">
+                        <div th:each="member : ${team.teamMemberList}">
+                            <div class="mt-1">
+                                <span>
+                                    [[${member.siteUser.nickname}]]
+                                </span>
+                                <span th:if="${team.teamAdmin.nickname} == ${member.siteUser.nickname}" class="float-end text-danger">
+                                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                                </span>
+                                <span th:unless="${team.teamAdmin.nickname} == ${member.siteUser.nickname}" class="float-end text-primary">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div>
-        프로젝트
-    </div>
+    <h4 class="mt-4">
+        Projects
+        <a class="" href="">
+            <i class="fa-regular fa-square-plus"></i>
+        </a>
+    </h4>
 
 </div>
-

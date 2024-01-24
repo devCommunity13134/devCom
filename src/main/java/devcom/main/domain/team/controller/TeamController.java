@@ -3,6 +3,7 @@ package devcom.main.domain.team.controller;
 import devcom.main.domain.team.TeamCreateForm;
 import devcom.main.domain.team.dto.TeamDtoForList;
 import devcom.main.domain.team.entity.Team;
+import devcom.main.domain.team.service.TeamAndProjectService;
 import devcom.main.domain.team.service.TeamService;
 import devcom.main.domain.teamMember.service.TeamMemberService;
 import devcom.main.domain.user.entity.SiteUser;
@@ -23,16 +24,41 @@ import java.util.List;
 @RequestMapping("/team")
 public class TeamController {
 
-    private final TeamService teamService;
-
+    private final TeamAndProjectService teamAndProjectService;
     private final UserService userService;
+
+    @PostMapping("/modifyTeam")
+    public String modifyTeam(@Valid TeamCreateForm teamCreateForm, BindingResult bindingResult, Principal principal){
+
+        SiteUser siteUser = userService.findByusername(principal.getName());
+
+        bindingResult = teamAndProjectService.create(teamCreateForm,bindingResult,siteUser);
+
+        if(bindingResult.hasErrors()){
+            return "/team/create";
+        }
+
+        return "redirect:/team/list";
+    }
+
+    @GetMapping("/modifyTeam/{id}")
+    public String modifyTeam(@PathVariable("id") Long teamId, TeamCreateForm teamCreateForm, Principal principal, Model model){
+
+        SiteUser siteUser = userService.findByusername(principal.getName());
+
+        Team team = teamAndProjectService.getTeamById(teamId,siteUser);
+
+        model.addAttribute("team", team);
+
+        return "/team/modifyTeam";
+    }
 
     @GetMapping("/detail/{id}")
     public String teamDetail(@PathVariable("id") Long teamId,Principal principal, Model model){
 
         SiteUser siteUser = userService.findByusername(principal.getName());
 
-        Team team = teamService.getTeamById(teamId,siteUser);
+        Team team = teamAndProjectService.getTeamById(teamId,siteUser);
 
         model.addAttribute("team", team);
 
@@ -44,7 +70,7 @@ public class TeamController {
 
         SiteUser siteUser = userService.findByusername(principal.getName());
 
-        List<Team> teamList = teamService.getTeamListByUser(siteUser);
+        List<Team> teamList = teamAndProjectService.getTeamListByUser(siteUser);
         List<TeamDtoForList> teamDtoList = new ArrayList<>();
         for(Team team : teamList){
             TeamDtoForList teamDto = TeamDtoForList.builder()
@@ -72,14 +98,13 @@ public class TeamController {
 
         SiteUser siteUser = userService.findByusername(principal.getName());
 
-        bindingResult = teamService.create(teamCreateForm,bindingResult,siteUser);
-
+        bindingResult = teamAndProjectService.create(teamCreateForm,bindingResult,siteUser);
 
         if(bindingResult.hasErrors()){
             return "/team/create";
         }
 
-        return "redirect:/";
+        return "redirect:/team/list";
     }
 
 }

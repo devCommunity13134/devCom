@@ -32,6 +32,7 @@ public class ServiceInit implements InitializingBean {
 
     private final UserService userService;
     private final TeamService teamService;
+    private final TeamMemberService teamMemberService;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -45,83 +46,6 @@ public class ServiceInit implements InitializingBean {
         userService.signup("user3", "유저3", "1234", "user3@gmai.com", "남".charAt(0), 21, 21, null, "Java");
         userService.signup("user4", "유저4", "1234", "user4@gmai.com", "남".charAt(0), 21, 21, null, "Java");
         userService.signup("user5", "유저5", "1234", "user5@gmai.com", "남".charAt(0), 21, 21, null, "Java");
-
-        BindingResult br = new BindingResult() {
-            @Override
-            public Object getTarget() {
-                return null;
-            }
-
-            @Override
-            public Map<String, Object> getModel() {
-                return null;
-            }
-
-            @Override
-            public Object getRawFieldValue(String field) {
-                return null;
-            }
-
-            @Override
-            public PropertyEditor findEditor(String field, Class<?> valueType) {
-                return null;
-            }
-
-            @Override
-            public PropertyEditorRegistry getPropertyEditorRegistry() {
-                return null;
-            }
-
-            @Override
-            public String[] resolveMessageCodes(String errorCode) {
-                return new String[0];
-            }
-
-            @Override
-            public String[] resolveMessageCodes(String errorCode, String field) {
-                return new String[0];
-            }
-
-            @Override
-            public void addError(ObjectError error) {
-
-            }
-
-            @Override
-            public String getObjectName() {
-                return null;
-            }
-
-            @Override
-            public void reject(String errorCode, Object[] errorArgs, String defaultMessage) {
-
-            }
-
-            @Override
-            public void rejectValue(String field, String errorCode, Object[] errorArgs, String defaultMessage) {
-
-            }
-
-            @Override
-            public List<ObjectError> getGlobalErrors() {
-                return null;
-            }
-
-            @Override
-            public List<FieldError> getFieldErrors() {
-                return null;
-            }
-
-            @Override
-            public Object getFieldValue(String field) {
-                return null;
-            }
-
-            @Override
-            public boolean hasErrors() {
-                return false;
-            }
-        };
 
         TeamCreateForm team1 = new TeamCreateForm();
         team1.setName("팀1");
@@ -145,11 +69,11 @@ public class ServiceInit implements InitializingBean {
 
         SiteUser st = userService.findByusername("user1");
 
-        teamService.create(team1, br, st);
-        teamService.create(team2, br, st);
-        teamService.create(team3, br, st);
-        teamService.create(team4, br, st);
-        teamService.create(team5, br, st);
+        teamMemberService.createTeamMemberAdmin(teamService.create(team1, st), st);
+        teamMemberService.createTeamMemberAdmin(teamService.create(team2, st), st);
+        teamMemberService.createTeamMemberAdmin(teamService.create(team3, st), st);
+        teamMemberService.createTeamMemberAdmin(teamService.create(team4, st), st);
+        teamMemberService.createTeamMemberAdmin(teamService.create(team5, st), st);
 
     }
 }

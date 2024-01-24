@@ -22,36 +22,22 @@ import java.util.Optional;
 public class TeamService {
 
     private final TeamRepository teamRepository;
-    private final TeamMemberService teamMemberService;
 
     @Transactional
-    public BindingResult create(TeamCreateForm teamCreateForm, BindingResult bindingResult, SiteUser siteUser) {
+    public Team create(TeamCreateForm teamCreateForm, SiteUser siteUser) {
 
-        // input validation
-        if(bindingResult.hasErrors()){
-            return bindingResult;
-        }
-
-        // isUnique name
-        if(!isUnique(teamCreateForm.getName())){
-            bindingResult.reject("이름중복","이미 존재하는 팀 이름 입니다.");
-            return bindingResult;
-        }
-
-        Team NewTeam = Team.builder()
+        Team newTeam = Team.builder()
                 .name(teamCreateForm.getName())
                 .description(teamCreateForm.getDescription())
                 .teamAdmin(siteUser)
                 .build();
 
-        teamRepository.save(NewTeam);
+        teamRepository.save(newTeam);
 
-        teamMemberService.createTeamMemberAdmin(NewTeam,siteUser);
-
-        return bindingResult;
+        return newTeam;
     }
 
-    private Boolean isUnique(String teamName){
+    public Boolean isUnique(String teamName){
         Optional<Team> team = teamRepository.findByName(teamName);
         return team.isEmpty();
     }
@@ -62,16 +48,12 @@ public class TeamService {
     }
 
     @SneakyThrows
-    public Team getTeamById(Long teamId, SiteUser siteUser) {
+    public Team getTeamById(Long teamId) {
 
         Optional<Team> team = teamRepository.findById(teamId);
 
         if(team.isEmpty()){
             throw new Exception("존재하지 않는 팀입니다.");
-        }
-
-        if(!teamMemberService.isRegisteredMember(team.get(),siteUser)){
-            throw new Exception("권한이 없습니다.");
         }
 
         return team.get();

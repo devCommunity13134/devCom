@@ -26,8 +26,15 @@ public class Team extends BaseEntity {
     private String name;
 
     @NotEmpty
+    @Column(columnDefinition="text")
     private String description;
 
     @ManyToOne
     private SiteUser teamAdmin;
+
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<TeamMember> teamMemberList;
+
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Project> projectList;
 }
