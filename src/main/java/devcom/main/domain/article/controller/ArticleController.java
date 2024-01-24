@@ -15,8 +15,14 @@ public class ArticleController {
     private final ArticleRepository articleRepository;
 
     @GetMapping("/list")
-    public String list(){
+    public String articleList(){
 
         return "article/list";
+    }
+
+    @GetMapping("/create")
+    public String articleCreate(){
+
+        return "article/form";
     }
 }
