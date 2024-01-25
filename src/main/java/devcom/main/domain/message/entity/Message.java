@@ -19,6 +19,6 @@ public class Message extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private boolean check;
+    private boolean checked;
 
 }

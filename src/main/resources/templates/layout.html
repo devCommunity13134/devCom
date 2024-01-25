@@ -35,10 +35,10 @@
                             Article
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">FrontEnd</a></li>
-                            <li><a class="dropdown-item" href="#">BackEnd</a></li>
-                            <li><a class="dropdown-item" href="#">DataEngineer</a></li>
-                            <li><a class="dropdown-item" href="#">AI</a></li>
+                            <li><a class="dropdown-item" th:href="@{|/article/list/frontEnd|}">FrontEnd</a></li>
+                            <li><a class="dropdown-item" th:href="@{|/article/list/backEnd|}">BackEnd</a></li>
+                            <li><a class="dropdown-item" th:href="@{|/article/list/dataEngineer|}">DataEngineer</a></li>
+                            <li><a class="dropdown-item" th:href="@{|/article/list/AI|}">AI</a></li>
                         </ul>
                     </li>
                     <li style="width:70%;" >
@@ -74,8 +74,8 @@
                     <strong>홍길동</strong>
                 </a>
                 <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" sec:authorize="isAuthenticated()">
-                    <img th:src="${user.profileImg}" alt="" width="32" height="32" class="rounded-circle me-2">
-                    <strong th:text="${user.nickname}"></strong>
+                    <img th:src="${@rq.getSiteUser().profileImg}" alt="" width="32" height="32" class="rounded-circle me-2">
+                    <strong th:text="${@rq.getSiteUser().nickname}"></strong>
                 </a>
                 <ul class="dropdown-menu text-small shadow">
                     <li><a class="dropdown-item" href="#">New project...</a></li>
