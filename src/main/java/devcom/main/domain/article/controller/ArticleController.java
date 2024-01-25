@@ -6,9 +6,11 @@ import devcom.main.domain.article.repository.ArticleRepository;
 import devcom.main.domain.article.service.ArticleService;
 import devcom.main.domain.category.entity.Category;
 import devcom.main.domain.category.service.CategoryService;
+import devcom.main.global.rq.Rq;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +37,7 @@ public class ArticleController {
         return "article/list";
     }
     // create article
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String articleCreate(){
 

@@ -54,8 +54,8 @@
                 </a>
             </div>
         </div>
-
-        <a th:href="@{/article/create}" class="btn btn-primary">글쓰기</a>
+        <!-- article_create button -->
+        <a th:if="${@rq.isLogin()}" th:href="@{/article/create}" class="btn btn-primary">글쓰기</a>
         <!-- 페이징처리 시작 -->
         <div th:if="${!paging.isEmpty()}">
             <ul class="pagination justify-content-center">
