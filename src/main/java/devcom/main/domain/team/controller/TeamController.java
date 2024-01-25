@@ -1,11 +1,8 @@
 package devcom.main.domain.team.controller;
 
 import devcom.main.domain.team.TeamCreateForm;
-import devcom.main.domain.team.dto.TeamDtoForList;
 import devcom.main.domain.team.entity.Team;
 import devcom.main.domain.team.service.TeamAndProjectService;
-import devcom.main.domain.team.service.TeamService;
-import devcom.main.domain.teamMember.service.TeamMemberService;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
 import jakarta.validation.Valid;
@@ -71,19 +68,8 @@ public class TeamController {
         SiteUser siteUser = userService.findByusername(principal.getName());
 
         List<Team> teamList = teamAndProjectService.getTeamListByUser(siteUser);
-        List<TeamDtoForList> teamDtoList = new ArrayList<>();
-        for(Team team : teamList){
-            TeamDtoForList teamDto = TeamDtoForList.builder()
-                                        .id(team.getId())
-                                        .teamAdminName(team.getTeamAdmin().getNickname())
-                                        .name(team.getName())
-                                        .description(team.getDescription())
-                                        .createDate(team.getCreateDate()).build();
-
-            teamDtoList.add(teamDto);
-        }
-
-        model.addAttribute("teamList",teamDtoList);
+       
+        model.addAttribute("teamList",teamList);
 
         return "/team/list";
     }
