@@ -50,8 +50,9 @@
                         </form>
                     </li>
 
-                    <li style="width:140px;" class="d-flex justify-content-between align-items-center" sec:authorize="isAnonymous()">
+                    <li style="width:240px;" class="d-flex justify-content-between align-items-center" sec:authorize="isAnonymous()">
                         <a class="btn btn-info btn-sm" th:href="@{/user/login}">로그인</a>
+                        <a class="btn btn-info btn-sm" th:href="@{/user/findaccount}">ID/PW 찾기</a>
                         <a class="btn btn-sm bg-success text-white bg-opacity-20" th:href="@{/user/signup}">회원가입</a>
                     </li>
                     <li style="width:150px;" class="d-flex justify-content-between align-items-center" sec:authorize="isAuthenticated()">
@@ -68,9 +69,13 @@
     <div class="container d-flex flex-row">
         <div class="d-flex flex-column flex-shrink-0 p-1 h-100" style="width: 200px;">
             <div class="dropdown mt-3">
-                <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" sec:authorize="isAnonymous()">
                     <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
                     <strong>홍길동</strong>
+                </a>
+                <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" sec:authorize="isAuthenticated()">
+                    <img th:src="${user.profileImg}" alt="" width="32" height="32" class="rounded-circle me-2">
+                    <strong th:text="${user.nickname}"></strong>
                 </a>
                 <ul class="dropdown-menu text-small shadow">
                     <li><a class="dropdown-item" href="#">New project...</a></li>

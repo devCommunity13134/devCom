@@ -1,12 +1,16 @@
 package devcom.main.domain.user.service;
 
 
+import devcom.main.domain.skill.entity.Skill;
+import devcom.main.domain.user.UserCreateForm;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,24 +19,25 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
-    public void signup(String username, String nickname, String password, String email, char sex, Integer age, Integer salary, String profileImg, String skill) {
+    public void signup(UserCreateForm userCreateForm, List<Skill> skillList) {
         SiteUser user = SiteUser.builder()
-                .username(username)
-                .nickname(nickname)
-                .password(passwordEncoder.encode(password))
-                .email(email)
-                .sex(sex)
-                .age(age)
-                .salary(salary)
-                .profileImg(profileImg)
-                .skill(skill)
+                .username(userCreateForm.getUsername())
+                .nickname(userCreateForm.getNickname())
+                .password(passwordEncoder.encode(userCreateForm.getPassword2()))
+                .phoneNumber(userCreateForm.getPhoneNumber())
+                .email(userCreateForm.getEmail())
+                .sex(userCreateForm.getSex())
+                .age(userCreateForm.getAge())
+                .salary(userCreateForm.getSalary())
+                .profileImg(userCreateForm.getProfileImg())
+                .skillList(skillList)
                 .build();
 
         this.userRepository.save(user);
     }
 
-    public SiteUser findByusername(String username) {
-        Optional<SiteUser> user = this.userRepository.findByusername(username);
+    public SiteUser findByUsername(String username) {
+        Optional<SiteUser> user = this.userRepository.findByUsername(username);
         if(user.isEmpty()) {
             throw new RuntimeException("존재하지 않은 사용자입니다.");
         }
@@ -45,6 +50,18 @@ public class UserService {
             throw new RuntimeException("존재하지 않은 사용자입니다.");
         }
         return user.get();
+    }
+
+    public BindingResult checkErrors(UserCreateForm userCreateForm, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            return bindingResult;
+        }
+        if(!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
+            bindingResult.rejectValue("password2", "passwordInCorrect",
+                    "2개의 패스워드가 일치하지 않습니다.");
+            return bindingResult;
+        }
+        return bindingResult;
     }
 }
 
