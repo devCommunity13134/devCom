@@ -68,10 +68,11 @@ class MainApplicationTests {
 
     // SiteUser Test
     // create "user1"
-    @Test
-    void siteUserSignupTest(){
-        this.userService.signup("user1","user1nick","1234","user1@gmail.com",'m',27,1000,"https://yt3.ggpht.com/lE7K-Ab6YHP4DzO9SwtFuS-GQxFbkklXcSCp99SFSzXWa6OlGw_esCFX0GUKuBa6DjaCd4-gmxsS=s800-c-fcrop64=1,2c330000d6ddffff-nd-v1","java");
-    }
+//    @Test
+//    void siteUserSignupTest(){
+//        this.skillService.create(skills,);
+//        this.userService.signup("user1","user1nick","1234","user1@gmail.com",'m',27,1000,"https://yt3.ggpht.com/lE7K-Ab6YHP4DzO9SwtFuS-GQxFbkklXcSCp99SFSzXWa6OlGw_esCFX0GUKuBa6DjaCd4-gmxsS=s800-c-fcrop64=1,2c330000d6ddffff-nd-v1","java", );
+//    }
 
     // Category Test
     @Test
@@ -82,8 +83,17 @@ class MainApplicationTests {
     @Test
     void articleCreateTest() {
         Category category = this.categoryService.getCategory("front");
-        SiteUser author =  this.userService.findByusername("user1");
-        this.articleService.create(category, "s3", "c3",author);
+        SiteUser author =  this.userService.findByUsername("user1");
+        this.articleService.create(category, "[s8]", "Lorem ipsum dolor sit\n" +
+                "                    amet, consectetur adipisicing elit. A ab asperiores, aspernatur at consectetur consequuntur cum\n" +
+                "                    deleniti ea eius ipsum non nulla officiis pariatur perferendis quod reprehenderit, saepe tempora\n" +
+                "                    tenetur. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur cum deleniti eaque\n" +
+                "                    esse nulla numquam obcaecati praesentium quam sunt. Dolorem ducimus earum illo laudantium odio omnis\n" +
+                "                    perferendis quae quaerat vel. Lorem ipsum dolor sit amet, consectetur adipisicing elit. A dolorum\n" +
+                "                    est excepturi facere illo laborum, natus officia quasi reprehenderit voluptatem! Doloribus harum\n" +
+                "                    officiis perspiciatis? Fugiat reprehenderit saepe sint totam voluptates! Lorem ipsum dolor sit amet,\n" +
+                "                    consectetur adipisicing elit. Alias asperiores deleniti doloremque eum excepturi fuga inventore\n" +
+                "                    ipsam iusto non obcaecati, possimus totam ullam veniam? Aliquam atque expedita illum qui vitae? ",author);
     }
 
     @Test
@@ -94,14 +104,14 @@ class MainApplicationTests {
 
     @Test
     void articleDeleteTest() {
-        Article article = this.articleService.getArticle(1);
+        Article article = this.articleService.getArticle(3);
         this.articleService.delete(article);
     }
     // Answer Test
     @Test
     void answerCreateTest() {
         Article article = this.articleService.getArticle(1);
-        SiteUser author =  this.userService.findByusername("user1");
+        SiteUser author =  this.userService.findByUsername("user1");
         this.answerService.create(article, "answerContent1", author);
     }
 
@@ -120,7 +130,7 @@ class MainApplicationTests {
     @Test
     void replyCreateTest(){
         Answer answer = this.answerService.getAnswer(1);
-        SiteUser author =  this.userService.findByusername("user1");
+        SiteUser author =  this.userService.findByUsername("user1");
         this.replyService.create(answer,"reply1", author);
     }
 

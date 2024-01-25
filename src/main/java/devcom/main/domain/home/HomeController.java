@@ -23,6 +23,6 @@ public class HomeController {
             SiteUser user = this.userService.findByUsername(principal.getName());
             model.addAttribute("user",user);
         }
-        return "layout";
+        return "home/index";
     }
 }

@@ -1,7 +1,9 @@
 package devcom.main.domain.article.entity;
 
+import devcom.main.domain.answer.entity.Answer;
 import devcom.main.domain.category.entity.Category;
 import devcom.main.domain.img.entity.Img;
+import devcom.main.domain.skill.entity.Skill;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.global.jpa.BaseEntity;
 import jakarta.persistence.*;
@@ -29,15 +31,20 @@ public class Article extends BaseEntity {
 
     // 조회수
     @Column
-    private Integer hit;
+    @Builder.Default()
+    private Integer hit = 0;
 
     // 좋아요
     @Column
-    private Integer likes;
+    @Builder.Default()
+    private Integer likes = 0;
 
     @ManyToOne
     @JoinColumn
     private Category category;
+
+    @OneToMany(mappedBy = "originalArticle", cascade = CascadeType.REMOVE)
+    private List<Answer> answerList;
 
 
     @ManyToOne
