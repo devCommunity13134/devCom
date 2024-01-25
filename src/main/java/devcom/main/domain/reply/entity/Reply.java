@@ -2,6 +2,7 @@ package devcom.main.domain.reply.entity;
 
 import devcom.main.domain.answer.entity.Answer;
 import devcom.main.domain.article.entity.Article;
+import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.global.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -24,4 +25,8 @@ public class Reply extends BaseEntity {
     @ManyToOne
     @JoinColumn
     private Answer originalAnswer;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private SiteUser author;
 }

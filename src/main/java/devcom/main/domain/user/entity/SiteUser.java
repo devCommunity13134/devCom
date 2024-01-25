@@ -38,7 +38,7 @@ public class SiteUser extends BaseEntity {
     private String email;
 
     @Column
-    private Integer phoneNumber;
+    private String phoneNumber;
 
     @Column(length = 1)
     private char sex;

@@ -36,7 +36,7 @@ public class UserCreateForm {
     private String email;
 
     @NotNull(message = "전화번호는 필수항목 입니다.")
-    private Integer phoneNumber;
+    private String phoneNumber;
 
     @NotNull(message = "성별은 필수항목 입니다.")
     private char sex;

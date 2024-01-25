@@ -1,0 +1,86 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+    <div style="max-width:1200px" class="py-4 px-3 w-100 bg-body">
+        <!--  top_section      -->
+        <div class="d-flex justify-content-between mb-2">
+            <!-- category           -->
+            <span class="fs-1 ">#Front</span>
+            <!-- popular, new, like item-box     -->
+            <div class="d-flex align-items-center text-secondary ">
+                <span class="fw-bold text-secondary">sort by:</span>
+                <button type="button" class="btn fw-bold">
+                    <span class="mx-1">✨</span>New
+                </button>
+                <button type="button" class="btn fw-bold">
+                    <span class="mx-1">💥</span>Popular
+                </button>
+                <button type="button" class="btn fw-bold">
+                    <span class="mx-1">👍</span>Like
+                </button>
+            </div>
+        </div>
+        <!--  articles     -->
+        <div th:each="article : ${paging}" class="d-flex shadow border-bottom border-black mb-3">
+            <!-- subject content _ author hit like comment numbers -->
+            <div class="d-flex flex-column flex-grow-1 ps-3 pb-3">
+                <!--subject th:href_fix_need-->
+                <a style="text-decoration: none; outline: none;"
+                   class="fs-2 fw-bold flex-grow-1 text-black" th:text="${article.subject}"></a>
+                <!--content-->
+                <p style="max-width: 850px; text-overflow: ellipsis; overflow: hidden; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; word-wrap:break-word; line-height:20px; max-height: 60px; text-align: left;"
+                   class="text-body-secondary flex-grow-1" th:text="${article.content}"></p>
+                <!-- author, createTime, comment, like, hit    -->
+                <div style="font-size: 14px;" class="d-flex flex-grow-1 text-secondary">
+                    <div>by <a href="#" style="text-decoration:none; color: gray;" class="fw-bold" th:text="${article.author.username}"></a> <span
+                            class="mx-2">•</span></div>
+                    <!--   createDate  -->
+                    <div>2024-01-24<span class="mx-2">•</span></div>
+                    <!--  if comment is null no comment -->
+                    <div th:if="${article.getAnswerList.size() > 0 || article.getAnswerList != null}" ><span>💬</span>[[${article.getAnswerList().size()}]] <span class="mx-2">•</span></div>
+                    <!--    like       -->
+                    <div><span>👍</span>[[${article.likes}]]<span class="mx-2">•</span></div>
+                    <!--   hit    -->
+                    <div><span>👀</span>[[${article.hit}]]</div>
+                </div>
+            </div>
+            <!-- 프로필 이미지 -->
+            <div class="d-flex align-items-center">
+                <a href="#">
+                    <div style="width: 150px; height: 150px; border-radius: 70%; overflow: hidden; "
+                         class="border border-black">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSToCu3S6GQE6FFDA1NT5bw4O7vHiWctYcbhg&usqp=CAU"
+                             alt="testImg">
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- article_create button -->
+        <a th:if="${@rq.isLogin()}" th:href="@{/article/create}" class="btn btn-primary">글쓰기</a>
+        <!-- 페이징처리 시작 -->
+        <div th:if="${!paging.isEmpty()}">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="@{|?page=${paging.number-1}|}">
+                        <span>이전</span>
+                    </a>
+                </li>
+                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                    th:if="${page >= paging.number-5 and page <= paging.number+5}"
+                    th:classappend="${page == paging.number} ? 'active'"
+                    class="page-item">
+                    <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                </li>
+                <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                    <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                        <span>다음</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- 페이징처리 끝 -->
+
+    </div>
+
+</div>
+</html>
