@@ -27,6 +27,7 @@ public class Article extends BaseEntity {
 
     private String subject;
 
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     // 조회수
