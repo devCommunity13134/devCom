@@ -26,6 +26,9 @@ public class Project extends BaseEntity {
     @NotEmpty(message = "프로젝트명은 필수 입니다.")
     private String name;
 
+    @NotEmpty(message = "프로젝트 설명은 필수 입니다.")
+    private String description;
+
     @ManyToOne
     private Team team;
 }

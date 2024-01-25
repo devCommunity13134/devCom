@@ -6,6 +6,7 @@ import devcom.main.domain.skill.service.SkillService;
 import devcom.main.domain.user.UserCreateForm;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
+import devcom.main.global.rq.Rq;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
+    private final Rq rq;
 
     private final UserService userService;
 
@@ -55,6 +57,7 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logout() {
+        rq.doLogout();
         return "redirect:/";
     }
 

@@ -1,6 +1,7 @@
 package devcom.main.domain.team.service;
 
 import devcom.main.domain.team.TeamCreateForm;
+import devcom.main.domain.team.TeamModifyForm;
 import devcom.main.domain.team.entity.Team;
 import devcom.main.domain.team.repository.TeamRepository;
 import devcom.main.domain.teamMember.entity.TeamMember;
@@ -57,5 +58,13 @@ public class TeamService {
         }
 
         return team.get();
+    }
+
+    public void modifyTeam(Team team, TeamModifyForm teamModifyForm) {
+
+        Team team1 = team.toBuilder()
+                    .name(teamModifyForm.getName()).description(teamModifyForm.getDescription()).build();
+
+        teamRepository.save(team1);
     }
 }

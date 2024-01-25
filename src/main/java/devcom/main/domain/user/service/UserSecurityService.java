@@ -7,6 +7,7 @@ import java.util.Optional;
 import devcom.main.domain.user.UserRole;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.repository.UserRepository;
+import devcom.main.global.rq.Rq;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class UserSecurityService implements UserDetailsService {
 
+    private final Rq rq;
     private final UserRepository userRepository;
 
     @Override
@@ -36,6 +38,7 @@ public class UserSecurityService implements UserDetailsService {
         } else {
             authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
         }
+        rq.doLogin(siteUser);
         return new User(siteUser.getUsername(), siteUser.getPassword(), authorities);
     }
 }

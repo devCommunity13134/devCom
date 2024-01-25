@@ -1,6 +1,7 @@
 package devcom.main.domain.team.controller;
 
 import devcom.main.domain.team.TeamCreateForm;
+import devcom.main.domain.team.TeamModifyForm;
 import devcom.main.domain.team.entity.Team;
 import devcom.main.domain.team.service.TeamAndProjectService;
 import devcom.main.domain.user.entity.SiteUser;
@@ -25,23 +26,23 @@ public class TeamController {
     private final UserService userService;
 
     @PostMapping("/modifyTeam")
-    public String modifyTeam(@Valid TeamCreateForm teamCreateForm, BindingResult bindingResult, Principal principal){
+    public String modifyTeam(@Valid TeamModifyForm teamModifyForm, BindingResult bindingResult, Principal principal){
 
-        SiteUser siteUser = userService.findByusername(principal.getName());
+        SiteUser siteUser = userService.findByUsername(principal.getName());
 
-        bindingResult = teamAndProjectService.create(teamCreateForm,bindingResult,siteUser);
+        bindingResult = teamAndProjectService.modifyTeam(teamModifyForm,bindingResult,siteUser);
 
         if(bindingResult.hasErrors()){
-            return "/team/create";
+            return "/team/modifyTeam";
         }
 
-        return "redirect:/team/list";
+        return "redirect:/team/detail/"+teamModifyForm.getId();
     }
 
     @GetMapping("/modifyTeam/{id}")
-    public String modifyTeam(@PathVariable("id") Long teamId, TeamCreateForm teamCreateForm, Principal principal, Model model){
+    public String modifyTeam(@PathVariable("id") Long teamId, TeamModifyForm teamModifyForm, Principal principal, Model model){
 
-        SiteUser siteUser = userService.findByusername(principal.getName());
+        SiteUser siteUser = userService.findByUsername(principal.getName());
 
         Team team = teamAndProjectService.getTeamById(teamId,siteUser);
 
@@ -53,7 +54,7 @@ public class TeamController {
     @GetMapping("/detail/{id}")
     public String teamDetail(@PathVariable("id") Long teamId,Principal principal, Model model){
 
-        SiteUser siteUser = userService.findByusername(principal.getName());
+        SiteUser siteUser = userService.findByUsername(principal.getName());
 
         Team team = teamAndProjectService.getTeamById(teamId,siteUser);
 
@@ -65,13 +66,13 @@ public class TeamController {
     @GetMapping("/list")
     public String teamList(Principal principal, Model model){
 
-        SiteUser siteUser = userService.findByusername(principal.getName());
+        SiteUser siteUser = userService.findByUsername(principal.getName());
 
         List<Team> teamList = teamAndProjectService.getTeamListByUser(siteUser);
        
         model.addAttribute("teamList",teamList);
 
-        return "/team/list";
+        return "team/list";
     }
 
     @GetMapping("/create")
@@ -82,9 +83,9 @@ public class TeamController {
     @PostMapping("/create")
     public String createTeam(@Valid TeamCreateForm teamCreateForm, BindingResult bindingResult, Principal principal){
 
-        SiteUser siteUser = userService.findByusername(principal.getName());
+        SiteUser siteUser = userService.findByUsername(principal.getName());
 
-        bindingResult = teamAndProjectService.create(teamCreateForm,bindingResult,siteUser);
+        bindingResult = teamAndProjectService.createTeam(teamCreateForm,bindingResult,siteUser);
 
         if(bindingResult.hasErrors()){
             return "/team/create";
