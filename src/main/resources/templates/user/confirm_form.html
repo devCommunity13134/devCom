@@ -1,0 +1,14 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3" style="width:500px;">
+    <form th:action="@{/user/findid/confirm}" method="post">
+        <div class="mb-3">
+            <label for="confirmNum" class="form-label">인증번호</label>
+            <input type="text" id="confirmNum" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">인증하기</button>
+    </form>
+    <div th:if="${user != null}" class="mb-3">
+        <div th:text="아이디 : ${user.username}"></div>
+    </div>
+</div>
+</html>
