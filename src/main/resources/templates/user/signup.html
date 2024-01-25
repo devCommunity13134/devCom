@@ -1,10 +1,9 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3" style="width:500px;">
     <div class="my-3 border-bottom">
-        <div>
-            <h4>회원가입</h4>
-        </div>
+        <h4>회원가입</h4>
     </div>
+    <!-- enctype="multipart/form-data" 파일 첨부 받는거 -->
     <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post">
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
         <div class="mb-3">
@@ -28,8 +27,21 @@
             <input type="email" th:field="*{email}" class="form-control">
         </div>
         <div class="mb-3">
-            <label for="sex" class="form-label">성별(남/여)</label>
-            <input type="text" th:field="*{sex}" class="form-control">
+            <label for="phoneNumber" class="form-label">전화번호</label>
+            <input type="tel" th:field="*{phoneNumber}" class="form-control" placeholder="'-'없이 입력">
+        </div>
+        <div class="mb-3">
+            <label for="sex" class="form-label">성별</label>
+            <div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="sex" id="sex" value="남">
+                    <label class="form-check-label" for="inlineRadio1">남</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="sex" id="sex" value="여">
+                    <label class="form-check-label" for="inlineRadio2">여</label>
+                </div>
+            </div>
         </div>
         <div class="mb-3">
             <label for="age" class="form-label">나이</label>
@@ -41,11 +53,44 @@
         </div>
         <div class="mb-3">
             <label for="profileImg" class="form-label">프로필사진</label>
-            <input type="text" th:field="*{profileImg}" class="form-control">
+            <input type="file" th:field="*{profileImg}" class="form-control">
         </div>
         <div class="mb-3">
-            <label for="skill" class="form-label">보유스킬</label>
-            <input type="text" th:field="*{skill}" class="form-control">
+            <label class="form-label">보유스킬</label>
+            <div style="display:flex; height:80px;">
+                <div style="margin-right:20px;">
+                    <input class="btn-check" type="checkbox" id="1" name="skill" value="HTML">
+                    <label class="btn btn-secondary btn-sm" for="1">HTML</label>
+                </div>
+                <div style="margin-right:20px;">
+                    <input class="btn-check" type="checkbox" id="2" name="skill" value="CSS">
+                    <label class="btn btn-secondary btn-sm" for="2">CSS</label>
+                </div>
+                <div style="margin-right:20px;">
+                    <input class="btn-check" type="checkbox" id="3" name="skill" value="JS">
+                    <label class="btn btn-secondary btn-sm" for="3">JS</label>
+                </div>
+                <div style="margin-right:20px;">
+                    <input class="btn-check" type="checkbox" id="4" name="skill" value="C">
+                    <label class="btn btn-secondary btn-sm" for="4">C</label>
+                </div>
+                <div style="margin-right:20px;">
+                    <input class="btn-check" type="checkbox" id="5" name="skill" value="C++">
+                    <label class="btn btn-secondary btn-sm" for="5">C++</label>
+                </div>
+                <div style="margin-right:20px;">
+                    <input class="btn-check" type="checkbox" id="6" name="skill" value="Java">
+                    <label class="btn btn-secondary btn-sm" for="6">Java</label>
+                </div>
+                <div style="margin-right:20px;">
+                    <input class="btn-check" type="checkbox" id="7" name="skill" value="Python">
+                    <label class="btn btn-secondary btn-sm" for="7">Python</label>
+                </div>
+                <div style="margin-right:20px;">
+                    <input class="btn-check" type="checkbox" id="8" name="skill" value="SQL">
+                    <label class="btn btn-secondary btn-sm" for="8">SQL</label>
+                </div>
+            </div>
         </div>
         <button type="submit" class="btn btn-primary">회원가입</button>
     </form>
