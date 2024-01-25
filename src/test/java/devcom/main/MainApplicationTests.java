@@ -66,8 +66,8 @@ class MainApplicationTests {
         }
     }
 
-    // SiteUser Test
-    // create "user1"
+
+
 //    @Test
 //    void siteUserSignupTest(){
 //        this.skillService.create(skills,);
