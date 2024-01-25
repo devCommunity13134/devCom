@@ -1,23 +1,53 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3" style="display:flex;">
-<div class="card" style="width: 18rem;">
-    <img th:src="${user.profileImg}" alt="프로필사진" style="width:280px; height:280px;">
-    <div class="card-body">
-        <h5 class="card-title" th:text="${user.nickname}"></h5>
-        <p class="card-text" th:text="${user.sex}"></p>
+    <div class="card" style="width: 18rem;">
+        <div style="display:flex; align-items:center; justify-content:center;">
+            <img th:src="${user.profileImg}" alt="프로필사진" style="width:280px; height:280px; object-fit:cover;">
+        </div>
+        <div class="card-body">
+            <h5 class="card-title" th:text="${user.nickname}"></h5>
+            <p class="card-text" th:text="${user.sex}"></p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item" th:text="|나이 : ${user.age}|"></li>
+            <li class="list-group-item">보유스킬
+                <span class="btn btn-success btn-sm" th:each="skill : ${user.skillList}" th:text="${skill.skillName}"
+                      style="margin-right:10px;"></span>
+            </li>
+            <li class="list-group-item" th:text="|이메일 : ${user.email}|"></li>
+        </ul>
+        <div class="card-body" style="display:flex; align-items:center;">
+            <!-- 쪽지 보내기 -->
+            <a class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"
+               data-bs-whatever="@mdo">쪽지 보내기</a>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">쪽지 작성하기</h1>
+                            <span th:text="|(받는 사람 : ${user.nickname})|"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="message-text" class="col-form-label"></label>
+                                    <textarea class="form-control" id="message-text" rows="10"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">닫기</button>
+                            <a th:href="@{message/send}" type="submit" class="btn btn-primary btn-sm">보내기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="btn btn-success btn-sm" style="margin-left:3px;">팀 초대하기</a>
+            <a href="#" class="btn btn-success btn-sm" style="margin-left:3px;">팔로우</a>
+        </div>
     </div>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item" th:text="|나이 : ${user.age}|"></li>
-        <li class="list-group-item">보유스킬
-            <span class="btn btn-success btn-sm" th:each="skill : ${user.skillList}" th:text="${skill.skillName}" style="margin-right:10px;"></span>
-        </li>
-        <li class="list-group-item" th:text="|이메일 : ${user.email}|"></li>
-    </ul>
-    <div class="card-body" style="text-align:center;">
-        <a href="#" class="btn btn-success btn-sm">쪽지 보내기</a>
-        <a href="#" class="btn btn-success btn-sm">팀 초대하기</a>
-    </div>
-</div>
     <div class="card" style="margin-left:30px; width:650px;">
         <h5 class="card-header">작성한 게시글</h5>
         <div class="card-body">

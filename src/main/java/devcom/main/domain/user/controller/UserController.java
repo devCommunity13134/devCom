@@ -8,6 +8,8 @@ import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -58,9 +60,20 @@ public class UserController {
         return "redirect:/";
     }
 
+
     @GetMapping("/profile")
-    public String profile(Model model, Principal principal) {
+    // 나의 프로필 조회
+    public String myProfile(Model model, Principal principal) {
         SiteUser user = this.userService.findByUsername(principal.getName());
+        model.addAttribute("user",user);
+        return "/user/profile";
+    }
+
+
+    @GetMapping("/profile/{id}")
+    // 다른 유저 프로필 조회
+    public String userProfile(Model model, @PathVariable(value = "id") Long id) {
+        SiteUser user = this.userService.findById(id);
         model.addAttribute("user",user);
         return "/user/profile";
     }
@@ -84,6 +97,13 @@ public class UserController {
         SiteUser user = this.userService.findByUsername(confirmUsername);
         model.addAttribute("user",user);
         return "redirect:/user/confirm_form";
+    }
+
+    @GetMapping("/follow/{id}")
+    public String followUser(Principal principal, @PathVariable(value = "id") Long id) {
+        SiteUser loginedUser = this.userService.findByUsername(principal.getName());
+        SiteUser followUser = this.userService.findById(id);
+        return "redirect:/user/profile";
     }
 
 }

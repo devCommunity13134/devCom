@@ -4,6 +4,7 @@ package devcom.main.domain.follow.entity;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.global.jpa.BaseEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,12 +20,13 @@ import java.util.List;
 @AllArgsConstructor
 public class Follow extends BaseEntity {
 
+    @ManyToOne
+    private SiteUser user;
 
-    private String followerUser;
-    // 나를 팔로우 하는 사람의 고유 아이디
 
-    private String followingUser;
-    // 내가 팔로우 하는 사람의 고유 아이디
+    private Long follwerUserId;
 
+
+    private Long follwingUserId;
 
 }

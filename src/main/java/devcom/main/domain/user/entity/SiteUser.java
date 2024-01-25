@@ -1,6 +1,7 @@
 package devcom.main.domain.user.entity;
 
 
+import devcom.main.domain.follow.entity.Follow;
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.global.jpa.BaseEntity;
 import jakarta.persistence.*;
@@ -20,10 +21,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SiteUser extends BaseEntity {
-    //    상속
-    //    private Long id;
-    //    private LocalDateTime createDate;
-    //    private LocalDateTime modifiedDate;
 
     @Column(unique = true)
     private String username;
@@ -38,7 +35,7 @@ public class SiteUser extends BaseEntity {
     private String email;
 
     @Column
-    private Integer phoneNumber;
+    private String phoneNumber;
 
     @Column(length = 1)
     private char sex;
@@ -55,4 +52,7 @@ public class SiteUser extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Skill> skillList;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Follow> followList;
 }

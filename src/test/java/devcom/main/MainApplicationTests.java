@@ -31,17 +31,4 @@ class MainApplicationTests {
     void contextLoads() {
 
     }
-    @Test
-    @Transactional
-    void userSkillList() {
-        SiteUser user = this.userService.findById(2L);
-        if (user.getSkillList() == null) {
-            System.out.println("======================skillList 저장안됨");
-        }
-        for(int i = 0; i < user.getSkillList().size(); i++) {
-            System.out.println(user.getSkillList().get(i).getSkillName());
-            System.out.println("test : "+i);
-        }
-    }
-
 }
