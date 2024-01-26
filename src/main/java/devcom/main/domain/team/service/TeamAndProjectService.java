@@ -1,8 +1,12 @@
 package devcom.main.domain.team.service;
 
 import devcom.main.domain.project.ProjectCreateForm;
+import devcom.main.domain.project.ProjectModifyForm;
 import devcom.main.domain.project.entity.Project;
 import devcom.main.domain.project.service.ProjectService;
+import devcom.main.domain.projectState.ProjectStateCreateForm;
+import devcom.main.domain.projectState.entity.ProjectState;
+import devcom.main.domain.projectState.service.ProjectStateService;
 import devcom.main.domain.team.TeamCreateForm;
 import devcom.main.domain.team.TeamModifyForm;
 import devcom.main.domain.team.entity.Team;
@@ -25,6 +29,7 @@ public class TeamAndProjectService {
     private final TeamMemberService teamMemberService;
 
     private final ProjectService projectService;
+    private final ProjectStateService projectStateService;
 
     @Transactional
     public BindingResult createTeam(TeamCreateForm teamCreateForm, BindingResult bindingResult, SiteUser siteUser) {
@@ -115,5 +120,27 @@ public class TeamAndProjectService {
         }
 
         return project.get();
+    }
+
+    @Transactional
+    public void createProjectState(Project project, ProjectStateCreateForm projectStateCreateForm) {
+        projectStateService.create(project,projectStateCreateForm);
+    }
+
+    @Transactional
+    public void deleteProjectState(Long projectStateId) {
+        ProjectState ps = projectStateService.findById(projectStateId);
+        projectStateService.delete(ps);
+    }
+
+    public BindingResult modifyProject(Project project, ProjectModifyForm projectModifyForm, BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()){
+            return bindingResult;
+        }
+
+        projectService.modifyProject(project,projectModifyForm);
+
+        return bindingResult;
     }
 }

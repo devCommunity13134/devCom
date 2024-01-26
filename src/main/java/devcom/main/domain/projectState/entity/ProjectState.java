@@ -17,8 +17,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class ProjectState extends BaseEntity {
 
-    @NotEmpty(message = "프로젝트 제목은 필수 입니다.")
-    private String subject;
+    @NotEmpty(message = "해야할 내용은 필수 입니다.")
     private String content;
 
     @NotEmpty(message = "상태는 필수 입니다.")

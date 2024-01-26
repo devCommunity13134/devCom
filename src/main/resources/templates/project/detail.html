@@ -1,27 +1,100 @@
 <html layout:decorate="~{layout}">
 
 <div layout:fragment="content">
-<style>
-    /* 스크롤바의 폭 너비 */
-    .customScroll::-webkit-scrollbar {
-        width: 5px;
-    }
+    <style>
+        /* 스크롤바의 폭 너비 */
+        .customScroll::-webkit-scrollbar {
+            width: 5px;
+        }
 
-    .customScroll::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0,.8); /* 스크롤바 색상 */
-        border-radius: 10px; /* 스크롤바 둥근 테두리 */
-    }
+        .customScroll::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0,.8); /* 스크롤바 색상 */
+            border-radius: 10px; /* 스크롤바 둥근 테두리 */
+        }
 
-    .customScroll::-webkit-scrollbar-track {
-        background: rgba(45, 45, 45, .45);  /*스크롤바 뒷 배경 색상*/
-    }
-</style>
+        .customScroll::-webkit-scrollbar-track {
+            background: rgba(45, 45, 45, .45);  /*스크롤바 뒷 배경 색상*/
+        }
+
+        .draggable{
+            cursor: pointer;
+        }
+    </style>
 <script>
-    $(document).ready(function(){
-        $(".forClick").on( "click", function() {
-          location.href="/project/detail/"+$(this).attr("id");
+$(document).ready(function(){
+
+<!-- ProjectState 생성 스크립트 -->
+    $('.doSubmit').click(function () {
+        var submitForm = "."+$(this).attr("id");
+        $(submitForm).submit(function(event) {
+          var content = this.content.value;
+          if(content.trim().length == 0) {
+            alert("내용을 입력해 주세요");
+            event.preventDefault();
+            return;
+          }
         });
+        $(submitForm).submit();
     });
+
+<!-- ProjectState 삭제 스크립트 -->
+    $('.deleteProjectState').click(function () {
+        if(confirm("증말로 삭제할꺼에요?")){
+            location.href = "/projectState/delete/"+[[${project.id}]]+"/"+$(this).attr("value");
+        }
+    });
+
+    <!--  드래그 앤 드롭 기능  -->
+
+    const draggables = document.querySelectorAll(".draggable");
+    const areas = document.querySelectorAll(".area");
+
+    draggables.forEach(draggable => {
+      draggable.addEventListener("dragstart", () => {
+        draggable.classList.add("dragging");
+      });
+
+      draggable.addEventListener("dragend", () => {
+        draggable.classList.remove("dragging");
+      });
+    });
+
+    areas.forEach(area => {
+      area.addEventListener("dragover", e => {
+        e.preventDefault();
+        const afterElement = getDragAfterElement(area, e.clientX);
+        const draggable = document.querySelector(".dragging");
+        if (afterElement === undefined) {
+          area.appendChild(draggable);
+        } else {
+<!--          area.insertBefore(draggable, afterElement);-->
+          area.appendChild(draggable);
+        }
+      });
+    });
+
+    function getDragAfterElement(area, x) {
+      const draggableElements = [
+        ...area.querySelectorAll(".draggable:not(.dragging)"),
+      ];
+      console.log($(area).attr("id"));
+
+      return draggableElements.reduce(
+        (closest, child) => {
+          const box = child.getBoundingClientRect();
+          const offset = x - box.left - box.width / 2;
+          // console.log(offset);
+          if (offset < 0 && offset > closest.offset) {
+            return { offset: offset, element: child };
+          } else {
+            return closest;
+          }
+        },
+        { offset: Number.NEGATIVE_INFINITY },
+      ).element;
+    }
+
+});
 </script>
 
     <h4>
@@ -30,43 +103,197 @@
 
     <div class="ProjectArea">
 
-            <div class="card shadow">
-                <div class="card-header text-bold">
-                    <i class="fa-regular fa-folder-open"></i>
-                    [[${project.name}]]
+        <div class="card shadow">
+            <div class="card-header text-bold">
+                <i class="fa-regular fa-folder-open"></i>
+                [[${project.name}]]
 
-<!--                    <div class="float-end d-inline dropstart" th:if="${team.teamAdmin.username} == ${#authentication.getPrincipal().getUsername()}">-->
-<!--                        <a class="text-dark" href="#" role="button" id="teamDropDown" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--                            <i class="fa-solid fa-gear"></i>-->
-<!--                        </a>-->
+                <div class="float-end d-inline dropstart">
+                    <a class="text-dark" href="#" role="button" id="projectDropDown" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        <i class="fa-solid fa-gear"></i>
+                    </a>
 
-<!--                        <ul class="dropdown-menu text-center" aria-labelledby="teamDropDown">-->
-<!--                            <li>-->
-<!--                                <a  class="text-dark dropdown-item" th:href="@{|/team/modifyTeam/${team.id}|}">-->
-<!--                                    <i class="fa-regular fa-pen-to-square text-success"></i> &nbsp;팀 수정-->
-<!--                                </a>-->
-<!--                            </li>-->
-<!--                            <li class="mt-1">-->
-<!--                                <a  class="text-dark dropdown-item" th:href="@{|/team/delete/${team.id}|}">-->
-<!--                                    <i class="fa-regular fa-trash-can text-danger"></i> &nbsp;팀 삭제-->
-<!--                                </a>-->
-<!--                            </li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
-
-                </div>
-                <div class="card-body">
-
-                    <div style="height:126px; overflow-y:auto;" class="customScroll">
-                        [[${project.description}]]
-                    </div>
-                    <div>
-                        <span class="float-end">
-                            [[${#temporals.format(project.createDate, 'yy-MM-dd')}]]
-                        </span>
-                    </div>
+                    <ul class="dropdown-menu text-center" aria-labelledby="projectDropDown">
+                        <li>
+                            <a class="text-dark dropdown-item" th:href="@{|/project/modify/${project.id}|}">
+                                <i class="fa-regular fa-pen-to-square text-success"></i> &nbsp;프로젝트 수정
+                            </a>
+                        </li>
+                        <li class="mt-1">
+                            <a class="text-dark dropdown-item" th:href="@{/}">
+                                <i class="fa-regular fa-trash-can text-danger"></i> &nbsp;프로젝트 삭제
+                            </a>
+                        </li>
+                    </ul>
                 </div>
 
             </div>
+            <div class="card-body">
+
+                <div style="overflow-y:auto;" class="customScroll">
+                    [[${project.description}]]
+                </div>
+                <div>
+                        <span class="float-end">
+                            [[${#temporals.format(project.createDate, 'yy-MM-dd')}]]
+                        </span>
+                </div>
+            </div>
+        </div>
+
+        <!--할일 목록-->
+        <div class="row row-cols-3 mt-2 g-2 h-100">
+            <div class="col">
+                <div class="card shadow border-success">
+                    <div class="card-header text-bold border-success">
+                        <i class="fa-solid fa-location-dot text-success"></i>
+                        Todo
+                        <a type="button" class="float-end text-success" data-bs-toggle="modal"
+                           data-bs-target="#toDoModal" href="#">
+                            <i class="fa-solid fa-plus"></i>
+                        </a>
+                    </div>
+                    <div class="card-body row row-cols-1 gap-2 m-1 area" id="todoArea">
+                        <div class="card draggable" draggable="true" th:each="todo : ${project.todoList}">
+                            <div class="card-body">
+                                [[${todo.content}]]
+                                <a href="#" th:value="${todo.id}" class="float-end text-danger deleteProjectState">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card shadow border-primary">
+                    <div class="card-header text-bold border-primary">
+                        <i class="fa-solid fa-rotate text-primary"></i> In Progress
+                        <a type="button" class="float-end text-primary" data-bs-toggle="modal"
+                           data-bs-target="#inProgressModal" href="#">
+                            <i class="fa-solid fa-plus"></i>
+                        </a>
+                    </div>
+                    <div class="card-body row row-cols-1 gap-2 m-1 area" id="inProgressArea">
+                        <div class="card draggable" draggable="true" th:each="inProgress : ${project.inProgressList}">
+                            <div class="card-body">
+                                [[${inProgress.content}]]
+                                <a href="#" th:value="${inProgress.id}" class="float-end text-danger deleteProjectState">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card shadow border-dark">
+                    <div class="card-header text-bold border-dark">
+                        <i class="fa-regular fa-circle-check text-dark"></i>
+                        Done
+                        <a type="button" class="float-end text-dark" data-bs-toggle="modal" data-bs-target="#doneModal"
+                           href="#">
+                            <i class="fa-solid fa-plus"></i>
+                        </a>
+                    </div>
+                    <div class="card-body row row-cols-1 gap-2 m-1 area" id="doneArea">
+                        <div class="card draggable" draggable="true" th:each="done : ${project.doneList}">
+                            <div class="card-body">
+                                [[${done.content}]]
+                                <a href="#" th:value="${done.id}" class="float-end text-danger deleteProjectState">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 모달 -->
+        <div class="modal fade" id="toDoModal" tabindex="-1" aria-labelledby="toDoModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="toDoModalLabel">Add ToDo Progress</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form th:action="@{|/projectState/createProjectState|}" th:object="${projectStateCreateForm}" method="post" class="todoForm">
+
+                        <div class="modal-body">
+                            <input type="hidden" name="projectId" th:value="${project.id}"/>
+                            <input type="hidden" name="state" value="todo"/>
+                            <div class="mb-3">
+                                <label class="col-form-label">ToDo Content:</label>
+                                <textarea class="form-control" name="content"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">닫기</button>
+                            <a id="todoForm" class="btn btn-sm btn-primary doSubmit">추가</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="inProgressModal" tabindex="-1" aria-labelledby="inProgressModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="inProgressModalLabel">Add In Progress</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form th:action="@{|/projectState/createProjectState|}" th:object="${projectStateCreateForm}" method="post" class="inProgressForm">
+
+                        <div class="modal-body">
+                            <input type="hidden" name="projectId" th:value="${project.id}"/>
+                            <input type="hidden" name="state" value="inProgress"/>
+                            <div class="mb-3">
+                                <label class="col-form-label">In Progress Content:</label>
+                                <textarea class="form-control" name="content"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">닫기</button>
+                            <a id="inProgressForm" class="btn btn-sm btn-primary doSubmit">추가</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="doneModal" tabindex="-1" aria-labelledby="doneModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="doneModalLabel">Add Done</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form th:action="@{|/projectState/createProjectState|}" th:object="${projectStateCreateForm}" method="post" class="doneForm">
+
+                        <div class="modal-body">
+                            <input type="hidden" name="projectId" th:value="${project.id}"/>
+                            <input type="hidden" name="state" value="done"/>
+                            <div class="mb-3">
+                                <label class="col-form-label">Done Content:</label>
+                                <textarea class="form-control" name="content"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">닫기</button>
+                            <a id="doneForm" class="btn btn-sm btn-primary doSubmit">추가</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>

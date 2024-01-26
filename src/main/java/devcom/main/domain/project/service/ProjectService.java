@@ -1,6 +1,7 @@
 package devcom.main.domain.project.service;
 
 import devcom.main.domain.project.ProjectCreateForm;
+import devcom.main.domain.project.ProjectModifyForm;
 import devcom.main.domain.project.entity.Project;
 import devcom.main.domain.project.repository.ProjectRepository;
 import devcom.main.domain.team.entity.Team;
@@ -39,5 +40,15 @@ public class ProjectService {
 
     public Optional<Project> getProjectById(Long projectId) {
         return projectRepository.findById(projectId);
+    }
+
+    public void modifyProject(Project project, ProjectModifyForm projectModifyForm) {
+
+        project = project.toBuilder()
+                .name(projectModifyForm.getName())
+                .description(projectModifyForm.getDescription())
+                .build();
+
+        projectRepository.save(project);
     }
 }
