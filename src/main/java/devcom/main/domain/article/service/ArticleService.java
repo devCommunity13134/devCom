@@ -71,4 +71,9 @@ public class ArticleService {
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         return this.articleRepository.findAllByCategory(category,pageable);
     }
+
+    public void voteArticle(Article article, SiteUser siteUser){
+        article.getVoter().add(siteUser);
+        this.articleRepository.save(article);
+    }
 }

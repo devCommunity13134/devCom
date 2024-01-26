@@ -171,7 +171,7 @@ class MainApplicationTests {
     // Answer Test
     @Test
     void answerCreateTest() {
-        Article article = this.articleService.getArticle(1);
+        Article article = this.articleService.getArticle(300);
         SiteUser author = this.userService.findByUsername("user1");
         this.answerService.create(article, "answerContent1", author);
     }

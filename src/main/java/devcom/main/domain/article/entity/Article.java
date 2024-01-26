@@ -17,6 +17,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -51,4 +52,7 @@ public class Article extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "author_id")
     private SiteUser author;
+
+    @ManyToMany
+    Set<SiteUser> voter;
 }
