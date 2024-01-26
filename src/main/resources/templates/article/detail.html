@@ -6,9 +6,9 @@
         <div class="d-flex justify-content-between flex-wrap">
             <!-- subject,item_box container  -->
             <div>
-                <span class="fs-3 fw-bold">[Subject1]</span>
+                <span class="fs-3 fw-bold">[[${article.subject}]]</span>
                 <div style="font-size: 14px;" class="d-flex flex-grow-1 text-secondary flex-wrap">
-                    <div>by <a href="#" style="text-decoration:none; color: gray;" class="fw-bold">author</a> <span
+                    <div>by <a href="#" style="text-decoration:none; color: gray;" class="fw-bold">[[${article.author}]]</a> <span
                             class="mx-2">•</span></div>
                     <!--   createDate  -->
                     <div>2024-01-24<span class="mx-2">•</span></div>
@@ -34,13 +34,7 @@
         </div>
         <!-- content -->
         <div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut cumque delectus dolore dolorum error
-                esse exercitationem inventore, laudantium modi officia pariatur qui reiciendis repudiandae suscipit
-                tempore veniam vitae voluptas voluptatum! Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Aut
-                cumque delectus dolore dolorum error
-                esse exercitationem inventore, laudantium modi officia pariatur qui reiciendis repudiandae suscipit
-                tempore veniam vitae voluptas voluptatum!</p>
+            <p>[[${article.content}]]</p>
         </div>
         <!-- like button js_need-->
         <a href="#" style="text-decoration: none;" class="btn btn-outline-secondary fw-bold">
