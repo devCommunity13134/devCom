@@ -5,11 +5,14 @@ import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.global.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,9 +21,8 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class TeamMember extends BaseEntity {
 
-    @OneToOne
+    @ManyToOne
     private SiteUser siteUser;
-    private String authority;
 
     @ManyToOne
     private Team team;

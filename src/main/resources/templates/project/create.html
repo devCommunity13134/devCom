@@ -1,0 +1,23 @@
+<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<div layout:fragment="content">
+
+    <div class="card shadow">
+        <h4 class="card-header"> [[${team.name}]] > New Project</h4>
+        <div class="card-body">
+            <form th:action="@{|/project/create/${team.id}|}" th:object="${projectCreateForm}" method="post">
+                <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="프로젝트명을 입력해 주세요">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" placeholder="프로젝트 설명을 입력해 주세요"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary float-end btn-sm">프로젝트 생성</button>
+            </form>
+        </div>
+    </div>
+
+</div>

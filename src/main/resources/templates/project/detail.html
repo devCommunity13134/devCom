@@ -1,0 +1,72 @@
+<html layout:decorate="~{layout}">
+
+<div layout:fragment="content">
+<style>
+    /* 스크롤바의 폭 너비 */
+    .customScroll::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .customScroll::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0,.8); /* 스크롤바 색상 */
+        border-radius: 10px; /* 스크롤바 둥근 테두리 */
+    }
+
+    .customScroll::-webkit-scrollbar-track {
+        background: rgba(45, 45, 45, .45);  /*스크롤바 뒷 배경 색상*/
+    }
+</style>
+<script>
+    $(document).ready(function(){
+        $(".forClick").on( "click", function() {
+          location.href="/project/detail/"+$(this).attr("id");
+        });
+    });
+</script>
+
+    <h4>
+        Project Details
+    </h4>
+
+    <div class="ProjectArea">
+
+            <div class="card shadow">
+                <div class="card-header text-bold">
+                    <i class="fa-regular fa-folder-open"></i>
+                    [[${project.name}]]
+
+<!--                    <div class="float-end d-inline dropstart" th:if="${team.teamAdmin.username} == ${#authentication.getPrincipal().getUsername()}">-->
+<!--                        <a class="text-dark" href="#" role="button" id="teamDropDown" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                            <i class="fa-solid fa-gear"></i>-->
+<!--                        </a>-->
+
+<!--                        <ul class="dropdown-menu text-center" aria-labelledby="teamDropDown">-->
+<!--                            <li>-->
+<!--                                <a  class="text-dark dropdown-item" th:href="@{|/team/modifyTeam/${team.id}|}">-->
+<!--                                    <i class="fa-regular fa-pen-to-square text-success"></i> &nbsp;팀 수정-->
+<!--                                </a>-->
+<!--                            </li>-->
+<!--                            <li class="mt-1">-->
+<!--                                <a  class="text-dark dropdown-item" th:href="@{|/team/delete/${team.id}|}">-->
+<!--                                    <i class="fa-regular fa-trash-can text-danger"></i> &nbsp;팀 삭제-->
+<!--                                </a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+
+                </div>
+                <div class="card-body">
+
+                    <div style="height:126px; overflow-y:auto;" class="customScroll">
+                        [[${project.description}]]
+                    </div>
+                    <div>
+                        <span class="float-end">
+                            [[${#temporals.format(project.createDate, 'yy-MM-dd')}]]
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+    </div>
+</div>

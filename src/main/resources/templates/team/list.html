@@ -1,0 +1,44 @@
+<html layout:decorate="~{layout}">
+
+<div layout:fragment="content">
+
+<script th:inline="javascript">
+$(document).ready(function(){
+    $(".forClick").on( "click", function() {
+      location.href="/team/detail/"+$(this).attr("id");
+    });
+});
+</script>
+
+    <h4>
+        My Team
+        <a class="" href="/team/create">
+            <i class="fa-regular fa-square-plus"></i>
+        </a>
+    </h4>
+
+    <div id="teamArea">
+        <div class="row row-cols-4 mt-2 g-2">
+
+            <div class="col" th:each="team : ${teamList}">
+                <div class="card shadow forClick bg-white" th:id="${team.id}" style="cursor:pointer; height:220px;">
+                    <h5 class="card-header bg-white" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                        [[${team.name}]]
+                    </h5>
+                    <div class="card-body">
+                        <div style="height:100px; text-overflow:ellipsis; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 4; display: -webkit-box;">
+                            [[${team.description}]]
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white" style="height:43px;">
+                        <div class="row">
+                            <p class="col-6">[[${team.teamAdmin.nickname}]]</p>
+                            <p class="col-6 text-end">[[${#temporals.format(team.createDate,'yy-MM-dd')}]]</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

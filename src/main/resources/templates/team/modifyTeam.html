@@ -1,0 +1,24 @@
+<html layout:decorate="~{layout}">
+
+<div layout:fragment="content">
+
+    <div class="card shadow">
+        <h4 class="card-header">Modify Team</h4>
+        <div class="card-body">
+            <form th:action="@{/team/modifyTeam}" th:object="${teamModifyForm}" method="post">
+                <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+                <input type="hidden" class="form-control" id="id" name="id" th:value="${team.id}">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" th:value="${team.name}" placeholder="팀명을 입력해 주세요">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" placeholder="팀 설명을 입력해 주세요">[[${team.description}]]</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary float-end btn-sm">팀 정보 수정</button>
+            </form>
+        </div>
+    </div>
+
+</div>
