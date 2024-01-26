@@ -3,6 +3,7 @@ package devcom.main.domain.article.entity;
 import devcom.main.domain.answer.entity.Answer;
 import devcom.main.domain.category.entity.Category;
 import devcom.main.domain.img.entity.Img;
+import devcom.main.domain.reply.entity.Reply;
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.global.jpa.BaseEntity;
@@ -47,6 +48,9 @@ public class Article extends BaseEntity {
 
     @OneToMany(mappedBy = "originalArticle", cascade = CascadeType.REMOVE)
     private List<Answer> answerList;
+
+    @OneToMany(mappedBy = "originalArticle", cascade = CascadeType.REMOVE)
+    private List<Reply> replyList;
 
 
     @ManyToOne
