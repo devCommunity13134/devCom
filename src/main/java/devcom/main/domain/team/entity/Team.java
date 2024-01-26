@@ -2,14 +2,15 @@ package devcom.main.domain.team.entity;
 
 import devcom.main.domain.project.entity.Project;
 import devcom.main.domain.teamMember.entity.TeamMember;
+import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.global.jpa.BaseEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import groovy.lang.Lazy;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
@@ -21,16 +22,19 @@ import java.util.List;
 @AllArgsConstructor
 public class Team extends BaseEntity {
 
-    @NotEmpty(message = "팀 명은 필수 입니다.")
+    @NotEmpty
     private String name;
 
-    @NotEmpty(message = "팀 설명은 필수 입니다.")
+    @NotEmpty
+    @Column(columnDefinition="text")
     private String description;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
+    @ManyToOne
+    private SiteUser teamAdmin;
+
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TeamMember> teamMemberList;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Project> projectList;
-
 }

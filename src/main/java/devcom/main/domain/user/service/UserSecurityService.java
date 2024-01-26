@@ -7,6 +7,7 @@ import java.util.Optional;
 import devcom.main.domain.user.UserRole;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.repository.UserRepository;
+import devcom.main.global.rq.Rq;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
