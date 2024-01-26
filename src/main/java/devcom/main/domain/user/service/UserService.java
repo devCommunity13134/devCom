@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +22,9 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
-    public void signup(UserCreateForm userCreateForm, List<Skill> skillList, MultipartFile file) {
-        String profileImg = file.getOriginalFilename();
+    public void signup(UserCreateForm userCreateForm, List<Skill> skillList, MultipartFile file) throws IOException {
+        file.transferTo(new File("C:\\Work\\devCom\\src\\main\\resources\\images\\"+file.getOriginalFilename()));
+        String profileImg = "http://localhost:8010/images/"+file.getOriginalFilename();
         SiteUser user = SiteUser.builder()
                 .username(userCreateForm.getUsername())
                 .nickname(userCreateForm.getNickname())

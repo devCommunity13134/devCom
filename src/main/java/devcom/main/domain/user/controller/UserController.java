@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -29,7 +30,6 @@ public class UserController {
 
     private final SkillService skillService;
 
-//    private final SendEmail sendEmail;
     private static int confirmNumber;
     private static String confirmUsername;
 
@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signupPost(@Valid UserCreateForm userCreateForm, BindingResult bindingResult,@RequestParam(value = "file") MultipartFile file) {
+    public String signupPost(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, @RequestParam(value = "profileImg") MultipartFile file) throws IOException {
         List<Skill> skillList = this.skillService.findByskillList(userCreateForm.getSkill());
         if(this.userService.checkErrors(userCreateForm, bindingResult).hasErrors()) {
             return "/user/signup";

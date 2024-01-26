@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class UserCreateForm {
 
     private Integer salary;
 
-    private String profileImg;
+    private MultipartFile profileImg;
 
     private List<String> skill;
 
