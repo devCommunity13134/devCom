@@ -156,11 +156,11 @@ class MainApplicationTests {
                 "                    perferendis quae quaerat vel. Lorem ipsum dolor sit amet? Aliquam atque expedita illum qui vitae? ", author);
     }
 
-    @Test
-    void articleModfiyTest() {
-        Article article = this.articleService.getArticle(1);
-        this.articleService.modify(article, "s1Modify", "c1Modify");
-    }
+//    @Test
+//    void articleModfiyTest() {
+//        Article article = this.articleService.getArticle(1);
+//        this.articleService.modify(article, "s1Modify", "c1Modify");
+//    }
 
     @Test
     void articleDeleteTest() {

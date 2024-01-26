@@ -43,7 +43,7 @@ public class ArticleController {
     // create article
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
-    public String articleCreate(){
+    public String articleCreate(ArticleForm articleForm){
 
         return "article/form";
     }
@@ -77,5 +77,26 @@ public class ArticleController {
 
         this.articleService.voteArticle(article, siteUser);
         return String.format("redirect:/article/detail/%s",articleId);
+    }
+
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify/{id}")
+    public String articleModify(ArticleForm articleForm){
+        return "article/form";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify/{id}")
+    public String articleModify(@Valid ArticleForm articleForm, BindingResult bindingResult, @PathVariable("id") Long articleId){
+        if(bindingResult.hasErrors()){
+            return "article/form";
+        }
+        Article article = this.articleService.getArticle(articleId);
+        Category category = this.categoryService.getCategory(articleForm.getCategoryName());
+
+        this.articleService.modify(category,article, articleForm.getSubject(), articleForm.getContent());
+
+        return String.format("redirect:/article/detail/%s", articleId);
     }
 }
