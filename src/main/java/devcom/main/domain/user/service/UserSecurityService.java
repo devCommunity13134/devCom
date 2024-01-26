@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class UserSecurityService implements UserDetailsService {
 
-    private final Rq rq;
     private final UserRepository userRepository;
 
     @Override
@@ -38,7 +37,6 @@ public class UserSecurityService implements UserDetailsService {
         } else {
             authorities.add(new SimpleGrantedAuthority(UserRole.USER.getValue()));
         }
-        rq.doLogin(siteUser);
         return new User(siteUser.getUsername(), siteUser.getPassword(), authorities);
     }
 }

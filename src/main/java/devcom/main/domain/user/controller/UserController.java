@@ -21,7 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
-    private final Rq rq;
 
     private final UserService userService;
 
@@ -58,7 +57,6 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logout() {
-        rq.doLogout();
         return "redirect:/";
     }
 

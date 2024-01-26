@@ -1,5 +1,8 @@
 package devcom.main.global.init;
 
+import devcom.main.domain.article.service.ArticleService;
+import devcom.main.domain.category.entity.Category;
+import devcom.main.domain.category.service.CategoryService;
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.domain.skill.service.SkillService;
 import devcom.main.domain.team.TeamCreateForm;
@@ -22,6 +25,8 @@ public class ServiceInit implements InitializingBean {
     private final TeamService teamService;
     private final TeamMemberService teamMemberService;
     private final SkillService skillService;
+    private final CategoryService categoryService;
+    private final ArticleService articleService;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -34,95 +39,46 @@ public class ServiceInit implements InitializingBean {
 
         List<Skill> sl = skillService.findByskillList(skillList);
 
-        UserCreateForm userCreateForm1 = new UserCreateForm();
-        userCreateForm1.setUsername("user1");
-        userCreateForm1.setSkill(skillList);
-        userCreateForm1.setPassword2("1234");
-        userCreateForm1.setPassword1("1234");
-        userCreateForm1.setEmail("user1@gmai.com");
-        userCreateForm1.setNickname("유저1");
-        userCreateForm1.setAge(21);
-        userCreateForm1.setSex("남".charAt(0));
-        userCreateForm1.setProfileImg("https://cdn.spotvnews.co.kr/news/photo/202212/572523_797960_5232.jpg");
+        for(int i = 1; i<=10; i++){
+            UserCreateForm userCreateForm1 = new UserCreateForm();
+            userCreateForm1.setUsername("user"+i);
+            userCreateForm1.setSkill(skillList);
+            userCreateForm1.setPassword2("1234");
+            userCreateForm1.setPassword1("1234");
+            userCreateForm1.setEmail("user"+i+"@gmai.com");
+            userCreateForm1.setNickname("유저"+i);
+            userCreateForm1.setAge(21);
+            userCreateForm1.setPhoneNumber("01010047979");
+            userCreateForm1.setSex("남".charAt(0));
+            userCreateForm1.setProfileImg("https://cdn.spotvnews.co.kr/news/photo/202212/572523_797960_5232.jpg");
 
-        UserCreateForm userCreateForm2 = new UserCreateForm();
-        userCreateForm2.setUsername("user2");
-        userCreateForm2.setSkill(skillList);
-        userCreateForm2.setPassword2("1234");
-        userCreateForm2.setPassword1("1234");
-        userCreateForm2.setEmail("user2@gmai.com");
-        userCreateForm2.setNickname("유저2");
-        userCreateForm2.setAge(21);
-        userCreateForm2.setSex("남".charAt(0));
-        userCreateForm2.setProfileImg("https://cdn.spotvnews.co.kr/news/photo/202212/572523_797960_5232.jpg");
+            userService.signup(userCreateForm1, sl);
 
-        UserCreateForm userCreateForm3 = new UserCreateForm();
-        userCreateForm3.setUsername("user3");
-        userCreateForm3.setSkill(skillList);
-        userCreateForm3.setPassword2("1234");
-        userCreateForm3.setPassword1("1234");
-        userCreateForm3.setEmail("user3@gmai.com");
-        userCreateForm3.setNickname("유저3");
-        userCreateForm3.setAge(21);
-        userCreateForm3.setSex("남".charAt(0));
-        userCreateForm3.setProfileImg("https://cdn.spotvnews.co.kr/news/photo/202212/572523_797960_5232.jpg");
+            TeamCreateForm team1 = new TeamCreateForm();
+            team1.setName("팀"+i);
+            team1.setDescription("팀"+i+" 설명");
 
-        UserCreateForm userCreateForm4 = new UserCreateForm();
-        userCreateForm4.setUsername("user4");
-        userCreateForm4.setSkill(skillList);
-        userCreateForm4.setPassword2("1234");
-        userCreateForm4.setPassword1("1234");
-        userCreateForm4.setEmail("user4@gmai.com");
-        userCreateForm4.setNickname("유저4");
-        userCreateForm4.setAge(21);
-        userCreateForm4.setSex("남".charAt(0));
-        userCreateForm4.setProfileImg("https://cdn.spotvnews.co.kr/news/photo/202212/572523_797960_5232.jpg");
+            SiteUser st = userService.findByUsername("user1");
 
-        UserCreateForm userCreateForm5 = new UserCreateForm();
-        userCreateForm5.setUsername("user5");
-        userCreateForm5.setSkill(skillList);
-        userCreateForm5.setPassword2("1234");
-        userCreateForm5.setPassword1("1234");
-        userCreateForm5.setEmail("user5@gmai.com");
-        userCreateForm5.setNickname("유저5");
-        userCreateForm5.setAge(21);
-        userCreateForm5.setSex("남".charAt(0));
-        userCreateForm5.setProfileImg("https://cdn.spotvnews.co.kr/news/photo/202212/572523_797960_5232.jpg");
+            teamMemberService.createTeamMemberAdmin(teamService.create(team1, st), st);
+        }
+        this.categoryService.create("frontEnd");
+        this.categoryService.create("backEnd");
+        this.categoryService.create("dataEngineer");
+        this.categoryService.create("AI");
 
-
-        userService.signup(userCreateForm1, sl);
-        userService.signup(userCreateForm2, sl);
-        userService.signup(userCreateForm3, sl);
-        userService.signup(userCreateForm4, sl);
-        userService.signup(userCreateForm5, sl);
-
-        TeamCreateForm team1 = new TeamCreateForm();
-        team1.setName("팀1");
-        team1.setDescription("팀1 설명");
-
-        TeamCreateForm team2 = new TeamCreateForm();
-        team2.setName("팀2");
-        team2.setDescription("팀2 설명");
-
-        TeamCreateForm team3 = new TeamCreateForm();
-        team3.setName("팀3");
-        team3.setDescription("팀3 설명");
-
-        TeamCreateForm team4 = new TeamCreateForm();
-        team4.setName("팀4");
-        team4.setDescription("팀4 설명");
-
-        TeamCreateForm team5 = new TeamCreateForm();
-        team5.setName("팀5");
-        team5.setDescription("팀5 설명");
-
-        SiteUser st = userService.findByUsername("user1");
-
-        teamMemberService.createTeamMemberAdmin(teamService.create(team1, st), st);
-        teamMemberService.createTeamMemberAdmin(teamService.create(team2, st), st);
-        teamMemberService.createTeamMemberAdmin(teamService.create(team3, st), st);
-        teamMemberService.createTeamMemberAdmin(teamService.create(team4, st), st);
-        teamMemberService.createTeamMemberAdmin(teamService.create(team5, st), st);
-
+        SiteUser author = this.userService.findByUsername("user1");
+        Category category = this.categoryService.getCategory("frontEnd");
+        for (int i = 1; i <= 300; i++) {
+            String subject = String.format("TestSubject:[%03d]", i);
+            String content = String.format("TestContetn:[%03d] Lorem ipsum dolor sit amet, " +
+                            "consectetur adipisicing elit. Aperiam commodi minima optio placeat quaerat" +
+                            " saepe voluptatum! A animi consectetur ducimus esse facilis molestiae, nesciunt" +
+                            " nihil non perspiciatis provident rem totam!Lorem ipsum dolor sit amet, consectetur" +
+                            " adipisicing elit. Aperiam commodi minima optio placeat quaerat saepe voluptatum! A animi" +
+                            " consectetur ducimus esse facilis molestiae, nesciunt nihil non perspiciatis provident rem totam!"
+                    , i);
+            this.articleService.create(category, subject, content, author);
+        }
     }
 }
