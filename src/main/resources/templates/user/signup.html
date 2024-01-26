@@ -3,8 +3,8 @@
     <div class="my-3 border-bottom">
         <h4>회원가입</h4>
     </div>
-    <!-- enctype="multipart/form-data" 파일 첨부 받는거 -->
-    <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post">
+    <!--  파일 첨부 받는거 -->
+    <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post" enctype="multipart/form-data">
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
         <div class="mb-3">
             <label for="username" class="form-label">사용자ID</label>
@@ -53,7 +53,7 @@
         </div>
         <div class="mb-3">
             <label for="profileImg" class="form-label">프로필사진</label>
-            <input type="file" th:field="*{profileImg}" class="form-control">
+            <input type="file" th:field="*{profileImg}" name="file" class="form-control">
         </div>
         <div class="mb-3">
             <label class="form-label">보유스킬</label>

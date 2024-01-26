@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -38,13 +39,13 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signupPost(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
+    public String signupPost(@Valid UserCreateForm userCreateForm, BindingResult bindingResult,@RequestParam(value = "file") MultipartFile file) {
         List<Skill> skillList = this.skillService.findByskillList(userCreateForm.getSkill());
         if(this.userService.checkErrors(userCreateForm, bindingResult).hasErrors()) {
             return "/user/signup";
         }
         // facade pattern : userService + skillService
-        this.userService.signup(userCreateForm,skillList);
+        this.userService.signup(userCreateForm,skillList,file);
         SiteUser user = this.userService.findByUsername(userCreateForm.getUsername());
         this.skillService.create(userCreateForm.getSkill(),user);
         //

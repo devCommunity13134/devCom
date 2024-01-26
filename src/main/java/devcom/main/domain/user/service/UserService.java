@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +20,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
-    public void signup(UserCreateForm userCreateForm, List<Skill> skillList) {
+    public void signup(UserCreateForm userCreateForm, List<Skill> skillList, MultipartFile file) {
+        String profileImg = file.getOriginalFilename();
         SiteUser user = SiteUser.builder()
                 .username(userCreateForm.getUsername())
                 .nickname(userCreateForm.getNickname())
@@ -29,7 +31,7 @@ public class UserService {
                 .sex(userCreateForm.getSex())
                 .age(userCreateForm.getAge())
                 .salary(userCreateForm.getSalary())
-                .profileImg(userCreateForm.getProfileImg())
+                .profileImg(profileImg)
                 .skillList(skillList)
                 .build();
 
