@@ -37,6 +37,7 @@ public class ArticleController {
         Category category1 = this.categoryService.getCategory(category);
         Page<Article> paging = this.articleService.getArticleList(page,category1);
         model.addAttribute("paging",paging);
+        model.addAttribute("categoryName", category1.getCategoryName());
         return "article/list";
     }
     // create article
