@@ -80,17 +80,16 @@ public class ProjectController {
             }
         }
 
-        ProjectDetailDto projectDetailDto = new ProjectDetailDto();
-
-        projectDetailDto.setId(project.getId());
-        projectDetailDto.setName(project.getName());
-        projectDetailDto.setDescription(project.getDescription());
-        projectDetailDto.setTeam(project.getTeam());
-        projectDetailDto.setCreateDate(project.getCreateDate());
-
-        projectDetailDto.setTodoList(todoList);
-        projectDetailDto.setInProgressList(inProgressList);
-        projectDetailDto.setDoneList(doneList);
+        ProjectDetailDto projectDetailDto = ProjectDetailDto.builder()
+                .id(project.getId())
+                .name(project.getName())
+                .description(project.getDescription())
+                .team(project.getTeam())
+                .createDate(project.getCreateDate())
+                .todoList(todoList)
+                .inProgressList(inProgressList)
+                .doneList(doneList)
+                .build();
 
         model.addAttribute("project", projectDetailDto);
 
