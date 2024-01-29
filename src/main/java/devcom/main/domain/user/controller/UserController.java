@@ -1,6 +1,7 @@
 package devcom.main.domain.user.controller;
 
 
+import devcom.main.domain.follow.entity.Follow;
 import devcom.main.domain.follow.service.FollowService;
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.domain.skill.service.SkillService;
@@ -44,6 +45,7 @@ public class UserController {
     @PostMapping("/signup")
     public String signupPost(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, @RequestParam(value = "profileImg") MultipartFile file) throws IOException {
         List<Skill> skillList = this.skillService.findByskillList(userCreateForm.getSkill());
+
         if(this.userService.checkErrors(userCreateForm, bindingResult).hasErrors()) {
             return "/user/signup";
         }
@@ -51,6 +53,7 @@ public class UserController {
         this.userService.signup(userCreateForm,skillList,file);
         SiteUser user = this.userService.findByUsername(userCreateForm.getUsername());
         this.skillService.create(userCreateForm.getSkill(),user);
+
         //
         return "redirect:/";
     }
@@ -59,6 +62,11 @@ public class UserController {
     public String login() {
 
         return "user/login";
+    }
+    @GetMapping("/login/kakao")
+    public String loginKakao() {
+
+        return "http://localhost:8010/login/oauth2/code/kakao/";
     }
 
     @GetMapping("/logout")

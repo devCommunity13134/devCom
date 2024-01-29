@@ -1,6 +1,7 @@
 package devcom.main.domain.follow.controller;
 
 
+import devcom.main.domain.follow.entity.Follow;
 import devcom.main.domain.follow.service.FollowService;
 import devcom.main.domain.user.entity.SiteUser;
 import lombok.RequiredArgsConstructor;
@@ -15,5 +16,8 @@ public class FollowController {
 
 
 
+    public Follow create(SiteUser user) {
+        return this.followService.create(user);
+    }
 
 }

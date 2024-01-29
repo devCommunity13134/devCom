@@ -54,7 +54,8 @@ public class SiteUser extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Skill> skillList;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne
+    @JoinColumn(name = "follow_id")
     private Follow follow;
     // follow 객체 안에는 팔로워 user_id 리스트와 팔로잉 user_id 리스트
 

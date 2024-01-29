@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Follow extends BaseEntity {
 
-    @OneToOne
+    @OneToOne(mappedBy = "follow")
     private SiteUser user;
 
     // 팔로워 user_id_list
@@ -28,5 +28,7 @@ public class Follow extends BaseEntity {
     // 팔로잉 user_id_list
     @OneToMany(mappedBy = "follow", cascade = CascadeType.REMOVE)
     private List<SiteUser> follwingIdList;
+
+    private String test;
 
 }
