@@ -15,7 +15,7 @@
                     <!--  if comment is null no comment -->
                     <div><span>💬</span>[[${article.getAnswerList().size()}]]<span class="mx-2">•</span></div>
                     <!--    like       -->
-                    <div><span>👍</span>[[${article.likes}]]<span class="mx-2">•</span></div>
+                    <div><span>👍</span><span th:text="${#lists.size(article.voter)}"></span><span class="mx-2">•</span></div>
                     <!--   hit    -->
                     <div><span>👀</span>[[${article.hit}]]</div>
                 </div>
@@ -37,7 +37,7 @@
         <div>
             <p>[[${article.content}]]</p>
         </div>
-        <!-- like button js_need-->
+        <!-- like button-->
         <a th:if="${@rq.isLogin()}" style="text-decoration: none;" class="recommend btn btn-outline-secondary fw-bold"
             th:href="@{|/article/vote/${article.id}|}">
             <span>Like</span>
@@ -72,7 +72,7 @@
             <!-- like button js_need-->
             <div class="d-flex flex-column">
                 <a th:if="${@rq.isLogin()}" th:href="@{|/answer/vote/${answer.id}|}" style="text-decoration: none;" class=" btn btn-outline-secondary btn-sm fw-bold">
-                    <span>👍 [[${answer.likes}]]</span>
+                    <span>👍 <span th:text="${#lists.size(answer.voter)}"></span></span>
                 </a>
 
             </div>

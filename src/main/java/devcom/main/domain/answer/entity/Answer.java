@@ -26,9 +26,7 @@ public class Answer extends BaseEntity {
 
     private String content;
 
-    @Column
-    @Builder.Default()
-    private Integer likes = 0;
+
 
     @ManyToOne
     @JoinColumn
