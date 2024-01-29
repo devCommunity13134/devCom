@@ -32,7 +32,6 @@ public class UserController {
     private final SkillService skillService;
 
     private final FollowService followService;
-
     private static int confirmNumber;
     private static String confirmUsername;
 
@@ -44,6 +43,7 @@ public class UserController {
     @PostMapping("/signup")
     public String signupPost(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, @RequestParam(value = "profileImg") MultipartFile file) throws IOException {
         List<Skill> skillList = this.skillService.findByskillList(userCreateForm.getSkill());
+
         if(this.userService.checkErrors(userCreateForm, bindingResult).hasErrors()) {
             return "/user/signup";
         }
@@ -51,6 +51,7 @@ public class UserController {
         this.userService.signup(userCreateForm,skillList,file);
         SiteUser user = this.userService.findByUsername(userCreateForm.getUsername());
         this.skillService.create(userCreateForm.getSkill(),user);
+
         //
         return "redirect:/";
     }
@@ -59,6 +60,11 @@ public class UserController {
     public String login() {
 
         return "user/login";
+    }
+    @GetMapping("/login/kakao")
+    public String loginKakao() {
+
+        return "http://localhost:8010/login/oauth2/code/kakao/";
     }
 
     @GetMapping("/logout")
@@ -108,9 +114,8 @@ public class UserController {
     @GetMapping("/follow/{id}")
     public String followUser(Model model,Principal principal, @PathVariable(value = "id") Long id) {
         SiteUser user = this.userService.findByUsername(principal.getName());
-        List<SiteUser> followerUserList = this.userService.addFollower(user,id);
-        model.addAttribute("followerUserList",followerUserList);
-        return "redirect:/user/profile";
+        this.followService.addFollower(user, id);
+        return "/user/profile";
     }
 
 }

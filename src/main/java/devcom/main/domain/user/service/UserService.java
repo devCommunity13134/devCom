@@ -1,6 +1,8 @@
 package devcom.main.domain.user.service;
 
 
+import devcom.main.domain.follow.entity.Following;
+import devcom.main.domain.follow.repository.FollowingRepository;
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.domain.user.UserCreateForm;
 import devcom.main.domain.user.entity.SiteUser;
@@ -8,6 +10,7 @@ import devcom.main.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,9 +24,11 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
+    private final FollowingRepository followingRepository;
+
     private final PasswordEncoder passwordEncoder;
     public void signup(UserCreateForm userCreateForm, List<Skill> skillList, MultipartFile file) throws IOException {
-        file.transferTo(new File("C:\\Work\\devCom\\src\\main\\resources\\images\\"+file.getOriginalFilename()));
+//        file.transferTo(new File("C:\\Work\\devCom\\src\\main\\resources\\images\\"+file.getOriginalFilename()));
         String profileImg = "http://localhost:8010/images/"+file.getOriginalFilename();
         SiteUser user = SiteUser.builder()
                 .username(userCreateForm.getUsername())
@@ -36,6 +41,23 @@ public class UserService {
                 .salary(userCreateForm.getSalary())
                 .profileImg(profileImg)
                 .skillList(skillList)
+                .build();
+
+        this.userRepository.save(user);
+    }
+
+    public void kakaoSignup(String username, String nickname) {
+        SiteUser user = SiteUser.builder()
+                .username(username)
+                .nickname(nickname)
+                .password("1234")
+                .phoneNumber("01012341234")
+                .email("kakao@test.com")
+                .sex('남')
+                .age(99)
+                .salary(9999)
+                .profileImg("https://www.designdb.com/usr/upload/editor/email/202304132212562023ad50-d888-46ee-8247-12fe63822d4f.png")
+                .skillList(null)
                 .build();
 
         this.userRepository.save(user);
@@ -69,12 +91,17 @@ public class UserService {
         return bindingResult;
     }
 
-    public List<SiteUser> addFollower(SiteUser user, Long id) {
-        List<SiteUser> followerUserList = user.getFollow().getFollwerIdList();
-        SiteUser followUser = this.findById(id);
-        followerUserList.add(followUser);
-        return followerUserList;
+
+    @Transactional
+    public SiteUser whenSocialLogin(String providerTypeCode, String username, String nickname) {
+
+        // 소셜 로그인를 통한 가입시 비번은 없다.
+        this.kakaoSignup(username, nickname);
+
+        return findByUsername(username);
+        // 최초 로그인 시 딱 한번 실행
     }
+
 }
 
 
