@@ -37,13 +37,23 @@ public class AnswerController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/vote/{id}")
-    public String answerVote(@PathVariable("id") Long answerId, Principal principal){
+    @GetMapping("/vote/{answerId}")
+    public String answerVote(@PathVariable("answerId") Long answerId, Principal principal){
         Answer answer = this.answerService.getAnswer(answerId);
         SiteUser siteUser = this.userService.findByUsername(principal.getName());
 
         this.answerService.voteAnswer(answer, siteUser);
         return String.format("redirect:/article/detail/%s",answer.getOriginalArticle().getId());
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete/{answerId}")
+    public String answerDelete(@PathVariable("answerId") Long answerId){
+        Answer answer = this.answerService.getAnswer(answerId);
+        Article originalArticle = answer.getOriginalArticle();
+        this.answerService.delete(answer);
+
+        return String.format("redirect:/article/detail/%s",originalArticle.getId());
     }
 
 }
