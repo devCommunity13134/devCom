@@ -72,7 +72,7 @@
             <!-- like button js_need-->
             <div class="d-flex flex-column">
                 <a th:if="${@rq.isLogin()}" th:href="@{|/answer/vote/${answer.id}|}" style="text-decoration: none;" class=" btn btn-outline-secondary btn-sm fw-bold">
-                    <span>Like 👍</span>
+                    <span>👍 [[${answer.likes}]]</span>
                 </a>
 
             </div>
