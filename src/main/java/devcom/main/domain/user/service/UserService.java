@@ -68,6 +68,13 @@ public class UserService {
         }
         return bindingResult;
     }
+
+    public List<SiteUser> addFollower(SiteUser user, Long id) {
+        List<SiteUser> followerUserList = user.getFollow().getFollwerIdList();
+        SiteUser followUser = this.findById(id);
+        followerUserList.add(followUser);
+        return followerUserList;
+    }
 }
 
 

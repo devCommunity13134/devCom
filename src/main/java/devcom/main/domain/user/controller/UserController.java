@@ -1,6 +1,7 @@
 package devcom.main.domain.user.controller;
 
 
+import devcom.main.domain.follow.service.FollowService;
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.domain.skill.service.SkillService;
 import devcom.main.domain.user.UserCreateForm;
@@ -29,6 +30,8 @@ public class UserController {
     private final UserService userService;
 
     private final SkillService skillService;
+
+    private final FollowService followService;
 
     private static int confirmNumber;
     private static String confirmUsername;
@@ -103,9 +106,10 @@ public class UserController {
     }
 
     @GetMapping("/follow/{id}")
-    public String followUser(Principal principal, @PathVariable(value = "id") Long id) {
-        SiteUser loginedUser = this.userService.findByUsername(principal.getName());
-        SiteUser followUser = this.userService.findById(id);
+    public String followUser(Model model,Principal principal, @PathVariable(value = "id") Long id) {
+        SiteUser user = this.userService.findByUsername(principal.getName());
+        List<SiteUser> followerUserList = this.userService.addFollower(user,id);
+        model.addAttribute("followerUserList",followerUserList);
         return "redirect:/user/profile";
     }
 

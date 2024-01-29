@@ -2,6 +2,7 @@ package devcom.main.domain.user.entity;
 
 
 import devcom.main.domain.follow.entity.Follow;
+import devcom.main.domain.message.entity.Message;
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.global.jpa.BaseEntity;
 import jakarta.persistence.*;
@@ -53,6 +54,10 @@ public class SiteUser extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Skill> skillList;
 
+    @OneToOne(mappedBy = "user")
+    private Follow follow;
+    // follow 객체 안에는 팔로워 user_id 리스트와 팔로잉 user_id 리스트
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Follow> followList;
+    private List<Message> messageList;
 }

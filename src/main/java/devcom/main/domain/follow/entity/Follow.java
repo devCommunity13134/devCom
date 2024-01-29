@@ -3,9 +3,7 @@ package devcom.main.domain.follow.entity;
 
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.global.jpa.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,13 +18,15 @@ import java.util.List;
 @AllArgsConstructor
 public class Follow extends BaseEntity {
 
-    @ManyToOne
+    @OneToOne
     private SiteUser user;
 
+    // 팔로워 user_id_list
+    @OneToMany(mappedBy = "follow", cascade = CascadeType.REMOVE)
+    private List<SiteUser> follwerIdList;
 
-    private Long follwerUserId;
-
-
-    private Long follwingUserId;
+    // 팔로잉 user_id_list
+    @OneToMany(mappedBy = "follow", cascade = CascadeType.REMOVE)
+    private List<SiteUser> follwingIdList;
 
 }
