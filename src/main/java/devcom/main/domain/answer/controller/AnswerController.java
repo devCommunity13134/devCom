@@ -31,7 +31,7 @@ public class AnswerController {
         SiteUser siteUser = this.userService.findByUsername(principal.getName());
         this.answerService.create(article,answerForm.getContent(),siteUser);
 
-        return String.format("/article/detail/%s",articleId);
+        return String.format("redirect:/article/detail/%s",articleId);
     }
 
 }

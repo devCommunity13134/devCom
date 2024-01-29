@@ -117,6 +117,7 @@ public class ArticleController {
         if(article.getReplyList() != null){
             this.replyService.deleteByAuthorId(id);
         }
+        this.articleService.delete(article);
 
 
         return String.format("redirect:/article/%s", categoryName);

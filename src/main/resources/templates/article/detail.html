@@ -49,8 +49,8 @@
            th:if="${article.author != null and #authentication.getPrincipal().getUsername() == article.author.username}">
             <span>Modify</span>
         </a>
-        <!-- modify-button if(authorized) -->
-        <a href="@{|/article/delete/${article.id}|}" style="text-decoration: none;" class="btn btn-outline-danger fw-bold"
+        <!-- delete-button if(authorized) -->
+        <a th:href="@{|/article/delete/${article.id}|}" style="text-decoration: none;" class="btn btn-outline-danger fw-bold"
            sec:authorize="isAuthenticated()"
            th:if="${article.author != null and #authentication.getPrincipal().getUsername() == article.author.username}">
             <span>Delete</span>
@@ -58,7 +58,7 @@
 
     </div>
     <!--comment form-->
-    <form style="max-width: 1200px;" th:action="@{|/answer/create/${article.id}|}"  th:object="${answerForm}" method="post"  class="mb-3">
+    <form th:if="${@rq.isLogin()}" style="max-width: 1200px;" th:action="@{|/answer/create/${article.id}|}"  th:object="${answerForm}" method="post"  class="mb-3">
         <textarea style="width:100%; resize: none;" th:field="*{content}"  cols="30" rows="10"></textarea>
         <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary fw-bold mt-2">Post</button>
