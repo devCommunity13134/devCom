@@ -69,8 +69,11 @@ public class ArticleController {
 
     // detail getMapping_fix_need
     @GetMapping("/detail/{id}")
-    public String articleDetail(Model model, @PathVariable("id") Long id, AnswerForm answerForm){
+    public String articleDetail(Model model, @PathVariable("id") Long id, AnswerForm answerForm, @RequestParam(value = "page",defaultValue = "0") int page){
         Article article = this.articleService.getArticle(id);
+
+        Page<Answer> answerPaging = this.answerService.getAnswerList(page,article);
+        model.addAttribute("answerPaging",answerPaging);
         model.addAttribute("article",article);
         return "article/detail";
     }

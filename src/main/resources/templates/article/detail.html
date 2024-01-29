@@ -38,7 +38,7 @@
             <p>[[${article.content}]]</p>
         </div>
         <!-- like button js_need-->
-        <a  style="text-decoration: none;" class="recommend btn btn-outline-secondary fw-bold"
+        <a th:if="${@rq.isLogin()}" style="text-decoration: none;" class="recommend btn btn-outline-secondary fw-bold"
             th:href="@{|/article/vote/${article.id}|}">
             <span>Like</span>
             <span class="fw-bold" th:text="${#lists.size(article.voter)}"></span>
@@ -66,12 +66,12 @@
     </form>
 
     <!-- comment list -->
-    <div style="max-width:1200px" class="shadow py-4 px-3 mb-3 w-100 bg-body">
+    <div th:each="article : ${answerPaging}" style="max-width:1200px" class="shadow py-4 px-3 mb-3 w-100 bg-body">
         <!-- like, profile-box(profile img, name, CommentCreateDate) -->
         <div class="d-flex">
             <!-- like button js_need-->
             <div class="d-flex flex-column">
-                <a href="#" style="text-decoration: none;" class=" btn btn-outline-secondary btn-sm fw-bold">
+                <a th:if="${@rq.isLogin()}" th:href="@{|/answer/vote/${answer.id}|}" style="text-decoration: none;" class=" btn btn-outline-secondary btn-sm fw-bold">
                     <span>Like 👍</span>
                 </a>
 
@@ -91,7 +91,7 @@
                 <!-- profile -->
                 <div class="d-flex ms-1">
                     <!--name-->
-                    <span style="font-size:14px;" class="fw-bold">commentAuthor</span>
+                    <span style="font-size:14px;" class="fw-bold">[[${answer.author.username}]]</span>
                     <span class="fw-bold mx-1">|</span>
                     <!--commentCreateDate-->
                     <span>24-01-24</span>

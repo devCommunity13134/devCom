@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -24,8 +25,10 @@ import java.util.Set;
 public class Answer extends BaseEntity {
 
     private String content;
+
     @Column
-    private Integer likes;
+    @Builder.Default()
+    private Integer likes = 0;
 
     @ManyToOne
     @JoinColumn
