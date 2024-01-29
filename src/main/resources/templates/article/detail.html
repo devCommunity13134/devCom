@@ -11,7 +11,7 @@
                     <div>by <a href="#" style="text-decoration:none; color: gray;" class="fw-bold">[[${article.author.username}]]</a> <span
                             class="mx-2">•</span></div>
                     <!--   createDate  -->
-                    <div>2024-01-24<span class="mx-2">•</span></div>
+                    <div th:text="${#temporals.format(article.createDate, 'yyyy-MM-dd')}"></div> <span class="mx-2">•</span>
                     <!--  if comment is null no comment -->
                     <div><span>💬</span>[[${article.getAnswerList().size()}]]<span class="mx-2">•</span></div>
                     <!--    like       -->
@@ -94,7 +94,7 @@
                     <span style="font-size:14px;" class="fw-bold">[[${answer.author.username}]]</span>
                     <span class="fw-bold mx-1">|</span>
                     <!--commentCreateDate-->
-                    <span th:text="${#dates.format(answer.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                    <span th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd')}"></span>
                 </div>
             </div>
             <!--modify, delete comment(show if authorized) -->
