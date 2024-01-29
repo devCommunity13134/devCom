@@ -103,7 +103,9 @@
                     <span>Modify</span>
                 </a>
                 <!-- delete button -->
-                <a th:href="@{|/answer/delete/${answer.id}|}" style="text-decoration: none;" class=" btn btn-outline-danger btn-sm fw-bold">
+                <a th:href="@{|/answer/delete/${answer.id}|}" style="text-decoration: none;" class=" btn btn-outline-danger btn-sm fw-bold"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}">
                     <span>Delete</span>
                 </a>
             </div>
