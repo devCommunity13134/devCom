@@ -31,8 +31,19 @@ public class ProjectController {
     private final TeamAndProjectService teamAndProjectService;
     private final UserService userService;
 
+    @GetMapping("/delete/{projectId}")
+    public String delete(@PathVariable("projectId") Long id, Principal principal){
+
+        SiteUser siteUser = userService.findByUsername(principal.getName());
+        Project project = teamAndProjectService.getProjectById(id,siteUser);
+
+        teamAndProjectService.deleteProject(project);
+
+        return "redirect:/team/detail/"+project.getTeam().getId();
+    }
+
     @PostMapping("/modify")
-    public String modify(@Valid ProjectModifyForm projectModifyForm,BindingResult bindingResult, Principal principal){
+    public String modify(@Valid ProjectModifyForm projectModifyForm,BindingResult bindingResult, Principal principal,Model model){
 
         SiteUser siteUser = userService.findByUsername(principal.getName());
         Project project = teamAndProjectService.getProjectById(projectModifyForm.getId(),siteUser);
@@ -40,10 +51,11 @@ public class ProjectController {
         bindingResult = teamAndProjectService.modifyProject(project,projectModifyForm,bindingResult);
 
         if(bindingResult.hasErrors()){
+            model.addAttribute("project", project);
             return "/project/modify";
         }
 
-        return "/project/detail/"+project.getId();
+        return "redirect:/project/detail/"+project.getId();
     }
 
     @GetMapping("/modify/{projectId}")

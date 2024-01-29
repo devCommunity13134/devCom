@@ -143,4 +143,19 @@ public class TeamAndProjectService {
 
         return bindingResult;
     }
+
+    public void deleteProject(Project project) {
+        projectService.delete(project);
+    }
+
+    @Transactional
+    @SneakyThrows
+    public void deleteTeam(Long teamId, SiteUser siteUser) {
+        Team team = getTeamById(teamId,siteUser);
+
+        if(!team.getTeamAdmin().getUsername().equals(siteUser.getUsername())){
+            throw new Exception("권한이 없습니다.");
+        }
+        teamService.delete(team);
+    }
 }

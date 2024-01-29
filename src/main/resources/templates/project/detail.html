@@ -37,12 +37,20 @@ $(document).ready(function(){
         $(submitForm).submit();
     });
 
+<!-- Project 삭제 스크립트 -->
+    $('.deleteProject').click(function () {
+        if(confirm("삭제된 프로젝트는 되돌릴 수 없습니다.")){
+            location.href = "/project/delete/"+[[${project.id}]];
+        }
+    });
+
 <!-- ProjectState 삭제 스크립트 -->
     $('.deleteProjectState').click(function () {
         if(confirm("증말로 삭제할꺼에요?")){
             location.href = "/projectState/delete/"+[[${project.id}]]+"/"+$(this).attr("value");
         }
     });
+
 
     <!--  드래그 앤 드롭 기능  -->
 
@@ -121,8 +129,8 @@ $(document).ready(function(){
                             </a>
                         </li>
                         <li class="mt-1">
-                            <a class="text-dark dropdown-item" th:href="@{/}">
-                                <i class="fa-regular fa-trash-can text-danger"></i> &nbsp;프로젝트 삭제
+                            <a class="text-dark dropdown-item deleteProject" href="#">
+                                <i class="fa-regular fa-trash-can text-danger "></i> &nbsp;프로젝트 삭제
                             </a>
                         </li>
                     </ul>

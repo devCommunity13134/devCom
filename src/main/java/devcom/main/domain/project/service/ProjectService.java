@@ -51,4 +51,8 @@ public class ProjectService {
 
         projectRepository.save(project);
     }
+
+    public void delete(Project project) {
+        projectRepository.delete(project);
+    }
 }
