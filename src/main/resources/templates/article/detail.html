@@ -8,7 +8,7 @@
             <div>
                 <span class="fs-3 fw-bold">[[${article.subject}]]</span>
                 <div style="font-size: 14px;" class="d-flex flex-grow-1 text-secondary flex-wrap">
-                    <div>by <a href="#" style="text-decoration:none; color: gray;" class="fw-bold">[[${article.author.username}]]</a> <span
+                    <div>by <a href="#" style="text-decoration:none; color: gray;" class="fw-bold">[[${article.author.nickname}]]</a> <span
                             class="mx-2">•</span></div>
                     <!--   createDate  -->
                     <div th:text="${#temporals.format(article.createDate, 'yyyy-MM-dd')}"></div> <span class="mx-2">•</span>
@@ -91,7 +91,7 @@
                 <!-- profile -->
                 <div class="d-flex ms-1">
                     <!--name-->
-                    <span style="font-size:14px;" class="fw-bold">[[${answer.author.username}]]</span>
+                    <span style="font-size:14px;" class="fw-bold">[[${answer.author.nickname}]]</span>
                     <span class="fw-bold mx-1">|</span>
                     <!--commentCreateDate-->
                     <span th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd')}"></span>

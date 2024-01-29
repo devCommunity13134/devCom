@@ -33,7 +33,7 @@
                 <div style="font-size: 14px;"  class="d-flex flex-grow-1 text-secondary align-items-center ">
                     <div>by <a href="#" style="text-decoration:none; color: gray;" tabindex="0" class="btn btn-sm fw-bold" role="button" data-bs-toggle="popover" data-bs-trigger="focus"
                                data-bs-content="profile"
-                               th:text="${article.author.username}"></a>> <span
+                               th:text="${article.author.nickname}"></a>> <span
                             class="mx-2">•</span></div>
                     <!--   createDate  -->
                     <div th:text="${#temporals.format(article.createDate, 'yyyy-MM-dd')}"></div> <span class="mx-2">•</span>
