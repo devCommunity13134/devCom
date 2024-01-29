@@ -69,7 +69,7 @@ public class ServiceInit implements InitializingBean {
 
         SiteUser author = this.userService.findByUsername("user1");
         Category category = this.categoryService.getCategory("frontEnd");
-        for (int i = 1; i <= 300; i++) {
+        for (int i = 1; i <= 10; i++) {
             String subject = String.format("TestSubject:[%03d]", i);
             String content = String.format("TestContetn:[%03d] Lorem ipsum dolor sit amet, " +
                             "consectetur adipisicing elit. Aperiam commodi minima optio placeat quaerat" +

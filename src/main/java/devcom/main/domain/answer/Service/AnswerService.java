@@ -35,8 +35,12 @@ public class AnswerService {
 
     //answer delete
     public void delete(Answer answer){
-        // need delete reply
        this.answerRepository.delete(answer);
+    }
+
+    //deleteByAuthorId
+    public void deleteByAuthorId(Long AuthorId){
+        this.answerRepository.deleteByAuthorId(AuthorId);
     }
 
     public Answer getAnswer(long id){

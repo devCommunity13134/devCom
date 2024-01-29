@@ -39,7 +39,7 @@
         </div>
         <!-- like button js_need-->
         <a  style="text-decoration: none;" class="recommend btn btn-outline-secondary fw-bold"
-           th:href="@{|/article/vote/${article.id}|}">
+            th:href="@{|/article/vote/${article.id}|}">
             <span>Like</span>
             <span class="fw-bold" th:text="${#lists.size(article.voter)}"></span>
         </a>
@@ -57,9 +57,9 @@
         </a>
 
     </div>
-    <!-- comment form-->
-    <form action="#" style="max-width: 1200px;" class="mb-3">
-        <textarea style="width:100%; resize: none;" name="comment" id="comment" cols="30" rows="10"></textarea>
+    <!--comment form-->
+    <form style="max-width: 1200px;" th:action="@{|/answer/create/${article.id}|}"  th:object="${answerForm}" method="post"  class="mb-3">
+        <textarea style="width:100%; resize: none;" th:field="*{content}"  cols="30" rows="10"></textarea>
         <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary fw-bold mt-2">Post</button>
         </div>
