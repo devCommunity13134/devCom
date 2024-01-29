@@ -94,7 +94,7 @@
                     <span style="font-size:14px;" class="fw-bold">[[${answer.author.username}]]</span>
                     <span class="fw-bold mx-1">|</span>
                     <!--commentCreateDate-->
-                    <span>24-01-24</span>
+                    <span th:text="${#dates.format(answer.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
                 </div>
             </div>
             <!--modify, delete comment(show if authorized) -->
