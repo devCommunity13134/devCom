@@ -73,7 +73,7 @@ class MainApplicationTests {
         userCreateForm.setSex('m');
         userCreateForm.setAge(27);
         userCreateForm.setSalary(500);
-        userCreateForm.setProfileImg("https://i.pinimg.com/564x/6e/63/00/6e6300cf54a9a3e7f352d9cd39ce8a13.jpg");
+//        userCreateForm.setProfileImg("https://i.pinimg.com/564x/6e/63/00/6e6300cf54a9a3e7f352d9cd39ce8a13.jpg");
         userCreateForm.setSkill(null);
         // siteUser create
         this.userService.signup(userCreateForm, skillList);
