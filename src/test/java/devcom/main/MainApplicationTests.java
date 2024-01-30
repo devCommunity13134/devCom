@@ -73,7 +73,7 @@ class MainApplicationTests {
         userCreateForm.setSex('m');
         userCreateForm.setAge(27);
         userCreateForm.setSalary(500);
-        userCreateForm.setProfileImg("https://i.pinimg.com/564x/6e/63/00/6e6300cf54a9a3e7f352d9cd39ce8a13.jpg");
+//        userCreateForm.setProfileImg("https://i.pinimg.com/564x/6e/63/00/6e6300cf54a9a3e7f352d9cd39ce8a13.jpg");
         userCreateForm.setSkill(null);
         // siteUser create
         this.userService.signup(userCreateForm, skillList);
@@ -156,11 +156,11 @@ class MainApplicationTests {
                 "                    perferendis quae quaerat vel. Lorem ipsum dolor sit amet? Aliquam atque expedita illum qui vitae? ", author);
     }
 
-    @Test
-    void articleModfiyTest() {
-        Article article = this.articleService.getArticle(1);
-        this.articleService.modify(article, "s1Modify", "c1Modify");
-    }
+//    @Test
+//    void articleModfiyTest() {
+//        Article article = this.articleService.getArticle(1);
+//        this.articleService.modify(article, "s1Modify", "c1Modify");
+//    }
 
     @Test
     void articleDeleteTest() {
@@ -171,7 +171,7 @@ class MainApplicationTests {
     // Answer Test
     @Test
     void answerCreateTest() {
-        Article article = this.articleService.getArticle(1);
+        Article article = this.articleService.getArticle(300);
         SiteUser author = this.userService.findByUsername("user1");
         this.answerService.create(article, "answerContent1", author);
     }

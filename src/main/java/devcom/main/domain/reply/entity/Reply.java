@@ -29,4 +29,8 @@ public class Reply extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "author_id")
     private SiteUser author;
+
+    @ManyToOne
+    @JoinColumn
+    private Article originalArticle;
 }

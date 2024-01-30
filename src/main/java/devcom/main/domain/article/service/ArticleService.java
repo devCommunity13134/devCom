@@ -35,8 +35,9 @@ public class ArticleService {
         this.articleRepository.save(article);
     }
     //article modify
-    public void modify(Article article, String subject, String content){
+    public void modify(Category category, Article article, String subject, String content){
         Article article1 = article.toBuilder()
+                .category(category)
                 .subject(subject)
                 .content(content)
                 .build();
@@ -46,7 +47,7 @@ public class ArticleService {
 
     //article delete
     public void delete(Article article){
-        // need delete reply
+
         this.articleRepository.delete(article);
     }
 
@@ -70,5 +71,10 @@ public class ArticleService {
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         return this.articleRepository.findAllByCategory(category,pageable);
+    }
+
+    public void voteArticle(Article article, SiteUser siteUser){
+        article.getVoter().add(siteUser);
+        this.articleRepository.save(article);
     }
 }
