@@ -47,7 +47,7 @@ public class ArticleService {
 
     //article delete
     public void delete(Article article){
-        // need delete reply
+
         this.articleRepository.delete(article);
     }
 
