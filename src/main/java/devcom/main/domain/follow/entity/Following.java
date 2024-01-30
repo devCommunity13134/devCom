@@ -22,6 +22,6 @@ public class Following extends BaseEntity {
     private SiteUser user;
 
     // 팔로잉 user_id_list
-    private List<Long> follwingUserIdList;
+    private Long followingUserId;
 
 }

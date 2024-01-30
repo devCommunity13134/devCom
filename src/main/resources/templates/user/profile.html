@@ -45,47 +45,50 @@
                 </div>
             </div>
             <a href="#" class="btn btn-success btn-sm" style="margin-left:3px;">팀 초대하기</a>
-            <a th:href="@{|/user/follow/${user.id}|}" class="btn btn-success btn-sm" style="margin-left:3px;">팔로우</a>
+            <a th:if="${#authentication.getPrincipal().getUsername() != user.username}"
+                    th:href="@{|/user/follow/${user.id}|}" class="btn btn-success btn-sm" style="margin-left:3px;">팔로우</a>
         </div>
     </div>
     <div class="card" style="margin-left:30px; width:650px;">
-        <h5 class="card-header">작성한 게시글</h5>
-        <div class="card-body">
-            <div class="my-3 border-bottom">
-                <a href="#">
-                    <h5 class="card-title">게시글 제목</h5>
-                </a>
-                <p class="card-text">어쩌구 저쩌구....</p>
+        <h5 class="card-header">작성한 게시글
+            <a href="#" style="font-size:14px;">전체보기</a>
+        </h5>
+        <div style="height:350px; overflow:scroll;">
+            <div class="card-body" th:each="article : ${user.articleList}">
+                <div class="my-3 border-bottom">
+                    <a th:href="@{|/article/detail/${article.id}|}">
+                        <h5 class="card-title" th:text="${article.subject}"></h5>
+                    </a>
+                    <p class="card-text" th:text="${article.content}"></p>
+                </div>
             </div>
-            <div class="my-3 border-bottom">
-                <a href="#">
-                    <h5 class="card-title">게시글 제목</h5>
-                </a>
-                <p class="card-text">어쩌구 저쩌구....</p>
-            </div>
-            <div class="my-3 border-bottom">
-                <a href="#">
-                    <h5 class="card-title">게시글 제목</h5>
-                </a>
-                <p class="card-text">어쩌구 저쩌구....</p>
-            </div>
-            <a href="#" class="btn btn-secondary btn-sm">전체보기</a>
         </div>
-        <h5 class="card-header">팔로워</h5>
-        <div class="card-body">
-            <a href="#">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>팔로워1</strong>
-            </a>
-            <a href="#">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>팔로워2</strong>
-            </a>
-            <a href="#">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>팔로워3</strong>
-            </a>
-            <a href="#" class="btn btn-secondary btn-sm">전체보기</a>
+
+        <h5 class="card-header">팔로워
+            <span th:text="|${#lists.size(user.followerList)}명|"></span>
+            <a href="#" style="font-size:14px;">전체보기</a>
+        </h5>
+        <div style="display:flex; overflow:scroll;">
+            <div class="card-body" th:each="follower : ${followerUserList}" style="text-align:center;">
+                <a th:href="@{|/user/profile/${follower.id}|}">
+                    <img th:src="${follower.profileImg}" alt="" width="40" height="40" class="rounded-circle me-2"
+                         style="border:1px solid gray;">
+                    <strong th:text="${follower.nickname}"></strong>
+                </a>
+            </div>
+        </div>
+        <h5 class="card-header">팔로잉
+            <span th:text="|${#lists.size(user.followingList)}명|"></span>
+            <a href="#" style="font-size:14px;">전체보기</a>
+        </h5>
+        <div style="display:flex; overflow:scroll;">
+            <div class="card-body" th:each="following : ${followingUserList}" style="text-align:center;">
+                <a th:href="@{|/user/profile/${following.id}|}">
+                    <img th:src="${following.profileImg}" alt="" width="32" height="32" class="rounded-circle me-2"
+                         style="border:1px solid gray;">
+                    <strong th:text="${following.nickname}"></strong>
+                </a>
+            </div>
         </div>
     </div>
 </div>

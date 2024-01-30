@@ -1,6 +1,7 @@
 package devcom.main.domain.user.entity;
 
 
+import devcom.main.domain.article.entity.Article;
 import devcom.main.domain.follow.entity.Follower;
 import devcom.main.domain.follow.entity.Following;
 import devcom.main.domain.message.entity.Message;
@@ -56,13 +57,16 @@ public class SiteUser extends BaseEntity {
     private List<Skill> skillList;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Following> followingList;
-    // 팔로잉 리스트
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Follower> followerList;
     // 팔로워 리스트
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Following> followingList;
+    // 팔로잉 리스트
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Message> messageList;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
+    private List<Article> articleList;
 }

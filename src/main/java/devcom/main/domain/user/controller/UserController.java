@@ -44,13 +44,13 @@ public class UserController {
     public String signupPost(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, @RequestParam(value = "profileImg") MultipartFile file) throws IOException {
         List<Skill> skillList = this.skillService.findByskillList(userCreateForm.getSkill());
 
-        if(this.userService.checkErrors(userCreateForm, bindingResult).hasErrors()) {
+        if (this.userService.checkErrors(userCreateForm, bindingResult).hasErrors()) {
             return "/user/signup";
         }
         // facade pattern : userService + skillService
-        this.userService.signup(userCreateForm,skillList,file);
+        this.userService.signup(userCreateForm, skillList, file);
         SiteUser user = this.userService.findByUsername(userCreateForm.getUsername());
-        this.skillService.create(userCreateForm.getSkill(),user);
+        this.skillService.create(userCreateForm.getSkill(), user);
 
         //
         return "redirect:/";
@@ -61,6 +61,7 @@ public class UserController {
 
         return "user/login";
     }
+
     @GetMapping("/login/kakao")
     public String loginKakao() {
 
@@ -77,7 +78,7 @@ public class UserController {
     // 나의 프로필 조회
     public String myProfile(Model model, Principal principal) {
         SiteUser user = this.userService.findByUsername(principal.getName());
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
         return "/user/profile";
     }
 
@@ -86,7 +87,11 @@ public class UserController {
     // 다른 유저 프로필 조회
     public String userProfile(Model model, @PathVariable(value = "id") Long id) {
         SiteUser user = this.userService.findById(id);
-        model.addAttribute("user",user);
+        List<SiteUser> followerUserList = this.followService.getFollowerUserList(user);
+        List<SiteUser> followingUserList = this.followService.getFollowingUserList(user);
+        model.addAttribute("followingUserList", followingUserList);
+        model.addAttribute("user", user);
+        model.addAttribute("followerUserList", followerUserList);
         return "/user/profile";
     }
 
@@ -102,20 +107,21 @@ public class UserController {
     }
 
     @PostMapping("/findid/confirm")
-    public String confirm(Model model,@RequestParam(value = "confirmNum") int confirmNum) {
-        if(confirmNum!= confirmNumber) {
+    public String confirm(Model model, @RequestParam(value = "confirmNum") int confirmNum) {
+        if (confirmNum != confirmNumber) {
             return "/findid/confirm";
         }
         SiteUser user = this.userService.findByUsername(confirmUsername);
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
         return "redirect:/user/confirm_form";
     }
 
     @GetMapping("/follow/{id}")
-    public String followUser(Model model,Principal principal, @PathVariable(value = "id") Long id) {
+    public String followUser(Model model, Principal principal, @PathVariable(value = "id") Long id) {
         SiteUser user = this.userService.findByUsername(principal.getName());
         this.followService.addFollower(user, id);
-        return "redirect:/user/profile";
+        this.followService.addFollowing(user, id);
+        return String.format("redirect:/user/profile/%d", id);
     }
 
 }

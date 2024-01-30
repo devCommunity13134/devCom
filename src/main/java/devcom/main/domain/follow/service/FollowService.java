@@ -26,23 +26,45 @@ public class FollowService {
 
 
     public void addFollower(SiteUser user, Long id) {
-        List<Long> follwerIdList = new ArrayList<>();
-        follwerIdList.add(id);
+        // user = 현재 로그인한 유저(나)
+        // id = 내가 팔로우를 누른 대상의 회원 id(상대)
         Follower follower = Follower.builder()
-                .user(user)
-                .followerUserIdList(follwerIdList)
+                .user(this.userService.findById(id))
+                .followerUserId(user.getId())
                 .build();
         this.followerRepository.save(follower);
+        this.userService.findById(id).getFollowerList().add(follower);
     }
 
+    public void addFollowing(SiteUser user, Long id) {
+        // user = 현재 로그인한 유저(나)
+        // id = 내가 팔로우를 누른 대상의 회원 id(상대)
+        Following following = Following.builder()
+                .user(this.userService.findById(user.getId()))
+                .followingUserId(id)
+                .build();
+        this.followingRepository.save(following);
+        this.userService.findById(user.getId()).getFollowingList().add(following);
+    }
+
+    // user를 팔로우 하는 팔로워 유저 리스트
     public List<SiteUser> getFollowerUserList(SiteUser user) {
         List<SiteUser> followerUserList = new ArrayList<>();
 
         for(int i = 0; i < user.getFollowerList().size(); i++) {
-            followerUserList.add(this.userService.findById(user.getFollowerList().get(i).getUser().getId()));
+            followerUserList.add(this.userService.findById(user.getFollowerList().get(i).getFollowerUserId()));
         }
         return followerUserList;
+    }
 
+    // user가 팔로잉 하는 유저 리스트
+    public List<SiteUser> getFollowingUserList(SiteUser user) {
+        List<SiteUser> followingUserList = new ArrayList<>();
+
+        for(int i = 0; i < user.getFollowingList().size(); i++) {
+            followingUserList.add(this.userService.findById(user.getFollowingList().get(i).getFollowingUserId()));
+        }
+        return followingUserList;
     }
 
 }
