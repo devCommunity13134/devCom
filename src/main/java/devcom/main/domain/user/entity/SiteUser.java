@@ -60,7 +60,7 @@ public class SiteUser extends BaseEntity {
     // 팔로잉 리스트
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Follower> followierList;
+    private List<Follower> followerList;
     // 팔로워 리스트
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)

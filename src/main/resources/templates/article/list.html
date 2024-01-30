@@ -33,15 +33,15 @@
                 <div style="font-size: 14px;"  class="d-flex flex-grow-1 text-secondary align-items-center ">
                     <div>by <a href="#" style="text-decoration:none; color: gray;" tabindex="0" class="btn btn-sm fw-bold" role="button" data-bs-toggle="popover" data-bs-trigger="focus"
                                data-bs-content="profile"
-                               th:text="${article.author.username}"></a>> <span
+                               th:text="${article.author.nickname}"></a>> <span
                             class="mx-2">•</span></div>
                     <!--   createDate  -->
-                    <div>2024-01-24<span class="mx-2">•</span></div>
+                    <div th:text="${#temporals.format(article.createDate, 'yyyy-MM-dd')}"></div> <span class="mx-2">•</span>
                     <!--  if comment is null no comment -->
                     <div th:if="${article.getAnswerList.size() > 0 || article.getAnswerList != null}"><span>💬</span>[[${article.getAnswerList().size()}]]
                         <span class="mx-2">•</span></div>
                     <!--    like       -->
-                    <div><span>👍</span>[[${article.likes}]]<span class="mx-2">•</span></div>
+                    <div><span>👍</span><span th:text="${#lists.size(article.voter)}"></span><span class="mx-2">•</span></div>
                     <!--   hit    -->
                     <div><span>👀</span>[[${article.hit}]]</div>
 

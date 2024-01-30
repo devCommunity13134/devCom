@@ -7,6 +7,7 @@ import devcom.main.domain.follow.repository.FollowerRepository;
 import devcom.main.domain.follow.repository.FollowingRepository;
 import devcom.main.domain.skill.service.SkillService;
 import devcom.main.domain.user.entity.SiteUser;
+import devcom.main.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,8 @@ public class FollowService {
 
     private final FollowerRepository followerRepository;
 
+    private final UserService userService;
+
 
     public void addFollower(SiteUser user, Long id) {
         List<Long> follwerIdList = new ArrayList<>();
@@ -30,6 +33,16 @@ public class FollowService {
                 .followerUserIdList(follwerIdList)
                 .build();
         this.followerRepository.save(follower);
+    }
+
+    public List<SiteUser> getFollowerUserList(SiteUser user) {
+        List<SiteUser> followerUserList = new ArrayList<>();
+
+        for(int i = 0; i < user.getFollowerList().size(); i++) {
+            followerUserList.add(this.userService.findById(user.getFollowerList().get(i).getUser().getId()));
+        }
+        return followerUserList;
+
     }
 
 }

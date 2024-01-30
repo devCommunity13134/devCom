@@ -40,6 +40,10 @@ public class ReplyService {
         this.replyRepository.delete(reply);
     }
 
+    public void deleteByAuthorId(Long AuthorId){
+        this.replyRepository.deleteByAuthorId(AuthorId);
+    }
+
     public Reply getReply(long id){
         Optional<Reply> optionalReply = this.replyRepository.findById(id);
         if(optionalReply.isEmpty()){
