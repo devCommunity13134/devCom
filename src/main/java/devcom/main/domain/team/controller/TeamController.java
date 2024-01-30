@@ -25,14 +25,26 @@ public class TeamController {
     private final TeamAndProjectService teamAndProjectService;
     private final UserService userService;
 
+    @GetMapping("/delete/{teamId}")
+    public String delete(@PathVariable("teamId") Long teamId, Principal principal,Model model) {
+
+        SiteUser siteUser = userService.findByUsername(principal.getName());
+
+        teamAndProjectService.deleteTeam(teamId,siteUser);
+
+        return "redirect:/team/list";
+    }
+
     @PostMapping("/modifyTeam")
-    public String modifyTeam(@Valid TeamModifyForm teamModifyForm, BindingResult bindingResult, Principal principal){
+    public String modifyTeam(@Valid TeamModifyForm teamModifyForm, BindingResult bindingResult, Principal principal,Model model) {
 
         SiteUser siteUser = userService.findByUsername(principal.getName());
 
         bindingResult = teamAndProjectService.modifyTeam(teamModifyForm,bindingResult,siteUser);
 
         if(bindingResult.hasErrors()){
+            Team team = teamAndProjectService.getTeamById(teamModifyForm.getId(),siteUser);
+            model.addAttribute("team", team);
             return "/team/modifyTeam";
         }
 

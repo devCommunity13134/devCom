@@ -21,6 +21,13 @@
             $(".forClick").on( "click", function() {
               location.href="/project/detail/"+$(this).attr("id");
             });
+
+            <!-- Team 삭제 스크립트 -->
+            $('.deleteTeam').click(function () {
+                if(confirm("삭제된 팀은 되돌릴 수 없습니다.")){
+                    location.href = "/team/delete/"+[[${team.id}]];
+                }
+            });
         });
     </script>
 
@@ -49,7 +56,7 @@
                                 </a>
                             </li>
                             <li class="mt-1">
-                                <a class="text-dark dropdown-item" th:href="@{|/team/delete/${team.id}|}">
+                                <a class="text-dark dropdown-item deleteTeam" href="#">
                                     <i class="fa-regular fa-trash-can text-danger"></i> &nbsp;팀 삭제
                                 </a>
                             </li>
