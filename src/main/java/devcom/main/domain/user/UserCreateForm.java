@@ -1,7 +1,6 @@
 package devcom.main.domain.user;
 
 
-import devcom.main.domain.follow.entity.Follow;
 import devcom.main.domain.skill.entity.Skill;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
