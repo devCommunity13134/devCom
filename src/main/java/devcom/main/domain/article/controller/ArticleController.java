@@ -73,16 +73,13 @@ public class ArticleController {
     public String articleDetail(Model model, @PathVariable("id") Long id, AnswerForm answerForm, @RequestParam(value = "page",defaultValue = "0") int page){
         Article article = this.articleService.getArticle(id);
 
-
-        int i = 0;
-        String replyPagingString = String.format("replyPaging%s", i);
-
-
-        for(Answer answer : article.getAnswerList()){
-            Page<Reply> replyPaging = this.replyService.getReplyList(page,answer);
-        }
+        // answerList, replyList
         Page<Answer> answerPaging = this.answerService.getAnswerList(page,article);
-        model.addAttribute("answerPaging",answerPaging);
+        Page<Reply> replyPaging =   this.replyService.getReplyList(page,article);
+
+        // send answerList, replyList to article/detail page
+        model.addAttribute("answerPaging", answerPaging);
+        model.addAttribute("replyPaging", replyPaging);
         model.addAttribute("article",article);
         return "article/detail";
     }

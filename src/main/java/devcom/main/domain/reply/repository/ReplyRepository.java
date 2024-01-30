@@ -14,5 +14,5 @@ import java.util.Optional;
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
     Optional<Reply> deleteByAuthorId(Long AuthorId);
 
-    Page<Reply> findAllByOriginalAnswer(Answer answer, Pageable pageable);
+    Page<Reply> findAllByOriginalArticle(Article article, Pageable pageable);
 }

@@ -151,8 +151,8 @@
             </div>
         </div>
         <!-- replyList  -->
-        <div class="ps-5">
-            <div style="max-width:1200px" class="shadow py-4 px-3 mb-3 w-100 bg-body">
+        <div th:if="@{answer.replyList != null and answer.originalArticleId == reply.originalArticleId and answer.id == reply.originalAnswerId}" th:each="reply : ${replyPaging}" class="ps-5">
+            <div  style="max-width:1200px" class="shadow py-4 px-3 mb-3 w-100 bg-body">
                 <!-- like, profile-box(profile img, name, replyCreateDate) -->
                 <div class="d-flex">
 
@@ -189,8 +189,7 @@
                 </div>
                 <!-- reply-content -->
                 <div style="margin-left: 10px;" class="mt-2">
-            <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Ad aliquid architecto consectetur esse eum fugit ipsum.
+            <span>[[${reply.content}]]
             </span>
                 </div>
                 <!-- reply button -->

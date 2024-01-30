@@ -60,11 +60,11 @@ public class ReplyService {
         return optionalReply.get();
     }
 
-    public Page<Reply> getReplyList(int page, Answer answer){
+    public Page<Reply> getReplyList(int page, Article article){
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.asc("createDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
 
-        return this.replyRepository.findAllByOriginalAnswer(answer,pageable);
+        return this.replyRepository.findAllByOriginalArticle(article,pageable);
     }
 }

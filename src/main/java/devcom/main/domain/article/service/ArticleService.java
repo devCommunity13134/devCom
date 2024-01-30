@@ -73,6 +73,13 @@ public class ArticleService {
         return this.articleRepository.findAllByCategory(category,pageable);
     }
 
+    public Page<Article> getArticleListSortByLikes(int page, Category category){
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("likes"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return this.articleRepository.findAllByCategory(category,pageable);
+    }
+
     public void voteArticle(Article article, SiteUser siteUser){
         article.getVoter().add(siteUser);
         this.articleRepository.save(article);
