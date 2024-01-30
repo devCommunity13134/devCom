@@ -115,7 +115,7 @@ public class UserController {
     public String followUser(Model model,Principal principal, @PathVariable(value = "id") Long id) {
         SiteUser user = this.userService.findByUsername(principal.getName());
         this.followService.addFollower(user, id);
-        return "/user/profile";
+        return "redirect:/user/profile";
     }
 
 }

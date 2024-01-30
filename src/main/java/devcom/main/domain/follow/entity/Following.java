@@ -18,11 +18,10 @@ import java.util.List;
 @AllArgsConstructor
 public class Following extends BaseEntity {
 
-    @OneToOne
+    @ManyToOne
     private SiteUser user;
 
     // 팔로잉 user_id_list
-    @OneToMany(mappedBy = "follow", cascade = CascadeType.REMOVE)
-    private List<SiteUser> follwingIdList;
+    private List<Long> follwingUserIdList;
 
 }

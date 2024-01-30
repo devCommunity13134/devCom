@@ -23,5 +23,5 @@ public class Follower extends BaseEntity {
     private SiteUser user;
 
     // 팔로워 user_id_list
-    private List<Long> followerIdList;
+    private List<Long> followerUserIdList;
 }

@@ -16,8 +16,4 @@ public class FollowController {
 
 
 
-    public Following create(SiteUser user) {
-        return this.followService.create(user);
-    }
-
 }

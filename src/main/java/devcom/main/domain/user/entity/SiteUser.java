@@ -1,7 +1,8 @@
 package devcom.main.domain.user.entity;
 
 
-import devcom.main.domain.follow.entity.Follow;
+import devcom.main.domain.follow.entity.Follower;
+import devcom.main.domain.follow.entity.Following;
 import devcom.main.domain.message.entity.Message;
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.global.jpa.BaseEntity;

@@ -28,8 +28,8 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     public void signup(UserCreateForm userCreateForm, List<Skill> skillList, MultipartFile file) throws IOException {
-//        file.transferTo(new File("C:\\Work\\devCom\\src\\main\\resources\\images\\"+file.getOriginalFilename()));
-        String profileImg = "http://localhost:8010/images/"+file.getOriginalFilename();
+        file.transferTo(new File("C:\\Work\\devCom\\src\\main\\resources\\static\\images\\"+file.getOriginalFilename()));
+        String profileImg = "/images/"+file.getOriginalFilename();
         SiteUser user = SiteUser.builder()
                 .username(userCreateForm.getUsername())
                 .nickname(userCreateForm.getNickname())

@@ -27,8 +27,9 @@ public class FollowService {
         follwerIdList.add(id);
         Follower follower = Follower.builder()
                 .user(user)
-                .followerIdList(follwerIdList)
+                .followerUserIdList(follwerIdList)
                 .build();
         this.followerRepository.save(follower);
     }
+
 }
