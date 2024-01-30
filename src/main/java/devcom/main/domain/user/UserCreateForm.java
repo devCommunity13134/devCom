@@ -8,8 +8,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -35,7 +37,8 @@ public class UserCreateForm {
     @Email
     private String email;
 
-    @NotNull(message = "전화번호는 필수항목 입니다.")
+    @NotEmpty(message = "전화번호는 필수항목 입니다.")
+    @Pattern(regexp = "^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$", message = "전화번호는 '010-XXXX-XXXX' 또는 '010XXXXXXXX' 형식만 입력 가능합니다.")
     private String phoneNumber;
 
     @NotNull(message = "성별은 필수항목 입니다.")
@@ -46,7 +49,7 @@ public class UserCreateForm {
 
     private Integer salary;
 
-    private String profileImg;
+    private MultipartFile profileImg;
 
     private List<String> skill;
 

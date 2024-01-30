@@ -38,6 +38,8 @@ dependencies {
 	// java mail api
 	implementation 'javax.mail:mail:1.4.7'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	// kakao social login
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
 }
 
