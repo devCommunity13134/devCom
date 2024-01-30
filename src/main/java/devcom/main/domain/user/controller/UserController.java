@@ -1,6 +1,7 @@
 package devcom.main.domain.user.controller;
 
 
+import devcom.main.domain.follow.entity.Follow;
 import devcom.main.domain.follow.service.FollowService;
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.domain.skill.service.SkillService;

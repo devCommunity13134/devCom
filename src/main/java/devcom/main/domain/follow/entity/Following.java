@@ -21,6 +21,10 @@ public class Following extends BaseEntity {
     @ManyToOne
     private SiteUser user;
 
+    // 팔로워 user_id_list
+    @OneToMany(mappedBy = "follow", cascade = CascadeType.REMOVE)
+    private List<SiteUser> follwerIdList;
+
     // 팔로잉 user_id_list
     private List<Long> follwingUserIdList;
 
