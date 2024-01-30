@@ -67,6 +67,7 @@
 
     <!-- comment list -->
     <div th:each="answer : ${answerPaging}" style="max-width:1200px" class="shadow py-4 px-3 mb-3 w-100 bg-body">
+
         <!-- like, profile-box(profile img, name, CommentCreateDate) -->
         <div class="d-flex">
             <!-- like button js_need-->
@@ -109,20 +110,17 @@
         </div>
         <!-- comment-content -->
         <div style="margin-left: 65px;" class="mt-3">
-            <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Ad aliquid architecto consectetur esse eum fugit ipsum, ita
-                que iusto maxime minus modi necessitatibus neque, nesciunt n
-                ihil non nostrum odio, officiis quasi?
+            <span>[[${answer.content}]]
             </span>
         </div>
         <!-- reply button -->
-        <p class="d-inline-flex gap-1">
-            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        <p class="d-flex justify-content-end">
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" th:data-bs-target="'#collapseExample'+${answer.id}" aria-expanded="false" aria-controls="collapseExample">
                 Reply
             </button>
         </p>
         <!-- replyForm -->
-        <div class="collapse" id="collapseExample">
+        <div class="collapse" th:id="'collapseExample' + ${answer.id}">
             <div class="ps-5">
                 <form th:action="@{/reply/create}" method="post" th:object="${replyForm}" style="max-width: 1200px;" class="mb-3">
                     <input type="hidden" th:name="@{originalArticleId}" th:value="${article.id}" />

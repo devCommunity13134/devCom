@@ -2,6 +2,7 @@ package devcom.main.domain.answer.entity;
 
 
 import devcom.main.domain.article.entity.Article;
+import devcom.main.domain.reply.entity.Reply;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.global.jpa.BaseEntity;
 import jakarta.persistence.*;
@@ -26,11 +27,12 @@ public class Answer extends BaseEntity {
 
     private String content;
 
-
-
     @ManyToOne
     @JoinColumn
     private Article originalArticle;
+
+    @OneToMany(mappedBy = "originalAnswer", cascade = CascadeType.REMOVE)
+    private List<Reply> replyList;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
