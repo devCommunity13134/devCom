@@ -93,7 +93,7 @@
 
                         <ul class="dropdown-menu text-center" aria-labelledby="memberDropDown">
                             <li>
-                                <a class="text-dark dropdown-item" th:href="@{|/team/modifyTeam/${team.id}|}">
+                                <a class="text-dark dropdown-item" th:href="@{|/teamMember/${team.id}|}">
                                     <i class="fa-regular fa-pen-to-square text-success"></i> &nbsp;팀원관리
                                 </a>
                             </li>
@@ -104,7 +104,7 @@
                 <div class="card-body">
                     <div style="height:150px; overflow-y:auto;" class="customScroll">
                         <div th:each="member : ${team.teamMemberList}">
-                            <div class="mt-1">
+                            <div class="mt-1 px-1">
                                 <span>
                                     [[${member.siteUser.nickname}]]
                                 </span>

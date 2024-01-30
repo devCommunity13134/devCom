@@ -1,0 +1,189 @@
+<html layout:decorate="~{layout}">
+
+<div layout:fragment="content">
+    <style>
+        /* 스크롤바의 폭 너비 */
+        .customScroll::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .customScroll::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0,.8); /* 스크롤바 색상 */
+            border-radius: 10px; /* 스크롤바 둥근 테두리 */
+        }
+
+        .customScroll::-webkit-scrollbar-track {
+            background: rgba(45, 45, 45, .45);  /*스크롤바 뒷 배경 색상*/
+        }
+    </style>
+    <script th:inline="javascript">
+
+        $(document).ready(function(){
+            $(".forClick").on( "click", function() {
+              location.href="/team/detail/"+$(this).attr("id");
+            });
+
+            $(".changeTeamAdmin").on( "click", function() {
+                console.log($(this).attr("id"));
+            });
+
+            $(".deleteTeamMember").on( "click", function() {
+                alert($(this).attr("id"));
+            });
+
+            $('.doSubmit').on("click",function () {
+
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+
+                alert(2);
+
+                var jsonData = {
+                    "teamId" : $("#teamId").val(),
+                    "nickname" : $("#nickname").val()
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    contentType: "application/json",
+                    url:'/teamInvite/inviteMember',
+                    data: JSON.stringify(jsonData), // String -> json 형태로 변환
+                    beforeSend : function(xhr)
+                    {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                        xhr.setRequestHeader(header, token);
+                    },
+                    dataType: 'json', // success 시 받아올 데이터 형
+                    async: true, //동기, 비동기 여부
+                    cache :false, // 캐시 여부
+                    success: function(data){
+                        console.log(data.name);
+                    },
+                    error:function(xhr,status,error){
+                        console.log('error:'+error);
+                    }
+                });
+
+
+
+            });
+
+        });
+    </script>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <h4>
+        [[${team.name}]] > Members
+    </h4>
+
+    <div class="row mt-3">
+        <div class="col-6">
+            <div class="card shadow">
+
+                <div class="card-header">
+                    <span>
+                        <i class="fa-solid fa-people-group"></i>
+                        Members
+                        <span class="badge bg-success">[[${#lists.size(team.teamMemberList)}]]</span>
+                    </span>
+                </div>
+
+                <div class="card-body">
+                    <div style="height:300px; overflow-y:auto;" class="customScroll">
+                        <a href="#" class="text-decoration-none card m-2" th:each="member : ${team.teamMemberList}"
+                           role="button" th:id="|memberDropdown${member.id}|" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            <div class="p-2 card-body">
+                                <span>
+                                    [[${member.siteUser.nickname}]]
+                                </span>
+                                <span th:if="${team.teamAdmin.nickname} == ${member.siteUser.nickname}"
+                                      class="float-end text-danger">
+                                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                                </span>
+                                <span th:unless="${team.teamAdmin.nickname} == ${member.siteUser.nickname}"
+                                      class="float-end text-primary">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                            </div>
+
+                            <ul class="dropdown-menu text-center" th:aria-labelledby="|memberDropdown${member.id}|">
+                                <li>
+                                    <button class="text-dark dropdown-item changeTeamAdmin" th:id="${member.id}" >
+                                        <i class="fa-solid fa-screwdriver-wrench text-success"></i> &nbsp;팀장 임명
+                                    </button>
+                                </li>
+                                <li class="mt-1">
+                                    <button class="text-dark dropdown-item deleteTeamMember" th:id="${member.id}">
+                                        <i class="fa-regular fa-trash-can text-danger"></i> &nbsp;팀 추방
+                                    </button>
+                                </li>
+                            </ul>
+                        </a>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+        <div class="col-6">
+            <div class="card shadow">
+                <div class="card-header text-bold">
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                    Invitation Request
+                    <span class="badge bg-success">[[${#lists.size(team.teamInviteList)}]]</span>
+
+                    <a type="button" class="float-end text-success" data-bs-toggle="modal"
+                       data-bs-target="#teamInviteModal" href="#">
+                        <i class="fa-solid fa-plus"></i>
+                    </a>
+
+                </div>
+                <div class="card-body">
+                    <div style="height:300px; overflow-y:auto;" class="customScroll">
+                        <a href="#" class="text-decoration-none card mr-1" th:each="invite : ${team.teamInviteList}">
+                            <div class="p-2 card-body">
+                                <span>
+                                    [[${invite.siteUser.nickname}]]
+                                </span>
+                                <span class="float-end text-primary">
+                                    <i class="fa-solid fa-user"></i>
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="teamInviteModal" tabindex="-1" aria-labelledby="teamInviteLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="teamInviteLabel">Invite Team Member</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="teamId" id="teamId" th:value="${team.id}"/>
+                        <div class="mb-3">
+                            <label class="col-form-label">초대할 회원 닉네임</label>
+                            <input type="text" class="form-control" id="nickname" name="nickname"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button class="btn btn-sm btn-primary doSubmit">추가</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
