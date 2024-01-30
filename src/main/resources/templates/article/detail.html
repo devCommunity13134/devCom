@@ -92,10 +92,10 @@
                 <!-- profile -->
                 <div class="d-flex ms-1">
                     <!--name-->
-                    <span style="font-size:14px;" class="fw-bold">commentAuthor</span>
+                    <span style="font-size:14px;" class="fw-bold">[[${answer.author}]]</span>
                     <span class="fw-bold mx-1">|</span>
                     <!--commentCreateDate-->
-                    <span>24-01-24</span>
+                    <span th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd')}"></span>
                 </div>
             </div>
             <!--modify, delete comment(show if authorized) -->
@@ -167,7 +167,7 @@
                         <span style="font-size:14px;" class="fw-bold">replyAuthor</span>
                         <span class="fw-bold mx-1">|</span>
                         <!--replyCreateDate-->
-                        <span>24-01-24</span>
+<!--                        <span th:text="${#temporals.format(reply.createDate, 'yyyy-MM-dd')}"></span>-->
                     </div>
                     <!--modify, delete comment(show if authorized) -->
                     <div class="px-3">
