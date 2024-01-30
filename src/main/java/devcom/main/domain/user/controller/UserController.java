@@ -89,9 +89,9 @@ public class UserController {
         SiteUser user = this.userService.findById(id);
         List<SiteUser> followerUserList = this.followService.getFollowerUserList(user);
         List<SiteUser> followingUserList = this.followService.getFollowingUserList(user);
-        model.addAttribute("followingUserList", followingUserList);
         model.addAttribute("user", user);
         model.addAttribute("followerUserList", followerUserList);
+        model.addAttribute("followingUserList", followingUserList);
         return "/user/profile";
     }
 

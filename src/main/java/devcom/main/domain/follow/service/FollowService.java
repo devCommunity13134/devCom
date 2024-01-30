@@ -26,6 +26,7 @@ public class FollowService {
 
 
     public void addFollower(SiteUser user, Long id) {
+        // 팔로우를 누르면 상대방의 팔로워에 내가 저장되어야 한다.
         // user = 현재 로그인한 유저(나)
         // id = 내가 팔로우를 누른 대상의 회원 id(상대)
         Follower follower = Follower.builder()
@@ -37,14 +38,15 @@ public class FollowService {
     }
 
     public void addFollowing(SiteUser user, Long id) {
+        // 팔로우를 누르면 나의 팔로잉에 상대가 저장되어야 한다.
         // user = 현재 로그인한 유저(나)
-        // id = 내가 팔로우를 누른 대상의 회원 id(상대)
+        // id = 나를 팔로우 하는 회원 id(상대)
         Following following = Following.builder()
-                .user(this.userService.findById(user.getId()))
+                .user(user)
                 .followingUserId(id)
                 .build();
         this.followingRepository.save(following);
-        this.userService.findById(user.getId()).getFollowingList().add(following);
+        user.getFollowingList().add(following);
     }
 
     // user를 팔로우 하는 팔로워 유저 리스트

@@ -84,7 +84,7 @@
         <div style="display:flex; overflow:scroll;">
             <div class="card-body" th:each="following : ${followingUserList}" style="text-align:center;">
                 <a th:href="@{|/user/profile/${following.id}|}">
-                    <img th:src="${following.profileImg}" alt="" width="32" height="32" class="rounded-circle me-2"
+                    <img th:src="${following.profileImg}" alt="" width="40" height="40" class="rounded-circle me-2"
                          style="border:1px solid gray;">
                     <strong th:text="${following.nickname}"></strong>
                 </a>
