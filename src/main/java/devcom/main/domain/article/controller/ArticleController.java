@@ -10,6 +10,7 @@ import devcom.main.domain.article.repository.ArticleRepository;
 import devcom.main.domain.article.service.ArticleService;
 import devcom.main.domain.category.entity.Category;
 import devcom.main.domain.category.service.CategoryService;
+import devcom.main.domain.reply.entity.Reply;
 import devcom.main.domain.reply.service.ReplyService;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
@@ -72,6 +73,14 @@ public class ArticleController {
     public String articleDetail(Model model, @PathVariable("id") Long id, AnswerForm answerForm, @RequestParam(value = "page",defaultValue = "0") int page){
         Article article = this.articleService.getArticle(id);
 
+
+        int i = 0;
+        String replyPagingString = String.format("replyPaging%s", i);
+
+
+        for(Answer answer : article.getAnswerList()){
+            Page<Reply> replyPaging = this.replyService.getReplyList(page,answer);
+        }
         Page<Answer> answerPaging = this.answerService.getAnswerList(page,article);
         model.addAttribute("answerPaging",answerPaging);
         model.addAttribute("article",article);

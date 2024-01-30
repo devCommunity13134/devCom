@@ -99,7 +99,7 @@
                     <!-- profile -->
                     <div class="d-flex ms-1">
                         <!--name-->
-                        <span style="font-size:14px;" class="fw-bold">[[${answer.author}]]</span>
+                        <span style="font-size:14px;" class="fw-bold">[[${answer.author.nickname}]]</span>
                         <span class="fw-bold mx-1">|</span>
                         <!--commentCreateDate-->
                         <span th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd')}"></span>
