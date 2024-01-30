@@ -13,10 +13,10 @@ public class ReplyForm {
     @NotEmpty(message = "내용을 입력해주세요")
     private String content;
 
-    @NotEmpty(message = "원 게시글 입력")
-    private Article originalArticle;
-
-    @NotEmpty(message = "원 댓글 입력")
-    private Answer originaleAnswer;
+//    @NotEmpty(message = "원 게시글 입력")
+//    private Article originalArticle;
+//
+//    @NotEmpty(message = "원 댓글 입력")
+//    private Answer originaleAnswer;
 
 }

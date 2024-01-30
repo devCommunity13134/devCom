@@ -116,23 +116,35 @@
             </span>
         </div>
         <!-- reply button -->
-        <div style="width: 100%;" class="d-flex my-1 mx-1 justify-content-end">
-            <button class="btn btn-primary btn-sm fw-bold mx-3">Reply</button>
+        <p class="d-inline-flex gap-1">
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Reply
+            </button>
+        </p>
+        <!-- replyForm -->
+        <div class="collapse" id="collapseExample">
+            <div class="ps-5">
+                <form th:action="@{/reply/create}" method="post" th:object="${replyForm}" style="max-width: 1200px;" class="mb-3">
+                    <input type="hidden" th:name="@{originalArticleId}" th:value="${article.id}" />
+                    <input type="hidden" th:name="@{originalAnswerId}" th:value="${answer.id}" />
+                    <label for="replyContent" class="form-label">reply</label>
+                    <textarea style="width:100%; resize: none;" class="form-control" name="content" id="replyContent" cols="30" rows="5"></textarea>
+<!--                    <input type="text" style="width:100%; resize: none;" class="form-control" name="content" id="replyContent" >-->
+
+                    <div class="d-flex justify-content-end align-items-center mt-2">
+                        <button type="submit" class="btn btn-primary fw-bold ">Post</button>
+                        <!-- button click => (reply form shrink) -->
+                        <button type="reset" class="btn fw-bold">Cancel</button>
+                    </div>
+
+                </form>
+            </div>
         </div>
+
 
     </div>
     <!-- reply form (hidden in usual, appear when push reply button above -->
-    <div class="ps-5">
-        <form action="#" style="max-width: 1200px;" class="mb-3">
-            <textarea style="width:100%; resize: none;" name="reply" id="reply" cols="30" rows="5"></textarea>
-            <div class="d-flex justify-content-end align-items-center mt-2">
-                <button type="submit" class="btn btn-primary fw-bold ">Post</button>
-                <!-- button click => (reply form shrink) -->
-                <button type="reset" class="btn fw-bold">Cancel</button>
-            </div>
 
-        </form>
-    </div>
     <!-- reply list (if reply is null > hidden) -->
     <div class="ps-5">
         <div style="max-width:1200px" class="shadow py-4 px-3 mb-3 w-100 bg-body">
