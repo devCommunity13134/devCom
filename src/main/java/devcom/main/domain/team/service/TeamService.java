@@ -67,4 +67,8 @@ public class TeamService {
 
         teamRepository.save(team1);
     }
+
+    public void delete(Team team) {
+        teamRepository.delete(team);
+    }
 }

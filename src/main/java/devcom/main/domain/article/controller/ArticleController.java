@@ -1,12 +1,16 @@
 package devcom.main.domain.article.controller;
 
 
+import devcom.main.domain.answer.AnswerForm;
+import devcom.main.domain.answer.Service.AnswerService;
+import devcom.main.domain.answer.entity.Answer;
 import devcom.main.domain.article.ArticleForm;
 import devcom.main.domain.article.entity.Article;
 import devcom.main.domain.article.repository.ArticleRepository;
 import devcom.main.domain.article.service.ArticleService;
 import devcom.main.domain.category.entity.Category;
 import devcom.main.domain.category.service.CategoryService;
+import devcom.main.domain.reply.service.ReplyService;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
 import devcom.main.global.rq.Rq;
@@ -28,6 +32,8 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final AnswerService answerService;
+    private final ReplyService replyService;
     private final CategoryService categoryService;
     private final UserService userService;
 
@@ -63,8 +69,11 @@ public class ArticleController {
 
     // detail getMapping_fix_need
     @GetMapping("/detail/{id}")
-    public String articleDetail(Model model, @PathVariable("id") Long id){
+    public String articleDetail(Model model, @PathVariable("id") Long id, AnswerForm answerForm, @RequestParam(value = "page",defaultValue = "0") int page){
         Article article = this.articleService.getArticle(id);
+
+        Page<Answer> answerPaging = this.answerService.getAnswerList(page,article);
+        model.addAttribute("answerPaging",answerPaging);
         model.addAttribute("article",article);
         return "article/detail";
     }
@@ -98,5 +107,22 @@ public class ArticleController {
         this.articleService.modify(category,article, articleForm.getSubject(), articleForm.getContent());
 
         return String.format("redirect:/article/detail/%s", articleId);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete/{id}")
+    public String articleDelete(@PathVariable("id") Long id){
+        Article article = this.articleService.getArticle(id);
+        String categoryName = article.getCategory().getCategoryName();
+        if(article.getAnswerList() != null){
+            this.answerService.deleteByAuthorId(id);
+        }
+        if(article.getReplyList() != null){
+            this.replyService.deleteByAuthorId(id);
+        }
+        this.articleService.delete(article);
+
+
+        return String.format("redirect:/article/%s", categoryName);
     }
 }
