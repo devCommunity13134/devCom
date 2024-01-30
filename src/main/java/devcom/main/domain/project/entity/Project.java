@@ -31,4 +31,7 @@ public class Project extends BaseEntity {
 
     @ManyToOne
     private Team team;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
+    private List<ProjectState> projectStates;
 }
