@@ -37,4 +37,16 @@ public class TeamMemberService {
 
         return teamMember.isPresent();
     }
+
+    public TeamMember findById(Long teamMemberId) {
+        return teamMemberRepository.findById(teamMemberId).get();
+    }
+
+    public void deleteTeamMember(TeamMember teamMember) {
+        teamMemberRepository.delete(teamMember);
+    }
+
+    public TeamMember findByTeamAndSiteUser(Team team, SiteUser siteUser) {
+        return teamMemberRepository.findByTeamAndSiteUser(team, siteUser).get();
+    }
 }

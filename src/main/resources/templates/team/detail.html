@@ -28,6 +28,17 @@
                     location.href = "/team/delete/"+[[${team.id}]];
                 }
             });
+
+            <!-- Team 탈퇴 스크립트 -->
+            $('.leaveTeam').click(function () {
+                if(confirm("팀에서 탈퇴하시겠습니까?")){
+                    if([[${team.teamAdmin.username == #authentication.getPrincipal().getUsername()}]]){
+                        alert("팀장은 탈퇴할 수 없습니다.");
+                        return;
+                    }
+                    location.href = "/team/leave/"+[[${team.id}]];
+                }
+            });
         });
     </script>
 
@@ -42,22 +53,26 @@
                     <i class="fa-solid fa-house-chimney"></i>
                     [[${team.name}]]
 
-                    <div class="float-end d-inline dropstart"
-                         th:if="${team.teamAdmin.username} == ${#authentication.getPrincipal().getUsername()}">
+                    <div class="float-end d-inline dropstart">
                         <a class="text-dark" href="#" role="button" id="teamDropDown" data-bs-toggle="dropdown"
                            aria-expanded="false">
                             <i class="fa-solid fa-gear"></i>
                         </a>
 
                         <ul class="dropdown-menu text-center" aria-labelledby="teamDropDown">
-                            <li>
+                            <li th:if="${team.teamAdmin.username} == ${#authentication.getPrincipal().getUsername()}">
                                 <a class="text-dark dropdown-item" th:href="@{|/team/modifyTeam/${team.id}|}">
                                     <i class="fa-regular fa-pen-to-square text-success"></i> &nbsp;팀 수정
                                 </a>
                             </li>
-                            <li class="mt-1">
+                            <li class="mt-1" th:if="${team.teamAdmin.username} == ${#authentication.getPrincipal().getUsername()}">
                                 <a class="text-dark dropdown-item deleteTeam" href="#">
                                     <i class="fa-regular fa-trash-can text-danger"></i> &nbsp;팀 삭제
+                                </a>
+                            </li>
+                            <li class="mt-1">
+                                <a class="text-dark dropdown-item leaveTeam" href="#">
+                                    <i class="fa-solid fa-right-from-bracket text-danger"></i> &nbsp;팀 탈퇴
                                 </a>
                             </li>
                         </ul>

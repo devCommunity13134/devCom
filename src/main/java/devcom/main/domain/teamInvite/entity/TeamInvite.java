@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @SuperBuilder(toBuilder = true)
@@ -22,4 +24,6 @@ public class TeamInvite extends BaseEntity {
 
     @ManyToOne
     private SiteUser siteUser;
+
+    private LocalDateTime expireDate;
 }

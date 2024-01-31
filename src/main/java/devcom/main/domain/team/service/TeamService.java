@@ -68,6 +68,13 @@ public class TeamService {
         teamRepository.save(team1);
     }
 
+    public void changeTeamAdmin(Team team,SiteUser siteUser) {
+
+        team = team.toBuilder().teamAdmin(siteUser).build();
+
+        teamRepository.save(team);
+    }
+
     public void delete(Team team) {
         teamRepository.delete(team);
     }

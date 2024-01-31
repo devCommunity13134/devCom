@@ -1,6 +1,5 @@
 package devcom.main.domain.user.service;
 
-
 import devcom.main.domain.follow.entity.Following;
 import devcom.main.domain.follow.repository.FollowingRepository;
 import devcom.main.domain.skill.entity.Skill;
@@ -23,7 +22,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-
     private final FollowingRepository followingRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -42,7 +40,6 @@ public class UserService {
                 .profileImg(profileImg)
                 .skillList(skillList)
                 .build();
-
         this.userRepository.save(user);
     }
 
@@ -61,6 +58,11 @@ public class UserService {
                 .build();
 
         this.userRepository.save(user);
+    }
+
+    public Optional<SiteUser> findByNickname(String nickname) {
+        Optional<SiteUser> user = this.userRepository.findByNickname(nickname);
+        return user;
     }
 
     public SiteUser findByUsername(String username) {

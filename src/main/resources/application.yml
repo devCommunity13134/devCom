@@ -21,8 +21,8 @@ spring:
   mail:
     host: smtp.gmail.com # 1
     port: 587 # 2
-    username: ${mail.username} # 3
-    password: ${mail.password} # 4
+    username:  # 3
+    password: # 4
     properties:
       mail:
         smtp:

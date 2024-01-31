@@ -24,19 +24,20 @@
             });
 
             $(".changeTeamAdmin").on( "click", function() {
-                console.log($(this).attr("id"));
+                if(confirm("팀장을 해당 회원으로 변경하시겠습니까?")){
+                    location.href = "/teamMember/changeAdmin/"+$(this).attr("id");
+                }
             });
 
             $(".deleteTeamMember").on( "click", function() {
-                alert($(this).attr("id"));
+                if(confirm("해당 회원을 추방하시겠습니까?")){
+                    location.href = "/teamMember/delete/"+$(this).attr("id");
+                }
             });
 
             $('.doSubmit').on("click",function () {
-
                 var token = $("meta[name='_csrf']").attr("content");
                 var header = $("meta[name='_csrf_header']").attr("content");
-
-                alert(2);
 
                 var jsonData = {
                     "teamId" : $("#teamId").val(),
@@ -56,19 +57,28 @@
                     async: true, //동기, 비동기 여부
                     cache :false, // 캐시 여부
                     success: function(data){
-                        console.log(data.name);
+                        if(data.isSuccess == false){
+                            alert(data.message);
+                            return;
+                        }
+                        alert(data.message);
+                        location.href="/teamMember/[[${team.id}]]"
                     },
                     error:function(xhr,status,error){
                         console.log('error:'+error);
                     }
                 });
 
-
-
             });
 
+            $('.deleteInvite').on("click",function () {
+                if(confirm("해당 초대 요청을 삭제하시겠습니까?")){
+                    location.href = "/teamInvite/delete/"+$(this).attr("id");
+                }
+            });
         });
     </script>
+
 
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -91,36 +101,39 @@
 
                 <div class="card-body">
                     <div style="height:300px; overflow-y:auto;" class="customScroll">
-                        <a href="#" class="text-decoration-none card m-2" th:each="member : ${team.teamMemberList}"
-                           role="button" th:id="|memberDropdown${member.id}|" data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                            <div class="p-2 card-body">
+                        <div th:each="member : ${team.teamMemberList}">
+                            <a href="#" class="text-decoration-none card m-2"
+                               role="button" th:id="|memberDropdown${member.id}|" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                <div class="p-2 card-body">
                                 <span>
                                     [[${member.siteUser.nickname}]]
                                 </span>
-                                <span th:if="${team.teamAdmin.nickname} == ${member.siteUser.nickname}"
-                                      class="float-end text-danger">
+                                    <span th:if="${team.teamAdmin.nickname} == ${member.siteUser.nickname}"
+                                          class="float-end text-danger">
                                     <i class="fa-solid fa-screwdriver-wrench"></i>
                                 </span>
-                                <span th:unless="${team.teamAdmin.nickname} == ${member.siteUser.nickname}"
-                                      class="float-end text-primary">
+                                    <span th:unless="${team.teamAdmin.nickname} == ${member.siteUser.nickname}"
+                                          class="float-end text-primary">
                                     <i class="fa-solid fa-user"></i>
                                 </span>
-                            </div>
+                                </div>
+                            </a>
 
-                            <ul class="dropdown-menu text-center" th:aria-labelledby="|memberDropdown${member.id}|">
+                            <ul th:if="${team.teamAdmin.username} != ${member.siteUser.username}" class="dropdown-menu text-center" th:aria-labelledby="|memberDropdown${member.id}|">
                                 <li>
-                                    <button class="text-dark dropdown-item changeTeamAdmin" th:id="${member.id}" >
+                                    <a href="#" class="text-dark dropdown-item changeTeamAdmin" th:id="${member.id}">
                                         <i class="fa-solid fa-screwdriver-wrench text-success"></i> &nbsp;팀장 임명
-                                    </button>
+                                    </a>
                                 </li>
                                 <li class="mt-1">
-                                    <button class="text-dark dropdown-item deleteTeamMember" th:id="${member.id}">
+                                    <a href="#" class="text-dark dropdown-item deleteTeamMember" th:id="${member.id}">
                                         <i class="fa-regular fa-trash-can text-danger"></i> &nbsp;팀 추방
-                                    </button>
+                                    </a>
                                 </li>
                             </ul>
-                        </a>
+
+                        </div>
 
                     </div>
                 </div>
@@ -145,16 +158,20 @@
                 </div>
                 <div class="card-body">
                     <div style="height:300px; overflow-y:auto;" class="customScroll">
-                        <a href="#" class="text-decoration-none card mr-1" th:each="invite : ${team.teamInviteList}">
+                        <div href="#" class="text-decoration-none card m-2" th:each="invite : ${team.teamInviteList}">
                             <div class="p-2 card-body">
                                 <span>
                                     [[${invite.siteUser.nickname}]]
                                 </span>
-                                <span class="float-end text-primary">
-                                    <i class="fa-solid fa-user"></i>
+                                <span class="float-end">
+                                    <i class="fa-solid fa-hourglass-half text-primary"></i>
+                                    [[${#temporals.format(invite.expireDate, 'yy-MM-dd')}]]
+                                    &nbsp;
+                                    <a href="#" class="text-danger text-decoration-none deleteInvite" th:id="${invite.id}"><i
+                                            class="fa-regular fa-trash-can text-danger"></i></a>
                                 </span>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 </div>
 
@@ -170,17 +187,17 @@
                     <h5 class="modal-title" id="teamInviteLabel">Invite Team Member</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                    <div class="modal-body">
-                        <input type="hidden" name="teamId" id="teamId" th:value="${team.id}"/>
-                        <div class="mb-3">
-                            <label class="col-form-label">초대할 회원 닉네임</label>
-                            <input type="text" class="form-control" id="nickname" name="nickname"/>
-                        </div>
+                <div class="modal-body">
+                    <input type="hidden" name="teamId" id="teamId" th:value="${team.id}"/>
+                    <div class="mb-3">
+                        <label class="col-form-label">초대할 회원 닉네임</label>
+                        <input type="text" class="form-control" id="nickname" name="nickname"/>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">닫기</button>
-                        <button class="btn btn-sm btn-primary doSubmit">추가</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button class="btn btn-sm btn-primary doSubmit">추가</button>
+                </div>
             </div>
         </div>
     </div>
