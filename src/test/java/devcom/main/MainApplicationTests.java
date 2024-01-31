@@ -87,7 +87,7 @@ class MainApplicationTests {
         Category category = this.categoryService.getCategory("frontEnd");
         for (int i = 1; i <= 300; i++) {
             String subject = String.format("TestSubject:[%03d]", i);
-            String content = String.format("TestContetn:[%03d] Lorem ipsum dolor sit amet, " +
+            String content = String.format("TestContent:[%03d] Lorem ipsum dolor sit amet, " +
                     "consectetur adipisicing elit. Aperiam commodi minima optio placeat quaerat" +
                     " saepe voluptatum! A animi consectetur ducimus esse facilis molestiae, nesciunt" +
                     " nihil non perspiciatis provident rem totam!Lorem ipsum dolor sit amet, consectetur" +

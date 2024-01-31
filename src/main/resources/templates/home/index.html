@@ -102,8 +102,8 @@
                     </thead>
                     <tbody>
                     <tr th:each="article : ${frontEndPage}" class="border-bottom">
-                        <td><a th:href="@{|/article/detail/${article.id}|}"><p style="width:250px; white-space: nowrap; overflow: hidden;
-                         text-overflow: ellipsis; text-decoration:none;" class="text-black">
+                        <td><a th:href="@{|/article/detail/${article.id}|}" style="text-decoration:none;" class="text-black fw-bold"><p style="width:250px; white-space: nowrap; overflow: hidden;
+                         text-overflow: ellipsis; ">
                             [[${article.subject}]]</p></a>
                         </td>
                         <td><span>👍</span>[[${article.likes}]]</td>
@@ -121,8 +121,8 @@
                     </thead>
                     <tbody>
                     <tr th:each="article : ${backEndPage}" class="border-bottom">
-                        <td><a th:href="@{|/article/detail/${article.id}|}"><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-text-decoration:none;" class="text-black">[[${article.subject}]]</p></a>
+                        <td><a th:href="@{|/article/detail/${article.id}|}" style="text-decoration:none;" class="text-black fw-bold"><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+                                ">[[${article.subject}]]</p></a>
                         </td>
                         <td><span>👍</span>[[${article.likes}]]</td>
                         <td><span>💬</span>[[${article.commentSize}]]</td>
@@ -143,8 +143,8 @@ text-decoration:none;" class="text-black">[[${article.subject}]]</p></a>
                     </thead>
                     <tbody>
                     <tr th:each="article : ${dataEngineerPage}" class="border-bottom">
-                        <td><a th:href="@{|/article/detail/${article.id}|}"><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-text-decoration:none;" class="text-black">[[${article.subject}]]</p></a>
+                        <td><a th:href="@{|/article/detail/${article.id}|}" style="text-decoration:none;" class="text-black fw-bold"><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+                                ">[[${article.subject}]]</p></a>
                         </td>
                         <td><span>👍</span>[[${article.likes}]]</td>
                         <td><span>💬</span>[[${article.commentSize}]]</td>
@@ -161,8 +161,8 @@ text-decoration:none;" class="text-black">[[${article.subject}]]</p></a>
                     </thead>
                     <tbody>
                     <tr th:each="article : ${AIPage}" class="border-bottom">
-                        <td><a th:href="@{|/article/detail/${article.id}|}"><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-text-decoration:none;" class="text-black">[[${article.subject}]]</p></a>
+                        <td><a th:href="@{|/article/detail/${article.id}|}" style="text-decoration:none;" class="text-black fw-bold"><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+                            ">[[${article.subject}]]</p></a>
                         </td>
                         <td><span>👍</span>[[${article.likes}]]</td>
                         <td><span>💬</span>[[${article.commentSize}]]</td>
