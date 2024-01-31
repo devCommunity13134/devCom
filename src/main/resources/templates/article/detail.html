@@ -107,10 +107,10 @@
                 </div>
                 <!--modify, delete comment(show if authorized) -->
                 <div class="px-3">
-                    <a href="#" style="text-decoration: none;" class=" btn btn-outline-warning btn-sm fw-bold">
+                    <a th:href="@{|/answer/modify/${answer.id}|}" style="text-decoration: none;" class=" btn btn-outline-warning btn-sm fw-bold">
                         <span>Modify</span>
                     </a>
-                    <a href="#" style="text-decoration: none;" class=" btn btn-outline-danger btn-sm fw-bold">
+                    <a th:href="@{|/answer/delete/${answer.id}|}" style="text-decoration: none;" class=" btn btn-outline-danger btn-sm fw-bold">
                         <span>Delete</span>
                     </a>
                 </div>

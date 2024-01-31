@@ -59,4 +59,14 @@ public class AnswerController {
         return String.format("redirect:/article/detail/%s",originalArticle.getId());
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify/{answerId}")
+    public String answerModify(@PathVariable("answerId") Long answerId, @Valid AnswerForm answerForm){
+        Answer answer = this.answerService.getAnswer(answerId);
+        Article originalArticle = answer.getOriginalArticle();
+        this.answerService.modify(answer,answerForm.getContent());
+
+        return String.format("redirect:/article/detail/%s",originalArticle.getId());
+    }
+
 }
