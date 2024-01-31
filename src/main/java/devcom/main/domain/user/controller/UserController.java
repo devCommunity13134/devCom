@@ -7,6 +7,7 @@ import devcom.main.domain.skill.service.SkillService;
 import devcom.main.domain.user.UserCreateForm;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
+import devcom.main.global.email.service.EmailService;
 import devcom.main.global.rq.Rq;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,8 @@ public class UserController {
     private final SkillService skillService;
 
     private final FollowService followService;
+
+    private final EmailService emailService;
     private static int confirmNumber;
     private static String confirmUsername;
 
@@ -51,6 +54,8 @@ public class UserController {
         this.userService.signup(userCreateForm, skillList, file);
         SiteUser user = this.userService.findByUsername(userCreateForm.getUsername());
         this.skillService.create(userCreateForm.getSkill(), user);
+
+        this.emailService.send(userCreateForm.getEmail(),"이메일 발송 테스트","잘 가냐?");
 
         //
         return "redirect:/";
@@ -78,7 +83,11 @@ public class UserController {
     // 나의 프로필 조회
     public String myProfile(Model model, Principal principal) {
         SiteUser user = this.userService.findByUsername(principal.getName());
+        List<SiteUser> followerUserList = this.followService.getFollowerUserList(user);
+        List<SiteUser> followingUserList = this.followService.getFollowingUserList(user);
         model.addAttribute("user", user);
+        model.addAttribute("followerUserList", followerUserList);
+        model.addAttribute("followingUserList", followingUserList);
         return "/user/profile";
     }
 

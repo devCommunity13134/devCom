@@ -18,8 +18,8 @@
         </ul>
         <div class="card-body" style="display:flex; align-items:center;">
             <!-- 쪽지 보내기 -->
-            <a class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"
-               data-bs-whatever="@mdo">쪽지 보내기</a>
+            <a class="btn btn-success btn-sm open-modal" data-bs-toggle="modal" data-bs-target="#exampleModal"
+               data-bs-whatever="@mdo" data-id="message-text">쪽지 보내기</a>
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog">
@@ -30,23 +30,26 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form>
+                            <form th:action="@{|/message/send/${user.id}|}" method="post">
                                 <div class="mb-3">
                                     <label for="message-text" class="col-form-label"></label>
-                                    <textarea class="form-control" id="message-text" rows="10"></textarea>
+                                    <textarea class="form-control" id="message-text" name="message-text" rows="10"></textarea>
                                 </div>
+                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">닫기
+                                </button>
+                                <button type="submit" class="btn btn-primary btn-sm">보내기</button>
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">닫기</button>
-                            <a th:href="@{message/send}" type="submit" class="btn btn-primary btn-sm">보내기</a>
+
                         </div>
                     </div>
                 </div>
             </div>
             <a href="#" class="btn btn-success btn-sm" style="margin-left:3px;">팀 초대하기</a>
             <a th:if="${#authentication.getPrincipal().getUsername() != user.username}"
-                    th:href="@{|/user/follow/${user.id}|}" class="btn btn-success btn-sm" style="margin-left:3px;">팔로우</a>
+               th:href="@{|/user/follow/${user.id}|}" class="btn btn-success btn-sm"
+               style="margin-left:3px;">팔로우</a>
         </div>
     </div>
     <div class="card" style="margin-left:30px; width:650px;">
@@ -70,7 +73,7 @@
         </h5>
         <div style="display:flex; overflow:scroll;">
             <div class="card-body" th:each="follower : ${followerUserList}" style="text-align:center;">
-                <a th:href="@{|/user/profile/${follower.id}|}">
+                <a th:href="@{|/user/profile/${follower.id}|}" style="font-size:12px;">
                     <img th:src="${follower.profileImg}" alt="" width="40" height="40" class="rounded-circle me-2"
                          style="border:1px solid gray;">
                     <strong th:text="${follower.nickname}"></strong>
@@ -83,7 +86,7 @@
         </h5>
         <div style="display:flex; overflow:scroll;">
             <div class="card-body" th:each="following : ${followingUserList}" style="text-align:center;">
-                <a th:href="@{|/user/profile/${following.id}|}">
+                <a th:href="@{|/user/profile/${following.id}|}" style="font-size:12px;">
                     <img th:src="${following.profileImg}" alt="" width="40" height="40" class="rounded-circle me-2"
                          style="border:1px solid gray;">
                     <strong th:text="${following.nickname}"></strong>
@@ -91,5 +94,13 @@
             </div>
         </div>
     </div>
+
+
+    <script>
+        $(".open-modal").click(function(){
+	        var data = $(this).data('id');
+            $("#message-text.form-control").html(data);
+        });
+    </script>
 </div>
 </html>
