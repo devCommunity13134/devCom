@@ -21,12 +21,11 @@ public class MessageController {
     private final UserService userService;
 
     @PostMapping("/send/{id}")
-    public String create(Model model, Principal principal, @PathVariable(value = "id") Long id, @RequestParam(value = "message-text") String content) {
-        SiteUser sendUser = this.userService.findByUsername(principal.getName());
-        SiteUser receiveUser = this.userService.findById(id);
-        this.messageService.addSendMessage(sendUser,id,content);
-        this.messageService.addReceiveMessage(receiveUser, sendUser.getId(), content);
-        model.addAttribute("user",sendUser);
+    public String sendMessage(Model model, Principal principal, @PathVariable(value = "id") Long id, @RequestParam(value = "message-text") String content) {
+        SiteUser user = this.userService.findByUsername(principal.getName());
+        this.messageService.addSendMessage(user,id,content);
+        this.messageService.addReceiveMessage(user, id, content);
+        model.addAttribute("user",user);
         return String.format("redirect:/user/profile/%d",id);
     }
 

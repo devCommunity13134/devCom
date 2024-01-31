@@ -10,6 +10,9 @@ import devcom.main.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MessageService {
@@ -21,31 +24,53 @@ public class MessageService {
     private final UserService userService;
 
 
-    public void addSendMessage(SiteUser sendUser, Long id, String content) {
-        // 보낸 사람 sendUser
+    public void addSendMessage(SiteUser user, Long id, String content) {
+        // 보낸 사람 user
         // 받는 사람 user_id = id
         // 내용 content
         SendMessage sendMessage = SendMessage.builder()
-                .user(sendUser)
+                .user(this.userService.findById(id))
                 .content(content)
                 .sendUserId(id)
+                //받는 사람 id
                 .build();
 
         this.sendMessageRepository.save(sendMessage);
-        this.userService.findById(id).getSendMessageList().add(sendMessage);
+        user.getSendMessageList().add(sendMessage);
     }
 
-    public void addReceiveMessage(SiteUser receiveUser, Long id, String content) {
-        // 받는 사람 receiveUser
-        // 보낸 사람 user_id = id
+    public void addReceiveMessage(SiteUser user, Long id, String content) {
+        // 받는 사람 findById(id)
+        // 보낸 사람 user
         // 내용 content
         ReceiveMessage receiveMessage = ReceiveMessage.builder()
-                .user(receiveUser)
+                .user(user)
                 .content(content)
-                .receiveUserId(id)
+                .receiveUserId(user.getId())
+                // 보낸 사람 id
                 .build();
 
         this.receiveMessageRepository.save(receiveMessage);
         this.userService.findById(id).getReceiveMessageList().add(receiveMessage);
+    }
+
+    public List<SiteUser> getSendUserList(SiteUser user) {
+        List<SiteUser> sendUserList = new ArrayList<>();
+
+        for(int i = 0; i < user.getSendMessageList().size(); i++) {
+            sendUserList.add(this.userService.findById(user.getSendMessageList().get(i).getSendUserId()));
+        }
+
+        return sendUserList;
+    }
+
+    public List<SiteUser> getReceiveUserList(SiteUser user) {
+        List<SiteUser> receiveUserList = new ArrayList<>();
+
+        for(int i = 0; i < user.getReceiveMessageList().size(); i++) {
+            receiveUserList.add(this.userService.findById(user.getReceiveMessageList().get(i).getReceiveUserId()));
+        }
+
+        return receiveUserList;
     }
 }

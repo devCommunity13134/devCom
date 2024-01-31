@@ -2,6 +2,9 @@ package devcom.main.domain.user.controller;
 
 
 import devcom.main.domain.follow.service.FollowService;
+import devcom.main.domain.message.entity.ReceiveMessage;
+import devcom.main.domain.message.entity.SendMessage;
+import devcom.main.domain.message.service.MessageService;
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.domain.skill.service.SkillService;
 import devcom.main.domain.user.UserCreateForm;
@@ -33,6 +36,8 @@ public class UserController {
     private final SkillService skillService;
 
     private final FollowService followService;
+
+    private final MessageService messageService;
 
     private final EmailService emailService;
     private static int confirmNumber;
@@ -131,6 +136,16 @@ public class UserController {
         this.followService.addFollower(user, id);
         this.followService.addFollowing(user, id);
         return String.format("redirect:/user/profile/%d", id);
+    }
+
+    @GetMapping("/message")
+    public String messageList(Model model, Principal principal) {
+        SiteUser user = this.userService.findByUsername(principal.getName());
+        List<SendMessage> sendMessageList = user.getSendMessageList();
+        List<ReceiveMessage> receiveMessageList = user.getReceiveMessageList();
+        model.addAttribute("sendMessageList",sendMessageList);
+        model.addAttribute("receiveMessageList",receiveMessageList);
+        return "/user/message_list";
     }
 
 }

@@ -19,7 +19,7 @@
         <div class="card-body" style="display:flex; align-items:center;">
             <!-- 쪽지 보내기 -->
             <a class="btn btn-success btn-sm open-modal" data-bs-toggle="modal" data-bs-target="#exampleModal"
-               data-bs-whatever="@mdo" data-id="message-text">쪽지 보내기</a>
+               data-bs-whatever="@mdo" data-id="message-text" th:if="${#authentication.getPrincipal().getUsername() != user.username}">쪽지 보내기</a>
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog">
@@ -33,7 +33,8 @@
                             <form th:action="@{|/message/send/${user.id}|}" method="post">
                                 <div class="mb-3">
                                     <label for="message-text" class="col-form-label"></label>
-                                    <textarea class="form-control" id="message-text" name="message-text" rows="10"></textarea>
+                                    <textarea class="form-control" id="message-text" name="message-text"
+                                              rows="10"></textarea>
                                 </div>
                                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">닫기
                                 </button>
@@ -46,7 +47,10 @@
                     </div>
                 </div>
             </div>
-            <a href="#" class="btn btn-success btn-sm" style="margin-left:3px;">팀 초대하기</a>
+            <a th:if="${#authentication.getPrincipal().getUsername() != user.username}"
+               href="#" class="btn btn-success btn-sm" style="margin-left:3px;">팀 초대하기</a>
+            <a th:if="${#authentication.getPrincipal().getUsername() == user.username}"
+               th:href="@{/user/message}" class="btn btn-success btn-sm" style="margin-left:3px;">쪽지함</a>
             <a th:if="${#authentication.getPrincipal().getUsername() != user.username}"
                th:href="@{|/user/follow/${user.id}|}" class="btn btn-success btn-sm"
                style="margin-left:3px;">팔로우</a>
@@ -66,7 +70,6 @@
                 </div>
             </div>
         </div>
-
         <h5 class="card-header">팔로워
             <span th:text="|${#lists.size(user.followerList)}명|"></span>
             <a href="#" style="font-size:14px;">전체보기</a>
@@ -94,13 +97,5 @@
             </div>
         </div>
     </div>
-
-
-    <script>
-        $(".open-modal").click(function(){
-	        var data = $(this).data('id');
-            $("#message-text.form-control").html(data);
-        });
-    </script>
 </div>
 </html>
