@@ -7,10 +7,10 @@
             <h1>DevComMain</h1>
         </div>
         <!--    like_hit_comment navigation   -->
-        <div class="container mt-3 ">
+        <div class="container mt-3">
             <div class="row">
                 <div class="col-lg">
-                    <div class="card">
+                    <div class="card shadow">
                         <div class="card-header ">
                             <ul class="nav nav-tabs card-header-tabs" id="bologna-list" role="tablist">
                                 <li class="nav-item">
@@ -97,12 +97,14 @@
                 <table class="table table-borderless">
                     <thead class="border-bottom">
                     <tr>
-                        <th>#FrontEnd</th>
+                        <th><a th:href="@{/article/frontEnd}" style="text-decoration:none; color:black;">#FrontEnd</a></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="article : ${frontEndPage}" class="border-bottom">
-                        <td><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">[[${article.subject}]]</p>
+                        <td><a th:href="@{|/article/detail/${article.id}|}"><p style="width:250px; white-space: nowrap; overflow: hidden;
+                         text-overflow: ellipsis; text-decoration:none;" class="text-black">
+                            [[${article.subject}]]</p></a>
                         </td>
                         <td><span>👍</span>[[${article.likes}]]</td>
                         <td><span>💬</span>[[${article.commentSize}]]</td>
@@ -114,12 +116,13 @@
                 <table class="table table-borderless">
                     <thead class="border-bottom">
                     <tr>
-                        <th>#BackEnd</th>
+                        <th><a th:href="@{/article/backEnd}" style="text-decoration:none; color:black;">#BackEnd</a></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="article : ${backEndPage}" class="border-bottom">
-                        <td><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">[[${article.subject}]]</p>
+                        <td><a th:href="@{|/article/detail/${article.id}|}"><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+text-decoration:none;" class="text-black">[[${article.subject}]]</p></a>
                         </td>
                         <td><span>👍</span>[[${article.likes}]]</td>
                         <td><span>💬</span>[[${article.commentSize}]]</td>
@@ -131,36 +134,38 @@
 
         <!-- 2nd line-->
         <div style="flex-wrap: wrap;" class="d-flex px-2">
-            <div style="flex-basis: 0; box-shadow: 0 3px 3px rgba(0,0,0,0.2);" class="flex-grow-1 border my-3 mx-1 pb-5">
+            <div style="flex-basis: 0; box-shadow: 0 3px 3px rgba(0,0,0,0.2);" class="flex-grow-1 border my-3 mx-1">
                 <table class="table table-borderless ">
                     <thead class="border-bottom">
                     <tr>
-                        <th>#head3</th>
+                        <th><a th:href="@{/article/dataEngineer}" style="text-decoration:none; color:black;">#dataEngineer</a></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">long longlonglonglonglonglonglonglonglonglonglonglonglonglonglong longlonglonglonglong</p>
+                    <tr th:each="article : ${dataEngineerPage}" class="border-bottom">
+                        <td><a th:href="@{|/article/detail/${article.id}|}"><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+text-decoration:none;" class="text-black">[[${article.subject}]]</p></a>
                         </td>
-                        <td>body3</td>
-                        <td>body4</td>
+                        <td><span>👍</span>[[${article.likes}]]</td>
+                        <td><span>💬</span>[[${article.commentSize}]]</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <div style="flex-basis: 0; box-shadow: 0 3px 3px rgba(0,0,0,0.2);" class="flex-grow-1 border my-3 mx-1 pb-5">
+            <div style="flex-basis: 0; box-shadow: 0 3px 3px rgba(0,0,0,0.2);" class="flex-grow-1 border my-3 mx-1">
                 <table class="table table-borderless">
                     <thead class="border-bottom">
                     <tr>
-                        <th>#head4</th>
+                        <th><a th:href="@{/article/AI}" style="text-decoration:none; color:black;">#AI</a></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">long longlonglonglonglonglonglonglonglonglonglonglonglonglonglong longlonglonglonglong</p>
+                    <tr th:each="article : ${AIPage}" class="border-bottom">
+                        <td><a th:href="@{|/article/detail/${article.id}|}"><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+text-decoration:none;" class="text-black">[[${article.subject}]]</p></a>
                         </td>
-                        <td>body3</td>
-                        <td>body4</td>
+                        <td><span>👍</span>[[${article.likes}]]</td>
+                        <td><span>💬</span>[[${article.commentSize}]]</td>
                     </tr>
                     </tbody>
                 </table>
