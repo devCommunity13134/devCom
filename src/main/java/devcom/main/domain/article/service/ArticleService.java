@@ -73,11 +73,26 @@ public class ArticleService {
         return this.articleRepository.findAllByCategory(category,pageable);
     }
 
-    public Page<Article> getArticleListSortByLikes(int page, Category category){
+    // main page page
+    public Page<Article> getArticleListSortByLikes(int page){
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("likes"));
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-        return this.articleRepository.findAllByCategory(category,pageable);
+        Pageable pageable = PageRequest.of(page, 4, Sort.by(sorts));
+        return this.articleRepository.findAll(pageable);
+    }
+
+    public Page<Article> getArticleListSortByHit(int page){
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("hit"));
+        Pageable pageable = PageRequest.of(page, 4, Sort.by(sorts));
+        return this.articleRepository.findAll(pageable);
+    }
+
+    public Page<Article> getArticleListSortByCommentSize(int page){
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("commentSize"));
+        Pageable pageable = PageRequest.of(page, 4, Sort.by(sorts));
+        return this.articleRepository.findAll(pageable);
     }
 
 

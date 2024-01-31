@@ -25,41 +25,63 @@
                             </ul>
                         </div>
                         <div class="card-body">
-                            <h4 class="card-title">Like</h4>
-                            <h6 class="card-subtitle mb-2">좋아요를 많이 받은 글들</h6>
-
                             <div class="tab-content mt-3">
+
                                 <div class="tab-pane active" id="like" role="tabpanel">
+                                    <h4 class="card-title">Like</h4>
+                                    <h6 class="card-subtitle mb-2">좋아요를 많이 받은 글들</h6>
                                     <table class="table table-borderless">
                                         <tbody>
-                                            <tr  class="border-bottom">
-                                                <td scop="row"><p style=" font-size: 12px; width: 90px;" class=" fw-bold">front</p></td>
-                                                <td><p style="width:300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                                    long long long long long long long long long long long long </p>
+                                            <tr th:each="article : ${likesPage}" class="border-bottom">
+                                                <td scop="row"><a th:href="@{|/article/${article.category.getCategoryName}|}" style="text-decoration: none; font-size: 12px; width: 90px;" class="text-black fw-bold">[[${article.category.getCategoryName}]]</a></td>
+                                                <td><p style="width:550px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                    <a th:href="@{|/article/detail/${article.id}|}" style="text-decoration: none;" class="text-black fw-bold">
+                                                        [[${article.subject}]]</a></p>
                                                 </td>
-                                                <td>body3</td>
-                                                <td>body4</td>
-                                            </tr>
-                                            <tr class="border-bottom">
-                                                <td scop="row"><p style="font-size: 12px; width: 90px;" class="fw-bold">front</p></td>
-                                                <td><p style="width:300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                                    long long long long long long long long long long long long </p>
-                                                </td>
-                                                <td>body3</td>
-                                                <td>body4</td>
+                                                <td><span>👍</span>[[${article.likes}]]</td>
+                                                <td><span>👀</span>[[${article.hit}]]</td>
+                                                <td><span>💬</span>[[${article.commentSize}]]</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
 
-                                <div class="tab-pane" id="hit" role="tabpanel" aria-labelledby="like-tab">
-                                    <p class="card-text">First settled around 1000 BCE and then founded as the Etruscan Felsina about 500 BCE, it was occupied by the Boii in the 4th century BCE and became a Roman colony and municipium with the name of Bononia in 196 BCE. </p>
-                                    <a href="#" class="card-link text-danger">Read more</a>
+                                <div class="tab-pane" id="hit" role="tabpanel" aria-labelledby="hit-tab">
+                                    <h4 class="card-title">Hit</h4>
+                                    <h6 class="card-subtitle mb-2">조회수가 많은 글들</h6>
+                                    <table class="table table-borderless">
+                                        <tbody>
+                                        <tr th:each="article : ${hitPage}" class="border-bottom">
+                                            <td scop="row"><a th:href="@{|/article/${article.category.getCategoryName}|}" style="text-decoration: none; font-size: 12px; width: 90px;" class="text-black fw-bold">[[${article.category.getCategoryName}]]</a></td>
+                                            <td><p style="width:550px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                <a tth:href="@{|/article/detail/${article.id}|}" style="text-decoration: none;" class="text-black fw-bold">
+                                                    [[${article.subject}]]</a></p>
+                                            </td>
+                                            <td><span>👍</span>[[${article.likes}]]</td>
+                                            <td><span>👀</span>[[${article.hit}]]</td>
+                                            <td><span>💬</span>[[${article.commentSize}]]</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
 
-                                <div class="tab-pane" id="deals" role="tabpanel" aria-labelledby="deals-tab">
-                                    <p class="card-text">Immerse yourself in the colours, aromas and traditions of Emilia-Romagna with a holiday in Bologna, and discover the city's rich artistic heritage.</p>
-                                    <a href="#" class="btn btn-danger btn-sm">Get Deals</a>
+                                <div class="tab-pane" id="comment" role="tabpanel" aria-labelledby="commentSize-tab">
+                                    <h4 class="card-title">Comment</h4>
+                                    <h6 class="card-subtitle mb-2">댓글이 많은 글들</h6>
+                                    <table class="table table-borderless">
+                                        <tbody>
+                                        <tr th:each="article : ${commentSizePage}" class="border-bottom">
+                                            <td scop="row"><a th:href="@{|/article/${article.category.getCategoryName}|}" style="text-decoration: none; font-size: 12px; width: 90px;" class="text-black fw-bold">[[${article.category.getCategoryName}]]</a></td>
+                                            <td><p style="width:550px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                <a th:href="@{|/article/detail/${article.id}|}" style="text-decoration: none;" class="text-black fw-bold">
+                                                    [[${article.subject}]]</a></p>
+                                            </td>
+                                            <td><span>👍</span>[[${article.likes}]]</td>
+                                            <td><span>👀</span>[[${article.hit}]]</td>
+                                            <td><span>💬</span>[[${article.commentSize}]]</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>

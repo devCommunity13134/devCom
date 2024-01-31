@@ -41,6 +41,7 @@ public class Article extends BaseEntity {
     @Builder.Default()
     private Integer likes = 0;
 
+    // count answer + reply
     @Column
     @Builder.Default()
     private Integer commentSize = 0;
