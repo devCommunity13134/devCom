@@ -2,12 +2,12 @@
 <div layout:fragment="content" class="container my-3">
 
 
-    <div style="max-width:1200px" class="pb-5 px-3 w-100 bg-body">
+    <div style="max-width:1200px" class="px-3 w-100 bg-body">
         <div class="border-bottom border-black">
             <h1>DevComMain</h1>
         </div>
         <!--    like_hit_comment navigation   -->
-        <div class="container mt-3">
+        <div class="container mt-3 ">
             <div class="row">
                 <div class="col-lg">
                     <div class="card">
@@ -92,37 +92,37 @@
 
 
         <!-- category start  -->
-        <div style="flex-wrap: wrap;" class="d-flex  ">
-            <div style="flex-basis: 0; box-shadow: 0 3px 3px rgba(0,0,0,0.2);" class="flex-grow-1  border my-3 mx-1 pb-5">
+        <div style="flex-wrap: wrap;" class="d-flex  px-2 ">
+            <div style="flex-basis: 0; box-shadow: 0 3px 3px rgba(0,0,0,0.2);" class="flex-grow-1 border my-2 mx-1">
                 <table class="table table-borderless">
                     <thead class="border-bottom">
                     <tr>
-                        <th>#head1</th>
+                        <th>#FrontEnd</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">long longlonglonglonglonglonglonglonglonglonglonglonglonglonglong longlonglonglonglong</p>
+                    <tr th:each="article : ${frontEndPage}" class="border-bottom">
+                        <td><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">[[${article.subject}]]</p>
                         </td>
-                        <td>body3</td>
-                        <td>body4</td>
+                        <td><span>👍</span>[[${article.likes}]]</td>
+                        <td><span>💬</span>[[${article.commentSize}]]</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <div style="flex-basis: 0; box-shadow: 0 3px 3px rgba(0,0,0,0.2);" class="flex-grow-1 border my-3 mx-1 pb-5">
+            <div style="flex-basis: 0; box-shadow: 0 3px 3px rgba(0,0,0,0.2);" class="flex-grow-1 border my-2 mx-1">
                 <table class="table table-borderless">
                     <thead class="border-bottom">
                     <tr>
-                        <th>#head2</th>
+                        <th>#BackEnd</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">long longlonglonglonglonglonglonglonglonglonglonglonglonglonglong longlonglonglonglong</p>
+                    <tr th:each="article : ${backEndPage}" class="border-bottom">
+                        <td><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">[[${article.subject}]]</p>
                         </td>
-                        <td>body3</td>
-                        <td>body4</td>
+                        <td><span>👍</span>[[${article.likes}]]</td>
+                        <td><span>💬</span>[[${article.commentSize}]]</td>
                     </tr>
                     </tbody>
                 </table>
@@ -130,7 +130,7 @@
         </div>
 
         <!-- 2nd line-->
-        <div style="flex-wrap: wrap;" class="d-flex">
+        <div style="flex-wrap: wrap;" class="d-flex px-2">
             <div style="flex-basis: 0; box-shadow: 0 3px 3px rgba(0,0,0,0.2);" class="flex-grow-1 border my-3 mx-1 pb-5">
                 <table class="table table-borderless ">
                     <thead class="border-bottom">

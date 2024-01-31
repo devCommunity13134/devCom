@@ -72,8 +72,16 @@ public class ArticleService {
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         return this.articleRepository.findAllByCategory(category,pageable);
     }
+    // same as above, smaller size
+    public Page<Article> getArticleListSmallSize(int page, Category category){
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 4, Sort.by(sorts));
+        return this.articleRepository.findAllByCategory(category,pageable);
+    }
 
-    // main page page
+
+    // main page top section list
     public Page<Article> getArticleListSortByLikes(int page){
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("likes"));

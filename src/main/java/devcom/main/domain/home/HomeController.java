@@ -3,6 +3,8 @@ package devcom.main.domain.home;
 
 import devcom.main.domain.article.entity.Article;
 import devcom.main.domain.article.service.ArticleService;
+import devcom.main.domain.category.entity.Category;
+import devcom.main.domain.category.service.CategoryService;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class HomeController {
 
     private final UserService userService;
     private final ArticleService articleService;
+    private final CategoryService categoryService;
 
     @GetMapping("/")
     public String root(Model model, Principal principal, @RequestParam(value = "page",defaultValue = "0") int page) {
@@ -39,7 +42,21 @@ public class HomeController {
         model.addAttribute("hitPage", hitPage);
         model.addAttribute("commentSizePage", commentSizePage);
 
+        Category frontEnd = this.categoryService.getCategory("frontEnd");
+        Category backEnd = this.categoryService.getCategory("backEnd");
+        Category dataEngineer = this.categoryService.getCategory("dataEngineer");
+        Category AI = this.categoryService.getCategory("AI");
 
+        // page by categoryName
+        Page<Article> frontEndPage = this.articleService.getArticleListSmallSize(page, frontEnd);
+        Page<Article> backEndPage = this.articleService.getArticleListSmallSize(page, backEnd);
+        Page<Article> dataEngineerPage = this.articleService.getArticleListSmallSize(page, dataEngineer);
+        Page<Article> AIPage = this.articleService.getArticleListSmallSize(page, AI);
+
+        model.addAttribute("frontEndPage", frontEndPage);
+        model.addAttribute("backEndPage", backEndPage);
+        model.addAttribute("dataEngineerPage", dataEngineerPage);
+        model.addAttribute("AIPage", AIPage);
 
         return "home/index";
     }
