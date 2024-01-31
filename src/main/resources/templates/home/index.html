@@ -138,13 +138,14 @@
                 <table class="table table-borderless ">
                     <thead class="border-bottom">
                     <tr>
-                        <th><a th:href="@{/article/dataEngineer}" style="text-decoration:none; color:black;">#dataEngineer</a></th>
+                        <th><a th:href="@{/article/dataEngineer}" style="text-decoration:none; color:black;">#DataEngineer</a></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="article : ${dataEngineerPage}" class="border-bottom">
                         <td><a th:href="@{|/article/detail/${article.id}|}" style="text-decoration:none;" class="text-black fw-bold"><p style="width:250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-                                ">[[${article.subject}]]</p></a>
+                                ">
+                            [[${article.subject}]]</p></a>
                         </td>
                         <td><span>👍</span>[[${article.likes}]]</td>
                         <td><span>💬</span>[[${article.commentSize}]]</td>

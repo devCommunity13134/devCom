@@ -15,7 +15,7 @@
                     <div th:text="${#temporals.format(article.createDate, 'yyyy-MM-dd')}"></div>
                     <span class="mx-2">•</span>
                     <!--  if comment is null no comment -->
-                    <div><span>💬</span>[[${article.getAnswerList().size()}]]<span class="mx-2">•</span></div>
+                    <div><span>💬</span>[[${article.commentSize}]]<span class="mx-2">•</span></div>
                     <!--    like    -->
                     <div><span>👍</span><span th:text="${article.likes}"></span><span class="mx-2">•</span>
                     </div>

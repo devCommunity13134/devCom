@@ -39,7 +39,10 @@ public class ReplyController {
         Answer origianlAnswer = this.answerService.getAnswer(originalAnswerId);
 
         SiteUser replyAuthor = this.userService.findByUsername(principal.getName());
-        this.replyService.create(replyForm,originalArticle, origianlAnswer,  replyAuthor);
+        this.replyService.create(replyForm,originalArticle, origianlAnswer, replyAuthor);
+
+        //raise commentSize
+        this.articleService.raiseCommentSize(originalArticle);
 
         return String.format("redirect:/article/detail/%s",originalArticleId);
     }
