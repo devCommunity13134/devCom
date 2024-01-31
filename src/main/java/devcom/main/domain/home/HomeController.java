@@ -1,6 +1,7 @@
 package devcom.main.domain.home;
 
 
+import devcom.main.domain.article.service.ArticleService;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.security.Principal;
 public class HomeController {
 
     private final UserService userService;
+    private final ArticleService articleService;
 
     @GetMapping("/")
     public String root(Model model, Principal principal) {
@@ -23,6 +25,7 @@ public class HomeController {
             SiteUser user = this.userService.findByUsername(principal.getName());
             model.addAttribute("user",user);
         }
+
         return "home/index";
     }
 }

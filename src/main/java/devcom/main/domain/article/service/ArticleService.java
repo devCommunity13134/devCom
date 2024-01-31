@@ -80,8 +80,24 @@ public class ArticleService {
         return this.articleRepository.findAllByCategory(category,pageable);
     }
 
+
     public void voteArticle(Article article, SiteUser siteUser){
         article.getVoter().add(siteUser);
         this.articleRepository.save(article);
+    }
+
+    // raise hit
+    public void hitArticle(Article article){
+        Article aritlce1 = article.toBuilder()
+                .hit(article.getHit()+1)
+                .build();
+        this.articleRepository.save(aritlce1);
+    }
+    //
+    public void likesArticle(Article article){
+        Article aritlce1 = article.toBuilder()
+                .likes(article.getLikes()+1)
+                .build();
+        this.articleRepository.save(aritlce1);
     }
 }

@@ -37,7 +37,9 @@ public class Article extends BaseEntity {
     @Builder.Default()
     private Integer hit = 0;
 
-    // 좋아요 voter로 대체
+    @Column
+    @Builder.Default()
+    private Integer likes = 0;
 
     @ManyToOne
     @JoinColumn

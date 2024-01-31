@@ -72,6 +72,8 @@ public class ArticleController {
     @GetMapping("/detail/{id}")
     public String articleDetail(Model model, @PathVariable("id") Long id, AnswerForm answerForm, @RequestParam(value = "page",defaultValue = "0") int page){
         Article article = this.articleService.getArticle(id);
+        // raise hit
+        this.articleService.hitArticle(article);
 
         // answerList, replyList
         Page<Answer> answerPaging = this.answerService.getAnswerList(page,article);
