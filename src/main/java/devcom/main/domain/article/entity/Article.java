@@ -41,6 +41,10 @@ public class Article extends BaseEntity {
     @Builder.Default()
     private Integer likes = 0;
 
+    @Column
+    @Builder.Default()
+    private Integer commentSize = 0;
+
     @ManyToOne
     @JoinColumn
     private Category category;

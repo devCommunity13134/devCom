@@ -92,6 +92,9 @@ public class ArticleController {
         Article article = this.articleService.getArticle(articleId);
         SiteUser siteUser = this.userService.findByUsername(principal.getName());
 
+        //raise likes
+        this.articleService.likesArticle(article);
+
         this.articleService.voteArticle(article, siteUser);
         return String.format("redirect:/article/detail/%s",articleId);
     }

@@ -41,7 +41,7 @@
                     <div th:if="${article.getAnswerList.size() > 0 || article.getAnswerList != null}"><span>💬</span>[[${article.getAnswerList().size()}]]
                         <span class="mx-2">•</span></div>
                     <!--    like       -->
-                    <div><span>👍</span><span th:text="${#lists.size(article.voter)}"></span><span class="mx-2">•</span></div>
+                    <div><span>👍</span><span th:text="${article.likes}"></span><span class="mx-2">•</span></div>
                     <!--   hit    -->
                     <div><span>👀</span>[[${article.hit}]]</div>
 

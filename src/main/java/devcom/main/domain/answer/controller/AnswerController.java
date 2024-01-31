@@ -31,7 +31,10 @@ public class AnswerController {
         }
         Article article =this.articleService.getArticle(articleId);
         SiteUser siteUser = this.userService.findByUsername(principal.getName());
+
         this.answerService.create(article,answerForm.getContent(),siteUser);
+        //raise commentSize
+        this.articleService.raiseCommentSize(article);
 
         return String.format("redirect:/article/detail/%s",articleId);
     }

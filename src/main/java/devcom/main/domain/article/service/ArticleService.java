@@ -100,4 +100,12 @@ public class ArticleService {
                 .build();
         this.articleRepository.save(aritlce1);
     }
+
+    public void raiseCommentSize(Article article){
+        Article article1 = article.toBuilder()
+                .commentSize(article.getCommentSize()+1)
+                .build();
+
+        this.articleRepository.save(article1);
+    }
 }
