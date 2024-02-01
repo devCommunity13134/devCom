@@ -26,11 +26,11 @@
             <!-- img-box container -->
             <div>
                 <!-- click a => profile -->
-                <a href="#">
+                <a th:href="@{|/user/profile/${article.author.id}|}">
                     <div style="width: 90px; height: 90px; border-radius: 70%; overflow: hidden; "
                          class="border border-black">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSToCu3S6GQE6FFDA1NT5bw4O7vHiWctYcbhg&usqp=CAU"
-                             alt="testImg">
+                        <img th:src="${article.author.profileImg}"
+                             alt="authorProfileImg">
                     </div>
                 </a>
             </div>

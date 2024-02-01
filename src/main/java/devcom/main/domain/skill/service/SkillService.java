@@ -46,4 +46,6 @@ public class SkillService {
         }
         return skillList;
     }
+
+    public Skill findByskillName(String skillName) { return this.skillRepository.findByskillName(skillName);}
 }
