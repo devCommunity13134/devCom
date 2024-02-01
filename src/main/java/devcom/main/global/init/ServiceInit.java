@@ -167,7 +167,7 @@ public class ServiceInit implements InitializingBean {
 //                    , i);
 //            this.articleService.create(category4, subject, content, author4, null);
 //        }
-        Article article1 = this.articleService.getArticle(1);
-        this.answerService.create(article1,"testAnswerContent", author);
+//        Article article1 = this.articleService.getArticle(1);
+//        this.answerService.create(article1,"testAnswerContent", author);
     }
 }
