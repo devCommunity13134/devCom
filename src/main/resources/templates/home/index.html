@@ -54,7 +54,7 @@
                                         <tr th:each="article : ${hitPage}" class="border-bottom">
                                             <td scop="row"><a th:href="@{|/article/${article.category.getCategoryName}|}" style="text-decoration: none; font-size: 12px; width: 90px;" class="text-black fw-bold">[[${article.category.getCategoryName}]]</a></td>
                                             <td><p style="width:550px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                                <a tth:href="@{|/article/detail/${article.id}|}" style="text-decoration: none;" class="text-black fw-bold">
+                                                <a th:href="@{|/article/detail/${article.id}|}" style="text-decoration: none;" class="text-black fw-bold">
                                                     [[${article.subject}]]</a></p>
                                             </td>
                                             <td><span>👍</span>[[${article.likes}]]</td>

@@ -24,10 +24,11 @@ public class AnswerController {
     private final ArticleService articleService;
     private final UserService userService;
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{articleId}")
     public String answerCreate(@Valid AnswerForm answerForm , BindingResult bindingResult, @PathVariable("articleId") Long articleId, Principal principal){
         if(bindingResult.hasErrors()){
-            return String.format("/article/detail/%s",articleId);
+            return String.format("redirect:/article/detail/%s",articleId);
         }
         Article article =this.articleService.getArticle(articleId);
         SiteUser siteUser = this.userService.findByUsername(principal.getName());
@@ -61,9 +62,14 @@ public class AnswerController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{answerId}")
-    public String answerModify(@PathVariable("answerId") Long answerId, @Valid AnswerForm answerForm){
+    public String answerModify(@PathVariable("answerId") Long answerId, @Valid AnswerForm answerForm, BindingResult bindingResult){
         Answer answer = this.answerService.getAnswer(answerId);
         Article originalArticle = answer.getOriginalArticle();
+        if(bindingResult.hasErrors()){
+            return String.format("redirect:/article/detail/%s",originalArticle.getId());
+        }
+
+
         this.answerService.modify(answer,answerForm.getContent());
 
         return String.format("redirect:/article/detail/%s",originalArticle.getId());
