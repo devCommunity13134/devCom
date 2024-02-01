@@ -32,11 +32,15 @@
                    class="text-body-secondary flex-grow-1" th:text="${article.content}"></p>
                 <!-- author, createTime, comment, like, hit    -->
                 <div style="font-size: 14px;" class="d-flex flex-grow-1 text-secondary align-items-center ">
-                    <div>by <a href="#" style="text-decoration:none; color: gray;" tabindex="0"
-                               class="btn btn-sm fw-bold" role="button" data-bs-toggle="popover" data-bs-trigger="focus"
-                               data-bs-content="profile"
-                               th:text="${article.author.nickname}"></a>> <span
-                            class="mx-2">•</span></div>
+                    <div>by
+                        <button style="color: gray;" tabindex="0" class="btn btn-sm fw-bold" role="button"
+                                data-bs-toggle="popover" data-bs-trigger="focus"
+                                data-bs-content="profile"
+                                th:text="${article.author.nickname}">
+                            <a href="">profile</a>
+                        </button>
+                        > <span class="mx-2">•</span>
+                    </div>
                     <!--   createDate  -->
                     <div th:text="${#temporals.format(article.createDate, 'yyyy-MM-dd')}"></div>
                     <span class="mx-2">•</span>
@@ -46,6 +50,7 @@
                     <!--    like       -->
                     <div><span>👍</span><span th:text="${#lists.size(article.voter)}"></span><span class="mx-2">•</span>
                     </div>
+                    <div><span>👍</span><span th:text="${article.likes}"></span><span class="mx-2">•</span></div>
                     <!--   hit    -->
                     <div><span>👀</span>[[${article.hit}]]</div>
 
@@ -53,11 +58,11 @@
             </div>
             <!-- 프로필 이미지 -->
             <div class="d-flex align-items-center">
-                <a href="#">
+                <a th:href="@{|/user/profile/${article.author.id}|}">
                     <div style="width: 150px; height: 150px; border-radius: 70%; overflow: hidden; "
                          class="border border-black">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSToCu3S6GQE6FFDA1NT5bw4O7vHiWctYcbhg&usqp=CAU"
-                             alt="testImg">
+                        <img th:src="${article.author.profileImg}"
+                             alt="testImg" style="">
                     </div>
                 </a>
             </div>

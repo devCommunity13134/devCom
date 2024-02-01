@@ -1,9 +1,11 @@
 package devcom.main.domain.user.entity;
 
 
+import devcom.main.domain.article.entity.Article;
 import devcom.main.domain.follow.entity.Follower;
 import devcom.main.domain.follow.entity.Following;
-import devcom.main.domain.message.entity.Message;
+import devcom.main.domain.message.entity.ReceiveMessage;
+import devcom.main.domain.message.entity.SendMessage;
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.global.jpa.BaseEntity;
 import jakarta.persistence.*;
@@ -56,13 +58,21 @@ public class SiteUser extends BaseEntity {
     private List<Skill> skillList;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Follower> followerList;
+    // 팔로워 리스트
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Following> followingList;
     // 팔로잉 리스트
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Follower> followierList;
-    // 팔로워 리스트
+    private List<SendMessage> sendMessageList;
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Message> messageList;
+    private List<ReceiveMessage> receiveMessageList;
+
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
+    private List<Article> articleList;
 }

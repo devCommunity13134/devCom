@@ -72,9 +72,63 @@ public class ArticleService {
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         return this.articleRepository.findAllByCategory(category,pageable);
     }
+    // same as above, smaller size
+    public Page<Article> getArticleListSmallSize(int page, Category category){
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 4, Sort.by(sorts));
+        return this.articleRepository.findAllByCategory(category,pageable);
+    }
+
+
+    // main page top section list
+    public Page<Article> getArticleListSortByLikes(int page){
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("likes"));
+        Pageable pageable = PageRequest.of(page, 4, Sort.by(sorts));
+        return this.articleRepository.findAll(pageable);
+    }
+
+    public Page<Article> getArticleListSortByHit(int page){
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("hit"));
+        Pageable pageable = PageRequest.of(page, 4, Sort.by(sorts));
+        return this.articleRepository.findAll(pageable);
+    }
+
+    public Page<Article> getArticleListSortByCommentSize(int page){
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("commentSize"));
+        Pageable pageable = PageRequest.of(page, 4, Sort.by(sorts));
+        return this.articleRepository.findAll(pageable);
+    }
+
 
     public void voteArticle(Article article, SiteUser siteUser){
         article.getVoter().add(siteUser);
         this.articleRepository.save(article);
+    }
+
+    // raise hit
+    public void hitArticle(Article article){
+        Article aritlce1 = article.toBuilder()
+                .hit(article.getHit()+1)
+                .build();
+        this.articleRepository.save(aritlce1);
+    }
+    //
+    public void likesArticle(Article article){
+        Article aritlce1 = article.toBuilder()
+                .likes(article.getLikes()+1)
+                .build();
+        this.articleRepository.save(aritlce1);
+    }
+
+    public void raiseCommentSize(Article article){
+        Article article1 = article.toBuilder()
+                .commentSize(article.getCommentSize()+1)
+                .build();
+
+        this.articleRepository.save(article1);
     }
 }

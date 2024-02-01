@@ -19,17 +19,17 @@ spring:
       org.hibernate.orm.jdbc.extract: TRACE
       org.springframework.transaction.interceptor: TRACE
   mail:
-    host: smtp.gmail.com # 1
-    port: 587 # 2
-    username:  # 3
-    password: # 4
+    host: smtp.gmail.com
+    port: 587
+    username: devcomemail@gmail.com
+    password: NEED_TO_INPUT_ON_SECRET
     properties:
       mail:
         smtp:
-          auth: true # 5
-          timeout: 5000 # 6
+          auth: true
+          timeout: 5000
           starttls:
-            enable: true # 7
+            enable: true
   # kakao social login
   security:
     oauth2:

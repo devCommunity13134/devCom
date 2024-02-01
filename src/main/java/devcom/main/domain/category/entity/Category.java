@@ -1,14 +1,14 @@
 package devcom.main.domain.category.entity;
 
+import devcom.main.domain.article.entity.Article;
 import devcom.main.global.jpa.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,4 +18,6 @@ import lombok.experimental.SuperBuilder;
 public class Category extends BaseEntity {
     private String categoryName;
 
+    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
+    private List<Article> articleList;
 }

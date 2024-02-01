@@ -1,0 +1,19 @@
+<html layout:decorate="~{layout}">
+    <div layout:fragment="content" class="container my-3" style="width:800px;">
+        <h5>쪽지함</h5>
+        <div>보낸 쪽지
+            <ul th:each="sendMessageList : ${sendMessageList}">
+                <li th:text="${sendMessageList.content}"></li>
+                <li th:text="${sendMessageList.user.nickname}"></li>
+                <li th:text="${sendMessageList.createDate}"></li>
+            </ul>
+        </div>
+        <div>받은 쪽지
+            <ul th:each="receiveMessageList : ${receiveMessageList}">
+                <li th:text="${receiveMessageList.content}"></li>
+                <li th:text="${receiveMessageList.user.nickname}"></li>
+                <li th:text="${receiveMessageList.createDate}"></li>
+            </ul>
+        </div>
+    </div>
+</html>

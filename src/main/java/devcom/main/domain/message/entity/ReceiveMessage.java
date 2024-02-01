@@ -1,6 +1,5 @@
 package devcom.main.domain.message.entity;
 
-
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.global.jpa.BaseEntity;
 import jakarta.persistence.Column;
@@ -11,27 +10,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
 
 @Entity
 @Getter
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Message extends BaseEntity {
+public class ReceiveMessage extends BaseEntity {
 
     @ManyToOne
     private SiteUser user;
+    // 보낸 사람
+
+    private Long receiveUserId;
+    // 받는 사람 id(pk)
 
     @Column(columnDefinition = "TEXT")
     private String content;
-
-    private boolean checked;
-
-    // 받는이 id
-    private Long toUserId;
-
-    // 보낸이 id
-    private Long fromUserId;
 
 }

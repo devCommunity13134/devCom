@@ -10,6 +10,7 @@ import devcom.main.domain.article.repository.ArticleRepository;
 import devcom.main.domain.article.service.ArticleService;
 import devcom.main.domain.category.entity.Category;
 import devcom.main.domain.category.service.CategoryService;
+import devcom.main.domain.reply.entity.Reply;
 import devcom.main.domain.reply.service.ReplyService;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
@@ -71,9 +72,16 @@ public class ArticleController {
     @GetMapping("/detail/{id}")
     public String articleDetail(Model model, @PathVariable("id") Long id, AnswerForm answerForm, @RequestParam(value = "page",defaultValue = "0") int page){
         Article article = this.articleService.getArticle(id);
+        // raise hit
+        this.articleService.hitArticle(article);
 
+        // answerList, replyList
         Page<Answer> answerPaging = this.answerService.getAnswerList(page,article);
-        model.addAttribute("answerPaging",answerPaging);
+        Page<Reply> replyPaging =   this.replyService.getReplyList(page,article);
+
+        // send answerList, replyList to article/detail page
+        model.addAttribute("answerPaging", answerPaging);
+        model.addAttribute("replyPaging", replyPaging);
         model.addAttribute("article",article);
         return "article/detail";
     }
@@ -83,6 +91,9 @@ public class ArticleController {
     public String articleVote(@PathVariable("id") Long articleId, Principal principal){
         Article article = this.articleService.getArticle(articleId);
         SiteUser siteUser = this.userService.findByUsername(principal.getName());
+
+        //raise likes
+        this.articleService.likesArticle(article);
 
         this.articleService.voteArticle(article, siteUser);
         return String.format("redirect:/article/detail/%s",articleId);

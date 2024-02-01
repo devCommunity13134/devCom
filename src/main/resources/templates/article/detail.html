@@ -8,14 +8,17 @@
             <div>
                 <span class="fs-3 fw-bold">[[${article.subject}]]</span>
                 <div style="font-size: 14px;" class="d-flex flex-grow-1 text-secondary flex-wrap">
-                    <div>by <a href="#" style="text-decoration:none; color: gray;" class="fw-bold">[[${article.author.nickname}]]</a> <span
-                            class="mx-2">•</span></div>
+                    <div>by <a href="#" style="text-decoration:none; color: gray;" class="fw-bold">[[${article.author.nickname}]]</a>
+                        <span
+                                class="mx-2">•</span></div>
                     <!--   createDate  -->
-                    <div th:text="${#temporals.format(article.createDate, 'yyyy-MM-dd')}"></div> <span class="mx-2">•</span>
+                    <div th:text="${#temporals.format(article.createDate, 'yyyy-MM-dd')}"></div>
+                    <span class="mx-2">•</span>
                     <!--  if comment is null no comment -->
                     <div><span>💬</span>[[${article.getAnswerList().size()}]]<span class="mx-2">•</span></div>
-                    <!--    like       -->
-                    <div><span>👍</span><span th:text="${#lists.size(article.voter)}"></span><span class="mx-2">•</span></div>
+                    <!--    like    -->
+                    <div><span>👍</span><span th:text="${article.likes}"></span><span class="mx-2">•</span>
+                    </div>
                     <!--   hit    -->
                     <div><span>👀</span>[[${article.hit}]]</div>
                 </div>
@@ -23,11 +26,11 @@
             <!-- img-box container -->
             <div>
                 <!-- click a => profile -->
-                <a href="#">
+                <a th:href="@{|/user/profile/${article.author.id}|}">
                     <div style="width: 90px; height: 90px; border-radius: 70%; overflow: hidden; "
                          class="border border-black">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSToCu3S6GQE6FFDA1NT5bw4O7vHiWctYcbhg&usqp=CAU"
-                             alt="testImg">
+                        <img th:src="${article.author.profileImg}"
+                             alt="authorProfileImg">
                     </div>
                 </a>
             </div>
@@ -39,18 +42,20 @@
         </div>
         <!-- like button-->
         <a th:if="${@rq.isLogin()}" style="text-decoration: none;" class="recommend btn btn-outline-secondary fw-bold"
-            th:href="@{|/article/vote/${article.id}|}">
+           th:href="@{|/article/vote/${article.id}|}">
             <span>Like</span>
             <span class="fw-bold" th:text="${#lists.size(article.voter)}"></span>
         </a>
         <!-- modify-button if(authorized) -->
-        <a th:href="@{|/article/modify/${article.id}|}" style="text-decoration: none;" class="btn btn-outline-warning fw-bold"
+        <a th:href="@{|/article/modify/${article.id}|}" style="text-decoration: none;"
+           class="btn btn-outline-warning fw-bold"
            sec:authorize="isAuthenticated()"
            th:if="${article.author != null and #authentication.getPrincipal().getUsername() == article.author.username}">
             <span>Modify</span>
         </a>
         <!-- delete-button if(authorized) -->
-        <a th:href="@{|/article/delete/${article.id}|}" style="text-decoration: none;" class="btn btn-outline-danger fw-bold"
+        <a th:href="@{|/article/delete/${article.id}|}" style="text-decoration: none;"
+           class="btn btn-outline-danger fw-bold"
            sec:authorize="isAuthenticated()"
            th:if="${article.author != null and #authentication.getPrincipal().getUsername() == article.author.username}">
             <span>Delete</span>
@@ -58,97 +63,27 @@
 
     </div>
     <!--comment form-->
-    <form th:if="${@rq.isLogin()}" style="max-width: 1200px;" th:action="@{|/answer/create/${article.id}|}"  th:object="${answerForm}" method="post"  class="mb-3">
-        <textarea style="width:100%; resize: none;" th:field="*{content}"  cols="30" rows="10"></textarea>
+    <form th:if="${@rq.isLogin()}" style="max-width: 1200px;" th:action="@{|/answer/create/${article.id}|}"
+          th:object="${answerForm}" method="post" class="mb-3">
+        <textarea style="width:100%; resize: none;" th:field="*{content}" cols="30" rows="10"></textarea>
         <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary fw-bold mt-2">Post</button>
         </div>
     </form>
 
     <!-- comment list -->
-    <div th:each="answer : ${answerPaging}" style="max-width:1200px" class="shadow py-4 px-3 mb-3 w-100 bg-body">
-        <!-- like, profile-box(profile img, name, CommentCreateDate) -->
-        <div class="d-flex">
-            <!-- like button js_need-->
-            <div class="d-flex flex-column">
-                <a th:if="${@rq.isLogin()}" th:href="@{|/answer/vote/${answer.id}|}" style="text-decoration: none;" class=" btn btn-outline-secondary btn-sm fw-bold">
-                    <span>👍 <span th:text="${#lists.size(answer.voter)}"></span></span>
-                </a>
-
-            </div>
-            <!-- img, profile-box -->
-            <div class="ms-2 d-flex align-items-center">
-                <!-- img-box -->
-                <div>
-                    <a href="#">
-                        <div style="width: 32px; height: 32px; border-radius: 70%; overflow: hidden; "
-                             class="border border-secondary">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSToCu3S6GQE6FFDA1NT5bw4O7vHiWctYcbhg&usqp=CAU"
-                                 alt="testImg">
-                        </div>
-                    </a>
-                </div>
-                <!-- profile -->
-                <div class="d-flex ms-1">
-                    <!--name-->
-                    <span style="font-size:14px;" class="fw-bold">[[${answer.author.nickname}]]</span>
-                    <span class="fw-bold mx-1">|</span>
-                    <!--commentCreateDate-->
-                    <span th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd')}"></span>
-                </div>
-            </div>
-            <!--modify, delete comment(show if authorized) -->
-            <div class="px-3">
-                <a href="#" style="text-decoration: none;" class=" btn btn-outline-warning btn-sm fw-bold">
-                    <span>Modify</span>
-                </a>
-                <!-- delete button -->
-                <a th:href="@{|/answer/delete/${answer.id}|}" style="text-decoration: none;" class=" btn btn-outline-danger btn-sm fw-bold"
-                   sec:authorize="isAuthenticated()"
-                   th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}">
-                    <span>Delete</span>
-                </a>
-            </div>
-        </div>
-        <!-- comment-content -->
-        <div style="margin-left: 65px;" class="mt-3">
-            <span>[[${answer.content}]]
-            </span>
-        </div>
-        <!-- reply button -->
-<!--        <p  class="d-inline-flex my-1 mx-1 justify-content-end">-->
-<!--            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">-->
-<!--                Reply-Collapse-->
-<!--            </button>-->
-<!--        </p>-->
-<!--        <div class="collapse" id="collapseExample">-->
-<!--            <div class="card card-body">-->
-<!--                Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.-->
-<!--            </div>-->
-<!--        </div>-->
-        <div style="width: 100%;" class="d-flex my-1 mx-1 justify-content-end">
-            <button class="btn btn-primary btn-sm fw-bold mx-3">Reply</button>
-        </div>
-
-    </div>
-    <!-- reply form (hidden in usual, appear when push reply button above -->
-    <div class="ps-5">
-        <form action="#" style="max-width: 1200px;" class="mb-3">
-            <textarea style="width:100%; resize: none;" name="reply" id="reply" cols="30" rows="5"></textarea>
-            <div class="d-flex justify-content-end align-items-center mt-2">
-                <button type="submit" class="btn btn-primary fw-bold ">Post</button>
-                <!-- button click => (reply form shrink) -->
-                <button type="reset" class="btn fw-bold">Cancel</button>
-            </div>
-
-        </form>
-    </div>
-    <!-- reply list (if reply is null > hidden) -->
-    <div class="ps-5">
+    <div th:each="answer : ${answerPaging}">
         <div style="max-width:1200px" class="shadow py-4 px-3 mb-3 w-100 bg-body">
-            <!-- like, profile-box(profile img, name, replyCreateDate) -->
+            <!-- like, profile-box(profile img, name, CommentCreateDate) -->
             <div class="d-flex">
+                <!-- like button-->
+                <div class="d-flex flex-column">
+                    <a th:if="${@rq.isLogin()}" th:href="@{|/answer/vote/${answer.id}|}" style="text-decoration: none;"
+                       class=" btn btn-outline-secondary btn-sm fw-bold">
+                        <span>👍 <span th:text="${#lists.size(answer.voter)}"></span></span>
+                    </a>
 
+                </div>
                 <!-- img, profile-box -->
                 <div class="ms-2 d-flex align-items-center">
                     <!-- img-box -->
@@ -164,35 +99,112 @@
                     <!-- profile -->
                     <div class="d-flex ms-1">
                         <!--name-->
-                        <span style="font-size:14px;" class="fw-bold">replyAuthor</span>
+                        <span style="font-size:14px;" class="fw-bold">[[${answer.author.nickname}]]</span>
                         <span class="fw-bold mx-1">|</span>
-                        <!--replyCreateDate-->
-                        <span>24-01-24</span>
-                    </div>
-                    <!--modify, delete comment(show if authorized) -->
-                    <div class="px-3">
-                        <a href="#" style="text-decoration: none;" class=" btn btn-outline-warning btn-sm fw-bold">
-                            <span>Modify</span>
-                        </a>
-                        <a href="#" style="text-decoration: none;" class=" btn btn-outline-danger btn-sm fw-bold">
-                            <span>Delete</span>
-                        </a>
+                        <!--commentCreateDate-->
+                        <span th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd')}"></span>
                     </div>
                 </div>
+                <!--modify, delete comment(show if authorized) -->
+                <div class="px-3">
+                    <a href="#" style="text-decoration: none;" class=" btn btn-outline-warning btn-sm fw-bold">
+                        <span>Modify</span>
+                    </a>
+                    <a href="#" style="text-decoration: none;" class=" btn btn-outline-danger btn-sm fw-bold">
+                        <span>Delete</span>
+                    </a>
+                </div>
             </div>
-            <!-- reply-content -->
-            <div style="margin-left: 10px;" class="mt-2">
-            <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Ad aliquid architecto consectetur esse eum fugit ipsum.
+            <!-- comment-content -->
+            <div style="margin-left: 65px;" class="mt-3">
+            <span>[[${answer.content}]]
             </span>
             </div>
             <!-- reply button -->
-            <div style="width: 100%;" class="d-flex my-1 mx-1 justify-content-end">
-                <button class="btn btn-primary btn-sm fw-bold mx-3">Reply</button>
-            </div>
+            <p class="d-flex justify-content-end">
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                        th:data-bs-target="'#collapseExample'+${answer.id}" aria-expanded="false"
+                        aria-controls="collapseExample">
+                    Reply
+                </button>
+            </p>
+            <!-- replyForm -->
+            <div class="collapse" th:id="'collapseExample' + ${answer.id}">
+                <div class="ps-5">
+                    <form th:action="@{/reply/create}" method="post" th:object="${replyForm}" style="max-width: 1200px;"
+                          class="mb-3">
+                        <input type="hidden" th:name="@{originalArticleId}" th:value="${article.id}"/>
+                        <input type="hidden" th:name="@{originalAnswerId}" th:value="${answer.id}"/>
+                        <label for="replyContent" class="form-label">reply</label>
+                        <textarea style="width:100%; resize: none;" class="form-control" name="content"
+                                  id="replyContent" cols="30" rows="5"></textarea>
+                        <!--                    <input type="text" style="width:100%; resize: none;" class="form-control" name="content" id="replyContent" >-->
 
+                        <div class="d-flex justify-content-end align-items-center mt-2">
+                            <button type="submit" class="btn btn-primary fw-bold ">Post</button>
+                            <!-- button click => (reply form shrink) -->
+                            <button type="reset" class="btn fw-bold">Cancel</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- replyList  -->
+        <div  th:each="reply : ${replyPaging}" class="ps-5">
+            <div th:if="@{answer.replyList != null and answer.originalArticleId == reply.originalArticleId and answer == reply.originalAnswer}"
+                 style="max-width:1200px" class="shadow py-4 px-3 mb-3 w-100 bg-body">
+                <!-- like, profile-box(profile img, name, replyCreateDate) -->
+                <div class="d-flex">
+
+                    <!-- img, profile-box -->
+                    <div class="ms-2 d-flex align-items-center">
+                        <!-- img-box -->
+                        <div>
+                            <a href="#">
+                                <div style="width: 32px; height: 32px; border-radius: 70%; overflow: hidden; "
+                                     class="border border-secondary">
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSToCu3S6GQE6FFDA1NT5bw4O7vHiWctYcbhg&usqp=CAU"
+                                         alt="testImg">
+                                </div>
+                            </a>
+                        </div>
+                        <!-- profile -->
+                        <div class="d-flex ms-1">
+                            <!--name-->
+                            <span style="font-size:14px;" class="fw-bold">replyAuthor</span>
+                            <span class="fw-bold mx-1">|</span>
+                            <!--replyCreateDate-->
+                            <!--                        <span th:text="${#temporals.format(reply.createDate, 'yyyy-MM-dd')}"></span>-->
+                        </div>
+                        <!--modify, delete comment(show if authorized) -->
+                        <div class="px-3">
+                            <a href="#" style="text-decoration: none;" class=" btn btn-outline-warning btn-sm fw-bold">
+                                <span>Modify</span>
+                            </a>
+                            <a href="#" style="text-decoration: none;" class=" btn btn-outline-danger btn-sm fw-bold">
+                                <span>Delete</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- reply-content -->
+                <div style="margin-left: 10px;" class="mt-2">
+            <span>[[${reply.content}]]
+            </span>
+                </div>
+                <!-- reply button -->
+                <div style="width: 100%;" class="d-flex my-1 mx-1 justify-content-end">
+                    <button class="btn btn-primary btn-sm fw-bold mx-3">Reply</button>
+                </div>
+
+            </div>
         </div>
     </div>
+    <!-- reply form (hidden in usual, appear when push reply button above -->
+
+    <!-- reply list (if reply is null > hidden) -->
+
 
 </div>
 </html>

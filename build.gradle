@@ -35,7 +35,7 @@ dependencies {
  	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-
+	// java mail api
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	// kakao social login
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
