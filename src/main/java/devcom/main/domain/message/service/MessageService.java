@@ -25,14 +25,14 @@ public class MessageService {
 
 
     public void addSendMessage(SiteUser user, Long id, String content) {
-        // 보낸 사람 user
-        // 받는 사람 user_id = id
+        // 보낸 메세지 저장 → 작성한 user에만 저장
+        // 보낸 사람 == user
+        // 받는 사람 == user_id = id
         // 내용 content
         SendMessage sendMessage = SendMessage.builder()
-                .user(this.userService.findById(id))
+                .user(user)
                 .content(content)
                 .sendUserId(id)
-                //받는 사람 id
                 .build();
 
         this.sendMessageRepository.save(sendMessage);
@@ -40,18 +40,18 @@ public class MessageService {
     }
 
     public void addReceiveMessage(SiteUser user, Long id, String content) {
-        // 받는 사람 findById(id)
-        // 보낸 사람 user
+        // 받은 메세지 저장 → 상대방 user에 저장
+        // 받는 사람 == user = findById(id)
+        // id == 보낸 사람 user_id
         // 내용 content
         ReceiveMessage receiveMessage = ReceiveMessage.builder()
                 .user(user)
                 .content(content)
-                .receiveUserId(user.getId())
-                // 보낸 사람 id
+                .receiveUserId(id)
                 .build();
 
         this.receiveMessageRepository.save(receiveMessage);
-        this.userService.findById(id).getReceiveMessageList().add(receiveMessage);
+        user.getReceiveMessageList().add(receiveMessage);
     }
 
     public List<SiteUser> getSendUserList(SiteUser user) {
