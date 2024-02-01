@@ -113,55 +113,55 @@ public class ServiceInit implements InitializingBean {
 
         SiteUser author = this.userService.findByUsername("user1");
         Category category = this.categoryService.getCategory("frontEnd");
-        for (int i = 1; i <= 10; i++) {
-            String subject = String.format("TestSubject:[%03d]", i);
-            String content = String.format("TestContetn:[%03d] Lorem ipsum dolor sit amet, " +
-                            "consectetur adipisicing elit. Aperiam commodi minima optio placeat quaerat" +
-                            " saepe voluptatum! A animi consectetur ducimus esse facilis molestiae, nesciunt" +
-                            " nihil non perspiciatis provident rem totam!Lorem ipsum dolor sit amet, consectetur" +
-                            " adipisicing elit. Aperiam commodi minima optio placeat quaerat saepe voluptatum! A animi" +
-                            " consectetur ducimus esse facilis molestiae, nesciunt nihil non perspiciatis provident rem totam!"
-                    , i);
-            this.articleService.create(category, subject, content, author);
-        }
-        SiteUser author2 = this.userService.findByUsername("user2");
-        Category category2 = this.categoryService.getCategory("backEnd");
-        for (int i = 1; i <= 10; i++) {
-            String subject = String.format("TestSubject:[%03d]", i);
-            String content = String.format("TestContetn:[%03d] Lorem ipsum dolor sit amet, " +
-                            "consectetur adipisicing elit. Aperiam commodi minima optio placeat quaerat" +
-                            " saepe voluptatum! A animi consectetur ducimus esse facilis molestiae, nesciunt" +
-                            " nihil non perspiciatis provident rem totam!Lorem ipsum dolor sit amet, consectetur" +
-                            " adipisicing elit. Aperiam commodi minima optio placeat quaerat saepe voluptatum! A animi" +
-                            " consectetur ducimus esse facilis molestiae, nesciunt nihil non perspiciatis provident rem totam!"
-                    , i);
-            this.articleService.create(category2, subject, content, author2);
-        }
-        SiteUser author3 = this.userService.findByUsername("user3");
-        Category category3 = this.categoryService.getCategory("dataEngineer");
-        for (int i = 1; i <= 10; i++) {
-            String subject = String.format("TestSubject:[%03d]", i);
-            String content = String.format("TestContetn:[%03d] Lorem ipsum dolor sit amet, " +
-                            "consectetur adipisicing elit. Aperiam commodi minima optio placeat quaerat" +
-                            " saepe voluptatum! A animi consectetur ducimus esse facilis molestiae, nesciunt" +
-                            " nihil non perspiciatis provident rem totam!Lorem ipsum dolor sit amet, consectetur" +
-                            " adipisicing elit. Aperiam commodi minima optio placeat quaerat saepe voluptatum! A animi" +
-                            " consectetur ducimus esse facilis molestiae, nesciunt nihil non perspiciatis provident rem totam!"
-                    , i);
-            this.articleService.create(category3, subject, content, author3);
-        }
-        SiteUser author4 = this.userService.findByUsername("user4");
-        Category category4 = this.categoryService.getCategory("AI");
-        for (int i = 1; i <= 10; i++) {
-            String subject = String.format("TestSubject:[%03d]", i);
-            String content = String.format("TestContetn:[%03d] Lorem ipsum dolor sit amet, " +
-                            "consectetur adipisicing elit. Aperiam commodi minima optio placeat quaerat" +
-                            " saepe voluptatum! A animi consectetur ducimus esse facilis molestiae, nesciunt" +
-                            " nihil non perspiciatis provident rem totam!Lorem ipsum dolor sit amet, consectetur" +
-                            " adipisicing elit. Aperiam commodi minima optio placeat quaerat saepe voluptatum! A animi" +
-                            " consectetur ducimus esse facilis molestiae, nesciunt nihil non perspiciatis provident rem totam!"
-                    , i);
-            this.articleService.create(category4, subject, content, author4);
-        }
+//        for (int i = 1; i <= 10; i++) {
+//            String subject = String.format("TestSubject:[%03d]", i);
+//            String content = String.format("TestContetn:[%03d] Lorem ipsum dolor sit amet, " +
+//                            "consectetur adipisicing elit. Aperiam commodi minima optio placeat quaerat" +
+//                            " saepe voluptatum! A animi consectetur ducimus esse facilis molestiae, nesciunt" +
+//                            " nihil non perspiciatis provident rem totam!Lorem ipsum dolor sit amet, consectetur" +
+//                            " adipisicing elit. Aperiam commodi minima optio placeat quaerat saepe voluptatum! A animi" +
+//                            " consectetur ducimus esse facilis molestiae, nesciunt nihil non perspiciatis provident rem totam!"
+//                    , i);
+//            this.articleService.create(category, subject, content, author);
+//        }
+//        SiteUser author2 = this.userService.findByUsername("user2");
+//        Category category2 = this.categoryService.getCategory("backEnd");
+//        for (int i = 1; i <= 10; i++) {
+//            String subject = String.format("TestSubject:[%03d]", i);
+//            String content = String.format("TestContetn:[%03d] Lorem ipsum dolor sit amet, " +
+//                            "consectetur adipisicing elit. Aperiam commodi minima optio placeat quaerat" +
+//                            " saepe voluptatum! A animi consectetur ducimus esse facilis molestiae, nesciunt" +
+//                            " nihil non perspiciatis provident rem totam!Lorem ipsum dolor sit amet, consectetur" +
+//                            " adipisicing elit. Aperiam commodi minima optio placeat quaerat saepe voluptatum! A animi" +
+//                            " consectetur ducimus esse facilis molestiae, nesciunt nihil non perspiciatis provident rem totam!"
+//                    , i);
+//            this.articleService.create(category2, subject, content, author2);
+//        }
+//        SiteUser author3 = this.userService.findByUsername("user3");
+//        Category category3 = this.categoryService.getCategory("dataEngineer");
+//        for (int i = 1; i <= 10; i++) {
+//            String subject = String.format("TestSubject:[%03d]", i);
+//            String content = String.format("TestContetn:[%03d] Lorem ipsum dolor sit amet, " +
+//                            "consectetur adipisicing elit. Aperiam commodi minima optio placeat quaerat" +
+//                            " saepe voluptatum! A animi consectetur ducimus esse facilis molestiae, nesciunt" +
+//                            " nihil non perspiciatis provident rem totam!Lorem ipsum dolor sit amet, consectetur" +
+//                            " adipisicing elit. Aperiam commodi minima optio placeat quaerat saepe voluptatum! A animi" +
+//                            " consectetur ducimus esse facilis molestiae, nesciunt nihil non perspiciatis provident rem totam!"
+//                    , i);
+//            this.articleService.create(category3, subject, content, author3);
+//        }
+//        SiteUser author4 = this.userService.findByUsername("user4");
+//        Category category4 = this.categoryService.getCategory("AI");
+//        for (int i = 1; i <= 10; i++) {
+//            String subject = String.format("TestSubject:[%03d]", i);
+//            String content = String.format("TestContetn:[%03d] Lorem ipsum dolor sit amet, " +
+//                            "consectetur adipisicing elit. Aperiam commodi minima optio placeat quaerat" +
+//                            " saepe voluptatum! A animi consectetur ducimus esse facilis molestiae, nesciunt" +
+//                            " nihil non perspiciatis provident rem totam!Lorem ipsum dolor sit amet, consectetur" +
+//                            " adipisicing elit. Aperiam commodi minima optio placeat quaerat saepe voluptatum! A animi" +
+//                            " consectetur ducimus esse facilis molestiae, nesciunt nihil non perspiciatis provident rem totam!"
+//                    , i);
+//            this.articleService.create(category4, subject, content, author4);
+//        }
     }
 }
