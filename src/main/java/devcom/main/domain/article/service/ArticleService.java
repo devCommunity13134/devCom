@@ -33,6 +33,18 @@ public class ArticleService {
 
     //article create
     public void create(Category category, String subject, String content , SiteUser author, MultipartFile thumbnail) {
+        if(thumbnail == null){
+            Article article = Article.builder()
+                    .category(category)
+                    .subject(subject)
+                    .content(content)
+                    .author(author)
+                    .thumbnailImg(null)
+                    .build();
+
+            this.articleRepository.save(article);
+            return;
+        }
         //MultipartFile => String type
         String thumbnailRelPath = "article/" + UUID.randomUUID().toString() + ".jpg";
         File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
@@ -46,15 +58,18 @@ public class ArticleService {
 
 
 
-        Article article = Article.builder()
-                .category(category)
-                .subject(subject)
-                .content(content)
-                .author(author)
-                .thumbnailImg(thumbnailRelPath)
-                .build();
 
-        this.articleRepository.save(article);
+            Article article = Article.builder()
+                    .category(category)
+                    .subject(subject)
+                    .content(content)
+                    .author(author)
+                    .thumbnailImg(thumbnailRelPath)
+                    .build();
+
+            this.articleRepository.save(article);
+
+
     }
     //article modify
     public void modify(Category category, Article article, String subject, String content){
