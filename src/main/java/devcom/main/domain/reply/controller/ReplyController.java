@@ -70,7 +70,7 @@ public class ReplyController {
         }
 
 
-        this.answerService.modify(answer,answerForm.getContent());
+        this.replyService.modify(reply,replyForm.getContent());
 
         return String.format("redirect:/article/detail/%s",originalArticle.getId());
     }
