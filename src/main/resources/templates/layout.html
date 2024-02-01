@@ -113,7 +113,7 @@
             <div class="bg-light">
                 <h2 class="accordion-header" id="Following">
                     <button class="accordion-button collapsed bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFollowing" aria-expanded="false" aria-controls="collapseTwo">
-                        <i class="fa-solid fa-person-walking"></i> &nbsp; Following
+                        <i class="fa-solid fa-person-walking"></i> &nbsp; Following [[${#lists.size(@rq.getFollowingList())}]]
                     </button>
                 </h2>
                 <div id="collapseFollowing" class="accordion-collapse collapse" aria-labelledby="Following" data-bs-parent="#accordionExample">
@@ -127,7 +127,7 @@
             <div class="bg-light">
                 <h2 class="accordion-header" id="Follower">
                     <button class="accordion-button collapsed bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFollower" aria-expanded="false" aria-controls="collapseTwo">
-                        <i class="fa-solid fa-person-walking fa-flip-horizontal"></i> &nbsp; Follower
+                        <i class="fa-solid fa-person-walking fa-flip-horizontal"></i> &nbsp; Follower [[${#lists.size(@rq.getFollowerList())}]]
                     </button>
                 </h2>
                 <div id="collapseFollower" class="accordion-collapse collapse" aria-labelledby="Follower" data-bs-parent="#accordionExample">
