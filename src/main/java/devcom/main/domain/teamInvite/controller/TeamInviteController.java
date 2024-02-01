@@ -34,7 +34,6 @@ public class TeamInviteController {
             this.isSuccess = isSuccess;
             this.message = message;
         }
-
     }
 
 

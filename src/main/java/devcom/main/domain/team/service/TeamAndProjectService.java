@@ -5,6 +5,7 @@ import devcom.main.domain.project.ProjectModifyForm;
 import devcom.main.domain.project.entity.Project;
 import devcom.main.domain.project.service.ProjectService;
 import devcom.main.domain.projectState.ProjectStateCreateForm;
+import devcom.main.domain.projectState.controller.ProjectStateController;
 import devcom.main.domain.projectState.entity.ProjectState;
 import devcom.main.domain.projectState.service.ProjectStateService;
 import devcom.main.domain.team.TeamCreateForm;
@@ -55,7 +56,7 @@ public class TeamAndProjectService {
         }
 
         Team NewTeam = teamService.create(teamCreateForm, siteUser);
-        teamMemberService.createTeamMemberAdmin(NewTeam,siteUser);
+        teamMemberService.createTeamMember(NewTeam,siteUser);
 
         return bindingResult;
     }
@@ -261,5 +262,15 @@ public class TeamAndProjectService {
 
         teamMemberService.deleteTeamMember(teamMember);
 
+    }
+
+
+    public ProjectStateController.changeProjectStateResponse changeProjectState(Project project, Long projectStateId, String state) {
+
+        ProjectState ps = projectStateService.findById(projectStateId);
+
+        projectStateService.update(ps,state);
+
+        return new ProjectStateController.changeProjectStateResponse(true, "변경됨");
     }
 }

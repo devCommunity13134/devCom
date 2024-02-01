@@ -1,5 +1,10 @@
 package devcom.main.global.rq;
 
+import devcom.main.domain.follow.entity.Follower;
+import devcom.main.domain.follow.entity.Following;
+import devcom.main.domain.follow.service.FollowService;
+import devcom.main.domain.team.entity.Team;
+import devcom.main.domain.team.service.TeamAndProjectService;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,10 +17,14 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
+import java.util.List;
+
 @Component
 @RequestScope
 public class Rq {
     private final UserService userService;
+    private final TeamAndProjectService teamAndProjectService;
+    private final FollowService followService;
     private final HttpServletRequest req;
     private final HttpServletResponse resp;
     private final HttpSession session;
@@ -23,8 +32,19 @@ public class Rq {
     @Setter
     private SiteUser siteUser = null;
 
-    public Rq(UserService userService, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
+    @Setter
+    List<Team> teamList = null;
+
+    @Setter
+    List<SiteUser> followerList = null;
+
+    @Setter
+    List<SiteUser> followingList = null;
+
+    public Rq(UserService userService, TeamAndProjectService teamAndProjectService, FollowService followService, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
         this.userService = userService;
+        this.teamAndProjectService = teamAndProjectService;
+        this.followService = followService;
         this.req = req;
         this.resp = resp;
         this.session = session;
@@ -59,6 +79,39 @@ public class Rq {
         }
 
         return siteUser;
+    }
+
+    public List<Team> getTeamList() {
+        if (isLogout()) {
+            return null;
+        }
+
+        if (siteUser != null) {
+            teamList = teamAndProjectService.getTeamListByUser(siteUser);
+        }
+        return teamList;
+    }
+
+    public List<SiteUser> getFollowerList() {
+        if (isLogout()) {
+            return null;
+        }
+
+        if (siteUser != null) {
+            followerList = followService.getFollowerUserList(siteUser);
+        }
+        return followerList;
+    }
+
+    public List<SiteUser> getFollowingList() {
+        if (isLogout()) {
+            return null;
+        }
+
+        if (siteUser != null) {
+            followingList = followService.getFollowingUserList(siteUser);
+        }
+        return followingList;
     }
 
     private String getLoginedSiteUserUsername() {

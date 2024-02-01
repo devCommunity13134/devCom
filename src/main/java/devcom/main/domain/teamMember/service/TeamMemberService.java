@@ -21,7 +21,7 @@ public class TeamMemberService {
     private final TeamMemberRepository teamMemberRepository;
 
     @Transactional
-    public void createTeamMemberAdmin(Team team, SiteUser teamAdminUser) {
+    public void createTeamMember(Team team, SiteUser teamAdminUser) {
 
         TeamMember tm = TeamMember.builder()
                 .team(team)
