@@ -7,15 +7,20 @@ import devcom.main.domain.article.repository.ArticleRepository;
 import devcom.main.domain.category.entity.Category;
 import devcom.main.domain.user.entity.SiteUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -23,16 +28,48 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    //article create
-    public void create(Category category, String subject, String content , SiteUser author) {
-        Article article = Article.builder()
-                .category(category)
-                .subject(subject)
-                .content(content)
-                .author(author)
-                .build();
+    @Value("${custom.fileDirPath}")
+    private String fileDirPath;
 
-        this.articleRepository.save(article);
+    //article create
+    public void create(Category category, String subject, String content , SiteUser author, MultipartFile thumbnail) {
+        if(thumbnail == null){
+            Article article = Article.builder()
+                    .category(category)
+                    .subject(subject)
+                    .content(content)
+                    .author(author)
+                    .thumbnailImg(null)
+                    .build();
+
+            this.articleRepository.save(article);
+            return;
+        }
+        //MultipartFile => String type
+        String thumbnailRelPath = "article/" + UUID.randomUUID().toString() + ".jpg";
+        File thumbnailFile = new File(fileDirPath + "/" + thumbnailRelPath);
+
+        try {
+            thumbnail.transferTo(thumbnailFile);
+        } catch (IOException e) {
+            throw  new RuntimeException(e);
+        }
+
+
+
+
+
+            Article article = Article.builder()
+                    .category(category)
+                    .subject(subject)
+                    .content(content)
+                    .author(author)
+                    .thumbnailImg(thumbnailRelPath)
+                    .build();
+
+            this.articleRepository.save(article);
+
+
     }
     //article modify
     public void modify(Category category, Article article, String subject, String content){

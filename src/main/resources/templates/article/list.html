@@ -1,4 +1,4 @@
-<html layout:decorate="~{layout}">
+<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml">
 <div layout:fragment="content" class="container my-3">
     <div style="max-width:1200px" class="py-4 px-3 w-100 bg-body">
         <!--  top_section      -->
@@ -27,9 +27,14 @@
                 <a style="text-decoration: none; outline: none;"
                    class="fs-2 fw-bold flex-grow-1 text-black" th:href="@{|detail/${article.id}|}"
                    th:text="${article.subject}"></a>
+                <!-- img -->
+                <div  style="width:700px; height: 160px; overflow:hidden">
+                    <a  th:href="@{|detail/${article.id}|}"><img  th:src="@{|/file/${article.thumbnailImg}|}" alt="사진"></a>
+                </div>
                 <!--content-->
                 <p style="max-width: 850px; text-overflow: ellipsis; overflow: hidden; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; word-wrap:break-word; line-height:20px; max-height: 60px; text-align: left;"
                    class="text-body-secondary flex-grow-1" th:text="${article.content}"></p>
+
                 <!-- author, createTime, comment, like, hit    -->
                 <div style="font-size: 14px;" class="d-flex flex-grow-1 text-secondary align-items-center ">
                     <div>by

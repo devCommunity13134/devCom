@@ -38,6 +38,7 @@
         </div>
         <!-- content -->
         <div>
+            <img th:if="article.thumbnailImg != null"  th:src="@{|/file/${article.thumbnailImg}|}" alt="사진">
             <p>[[${article.content}]]</p>
         </div>
         <!-- like button-->

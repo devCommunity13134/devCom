@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -56,14 +57,15 @@ public class ArticleController {
     }
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String articleCreate(@Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal){
+    public String articleCreate(@Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal,  @RequestParam("thumbnail") MultipartFile thumbnail){
         if(bindingResult.hasErrors()){
             return "article/form";
         }
+
         Category category = this.categoryService.getCategory(articleForm.getCategoryName());
         SiteUser author = this.userService.findByUsername(principal.getName());
 
-        this.articleService.create(category ,articleForm.getSubject(),articleForm.getContent(),author);
+        this.articleService.create(category ,articleForm.getSubject(),articleForm.getContent(),author, thumbnail);
 
         return String.format("redirect:/article/%s",articleForm.getCategoryName());
     }
