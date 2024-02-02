@@ -93,11 +93,9 @@ public class ArticleController {
     public String articleVote(@PathVariable("id") Long articleId, Principal principal){
         Article article = this.articleService.getArticle(articleId);
         SiteUser siteUser = this.userService.findByUsername(principal.getName());
-
+        this.articleService.voteArticle(article, siteUser);
         //raise likes
         this.articleService.likesArticle(article);
-
-        this.articleService.voteArticle(article, siteUser);
         return String.format("redirect:/article/detail/%s",articleId);
     }
 

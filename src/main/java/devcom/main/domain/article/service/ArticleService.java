@@ -134,7 +134,7 @@ public class ArticleService {
     // main page top section list
     public Page<Article> getArticleListSortByLikes(int page) {
         List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("likes"));
+        sorts.add(Sort.Order.desc("voter"));
         Pageable pageable = PageRequest.of(page, 4, Sort.by(sorts));
         return this.articleRepository.findAll(pageable);
     }
@@ -156,6 +156,7 @@ public class ArticleService {
 
     public void voteArticle(Article article, SiteUser siteUser) {
         article.getVoter().add(siteUser);
+
         this.articleRepository.save(article);
     }
 
@@ -170,7 +171,7 @@ public class ArticleService {
     //
     public void likesArticle(Article article) {
         Article aritlce1 = article.toBuilder()
-                .likes(article.getLikes() + 1)
+                .likes(article.getVoter().size())
                 .build();
         this.articleRepository.save(aritlce1);
     }

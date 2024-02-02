@@ -20,7 +20,7 @@
                 <strong class="me-auto">ID 찾기</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="toast-body" th:text="|회원님의 아이디는 [ ${user.username} ] 입니다.|">
+            <div class="toast-body" th:text="${user.username}">
             </div>
         </div>
     </div>
