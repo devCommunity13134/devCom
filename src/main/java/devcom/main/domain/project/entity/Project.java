@@ -4,10 +4,7 @@ import devcom.main.domain.projectState.entity.ProjectState;
 import devcom.main.domain.team.entity.Team;
 import devcom.main.domain.teamMember.entity.TeamMember;
 import devcom.main.global.jpa.BaseEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,5 +30,6 @@ public class Project extends BaseEntity {
     private Team team;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
+    @OrderBy("modifiedDate asc")
     private List<ProjectState> projectStates;
 }
