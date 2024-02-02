@@ -1,6 +1,7 @@
 package devcom.main.domain.team.entity;
 
 import devcom.main.domain.project.entity.Project;
+import devcom.main.domain.teamInvite.entity.TeamInvite;
 import devcom.main.domain.teamMember.entity.TeamMember;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.global.jpa.BaseEntity;
@@ -37,4 +38,7 @@ public class Team extends BaseEntity {
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Project> projectList;
+
+    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<TeamInvite> teamInviteList;
 }

@@ -5,13 +5,20 @@ import devcom.main.domain.project.ProjectModifyForm;
 import devcom.main.domain.project.entity.Project;
 import devcom.main.domain.project.service.ProjectService;
 import devcom.main.domain.projectState.ProjectStateCreateForm;
+import devcom.main.domain.projectState.controller.ProjectStateController;
 import devcom.main.domain.projectState.entity.ProjectState;
 import devcom.main.domain.projectState.service.ProjectStateService;
 import devcom.main.domain.team.TeamCreateForm;
 import devcom.main.domain.team.TeamModifyForm;
 import devcom.main.domain.team.entity.Team;
+import devcom.main.domain.teamInvite.TeamInviteForm;
+import devcom.main.domain.teamInvite.controller.TeamInviteController;
+import devcom.main.domain.teamInvite.entity.TeamInvite;
+import devcom.main.domain.teamInvite.service.TeamInviteService;
+import devcom.main.domain.teamMember.entity.TeamMember;
 import devcom.main.domain.teamMember.service.TeamMemberService;
 import devcom.main.domain.user.entity.SiteUser;
+import devcom.main.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
@@ -25,8 +32,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TeamAndProjectService {
 
+    private final UserService userService;
+
     private final TeamService teamService;
     private final TeamMemberService teamMemberService;
+    private final TeamInviteService teamInviteService;
 
     private final ProjectService projectService;
     private final ProjectStateService projectStateService;
@@ -46,7 +56,7 @@ public class TeamAndProjectService {
         }
 
         Team NewTeam = teamService.create(teamCreateForm, siteUser);
-        teamMemberService.createTeamMemberAdmin(NewTeam,siteUser);
+        teamMemberService.createTeamMember(NewTeam,siteUser);
 
         return bindingResult;
     }
@@ -157,5 +167,106 @@ public class TeamAndProjectService {
             throw new Exception("권한이 없습니다.");
         }
         teamService.delete(team);
+    }
+
+    @Transactional
+    public TeamInviteController.TeamInviteResponse inviteMember(TeamInviteForm teamInviteForm, SiteUser siteUser, BindingResult bindingResult) {
+
+        // 유효성 검사
+        if(bindingResult.hasErrors()){
+            return new TeamInviteController.TeamInviteResponse(false, bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
+
+        // 팀 초대 권한 있는지 검사
+        Team team = getTeamById(teamInviteForm.getTeamId(),siteUser);
+
+        if(!team.getTeamAdmin().getUsername().equals(siteUser.getUsername())){
+            return new TeamInviteController.TeamInviteResponse(false, "권한이 없습니다.");
+        }
+
+        // 존재하는 회원인지 검사
+        SiteUser invitedUser = userService.findByNickname(teamInviteForm.getNickname());
+
+        // 이미 팀 멤버인지 검사
+        if(teamMemberService.isRegisteredMember(team, invitedUser)){
+            return new TeamInviteController.TeamInviteResponse(false, "이미 팀 멤버인 회원입니다.");
+        }
+
+        teamInviteService.create(team, invitedUser);
+
+        return new TeamInviteController.TeamInviteResponse(true, "초대 메세지를 전송하였습니다.");
+    }
+
+    @SneakyThrows
+    @Transactional
+    public Long deleteInvite(Long inviteId, SiteUser siteUser) {
+        TeamInvite invite = teamInviteService.findById(inviteId);
+        Team team = invite.getTeam();
+        if(!team.getTeamAdmin().getUsername().equals(siteUser.getUsername())){
+            throw new Exception("권한이 없습니다.");
+        }
+
+        teamInviteService.delete(invite);
+
+        return invite.getTeam().getId();
+    }
+
+    public TeamMember getTeamMemberById(Long teamMemberId) {
+        return teamMemberService.findById(teamMemberId);
+    }
+
+    @SneakyThrows
+    @Transactional
+    public void changeTeamAdmin(TeamMember teamMember, SiteUser siteUser) {
+
+        Team team = teamMember.getTeam();
+
+        if(!team.getTeamAdmin().getUsername().equals(siteUser.getUsername())){
+            throw new Exception("권한이 없습니다.");
+        }
+
+        teamService.changeTeamAdmin(team,teamMember.getSiteUser());
+    }
+
+    @SneakyThrows
+    @Transactional
+    public void deleteTeamMember(TeamMember teamMember, SiteUser siteUser) {
+
+        Team team = teamMember.getTeam();
+
+        if(!team.getTeamAdmin().getUsername().equals(siteUser.getUsername())){
+            throw new Exception("권한이 없습니다.");
+        }
+
+        if(team.getTeamAdmin().getUsername().equals(teamMember.getSiteUser().getUsername())){
+            throw new Exception("팀장은 못나가~");
+        }
+
+        teamMemberService.deleteTeamMember(teamMember);
+    }
+
+    @SneakyThrows
+    @Transactional
+    public void leaveTeam(Long teamId, SiteUser siteUser) {
+        Team team = teamService.getTeamById(teamId);
+
+        if(team.getTeamAdmin().getUsername().equals(siteUser.getUsername())){
+            throw new Exception("팀장은 못나가~");
+        }
+
+        TeamMember teamMember = teamMemberService.findByTeamAndSiteUser(team,siteUser);
+
+        teamMemberService.deleteTeamMember(teamMember);
+
+    }
+
+
+    public ProjectStateController.changeProjectStateResponse changeProjectState(Project project, Long projectStateId, String state) {
+
+        ProjectState ps = projectStateService.findById(projectStateId);
+
+        projectStateService.update(ps,state);
+
+        return new ProjectStateController.changeProjectStateResponse(true, "변경됨");
     }
 }

@@ -8,6 +8,8 @@ import devcom.main.domain.category.service.CategoryService;
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.domain.skill.service.SkillService;
 import devcom.main.domain.team.TeamCreateForm;
+import devcom.main.domain.team.entity.Team;
+import devcom.main.domain.team.service.TeamAndProjectService;
 import devcom.main.domain.team.service.TeamService;
 import devcom.main.domain.teamMember.service.TeamMemberService;
 import devcom.main.domain.user.UserCreateForm;
@@ -107,8 +109,15 @@ public class ServiceInit implements InitializingBean {
 
             SiteUser st = userService.findByUsername("user1");
 
-            teamMemberService.createTeamMemberAdmin(teamService.create(team1, st), st);
+            teamMemberService.createTeamMember(teamService.create(team1, st), st);
         }
+
+        Team team = teamService.getTeamById(1L);
+
+        for(int i = 2; i <10; i++) {
+            teamMemberService.createTeamMember(team, userService.findByUsername("user"+i));
+        }
+
         this.categoryService.create("frontEnd");
         this.categoryService.create("backEnd");
         this.categoryService.create("dataEngineer");
