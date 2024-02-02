@@ -38,7 +38,7 @@
         </div>
         <!-- content -->
         <div>
-            <img style="width:100%; height:100%; object-fit: cover;" th:if="${article.thumbnailImg != null}"  th:src="@{|/file/${article.thumbnailImg}|}" alt="사진">
+            <img style="max-width:800px; max-height:auto; object-fit: cover;" th:if="${article.thumbnailImg != null}"  th:src="@{|/file/${article.thumbnailImg}|}" alt="사진">
             <p>[[${article.content}]]</p>
         </div>
         <!-- like button-->
