@@ -41,94 +41,98 @@ public class ArticleController {
 
     // article list
     @GetMapping("/{category}")
-    public String articleList(Model model, @PathVariable("category") String category, @RequestParam(value = "page",defaultValue = "0") int page){
+    public String articleList(Model model, @PathVariable("category") String category, @RequestParam(value = "page", defaultValue = "0") int page
+            , @RequestParam(value = "keyword", defaultValue = "") String keyword) {
         Category category1 = this.categoryService.getCategory(category);
-        Page<Article> paging = this.articleService.getArticleList(page,category1);
-        model.addAttribute("paging",paging);
+        Page<Article> paging = this.articleService.getArticleList(page, keyword, category1);
+        model.addAttribute("paging", paging);
         model.addAttribute("categoryName", category1.getCategoryName());
+        model.addAttribute("keyword", keyword);
         return "article/list";
     }
+
     // create article
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
-    public String articleCreate(ArticleForm articleForm){
+    public String articleCreate(ArticleForm articleForm) {
 
         return "article/form";
     }
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    public String articleCreate(@Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal,  @RequestParam("thumbnail") MultipartFile thumbnail){
-        if(bindingResult.hasErrors()){
+    public String articleCreate(@Valid ArticleForm articleForm, BindingResult bindingResult, Principal principal, @RequestParam("thumbnail") MultipartFile thumbnail) {
+        if (bindingResult.hasErrors()) {
             return "article/form";
         }
 
         Category category = this.categoryService.getCategory(articleForm.getCategoryName());
         SiteUser author = this.userService.findByUsername(principal.getName());
 
-        this.articleService.create(category ,articleForm.getSubject(),articleForm.getContent(),author, thumbnail);
+        this.articleService.create(category, articleForm.getSubject(), articleForm.getContent(), author, thumbnail);
 
-        return String.format("redirect:/article/%s",articleForm.getCategoryName());
+        return String.format("redirect:/article/%s", articleForm.getCategoryName());
     }
 
     // detail getMapping_fix_need
     @GetMapping("/detail/{id}")
-    public String articleDetail(Model model, @PathVariable("id") Long id, AnswerForm answerForm, @RequestParam(value = "page",defaultValue = "0") int page){
+    public String articleDetail(Model model, @PathVariable("id") Long id, AnswerForm answerForm, @RequestParam(value = "page", defaultValue = "0") int page) {
         Article article = this.articleService.getArticle(id);
         // raise hit
         this.articleService.hitArticle(article);
 
         // answerList, replyList
-        Page<Answer> answerPaging = this.answerService.getAnswerList(page,article);
-        Page<Reply> replyPaging =   this.replyService.getReplyList(page,article);
+        Page<Answer> answerPaging = this.answerService.getAnswerList(page, article);
+        Page<Reply> replyPaging = this.replyService.getReplyList(page, article);
 
         // send answerList, replyList to article/detail page
         model.addAttribute("answerPaging", answerPaging);
         model.addAttribute("replyPaging", replyPaging);
-        model.addAttribute("article",article);
+        model.addAttribute("article", article);
         return "article/detail";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/vote/{id}")
-    public String articleVote(@PathVariable("id") Long articleId, Principal principal){
+    public String articleVote(@PathVariable("id") Long articleId, Principal principal) {
         Article article = this.articleService.getArticle(articleId);
         SiteUser siteUser = this.userService.findByUsername(principal.getName());
         this.articleService.voteArticle(article, siteUser);
         //raise likes
         this.articleService.likesArticle(article);
-        return String.format("redirect:/article/detail/%s",articleId);
+        return String.format("redirect:/article/detail/%s", articleId);
     }
 
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String articleModify(ArticleForm articleForm){
+    public String articleModify(ArticleForm articleForm) {
         return "article/form";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
-    public String articleModify(@Valid ArticleForm articleForm, BindingResult bindingResult, @PathVariable("id") Long articleId){
-        if(bindingResult.hasErrors()){
+    public String articleModify(@Valid ArticleForm articleForm, BindingResult bindingResult, @PathVariable("id") Long articleId) {
+        if (bindingResult.hasErrors()) {
             return "article/form";
         }
         Article article = this.articleService.getArticle(articleId);
         Category category = this.categoryService.getCategory(articleForm.getCategoryName());
 
-        this.articleService.modify(category,article, articleForm.getSubject(), articleForm.getContent());
+        this.articleService.modify(category, article, articleForm.getSubject(), articleForm.getContent());
 
         return String.format("redirect:/article/detail/%s", articleId);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
-    public String articleDelete(@PathVariable("id") Long id){
+    public String articleDelete(@PathVariable("id") Long id) {
         Article article = this.articleService.getArticle(id);
         String categoryName = article.getCategory().getCategoryName();
-        if(article.getAnswerList() != null){
+        if (article.getAnswerList() != null) {
             this.answerService.deleteByAuthorId(id);
         }
-        if(article.getReplyList() != null){
+        if (article.getReplyList() != null) {
             this.replyService.deleteByAuthorId(id);
         }
         this.articleService.delete(article);
