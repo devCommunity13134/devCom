@@ -185,18 +185,14 @@ public class TeamAndProjectService {
         }
 
         // 존재하는 회원인지 검사
-        Optional<SiteUser> invitedUser = userService.findByNickname(teamInviteForm.getNickname());
-
-        if(invitedUser.isEmpty()){
-            return new TeamInviteController.TeamInviteResponse(false, "존재하지 않는 회원 닉네임 입니다.");
-        }
+        SiteUser invitedUser = userService.findByNickname(teamInviteForm.getNickname());
 
         // 이미 팀 멤버인지 검사
-        if(teamMemberService.isRegisteredMember(team, invitedUser.get())){
+        if(teamMemberService.isRegisteredMember(team, invitedUser)){
             return new TeamInviteController.TeamInviteResponse(false, "이미 팀 멤버인 회원입니다.");
         }
 
-        teamInviteService.create(team, invitedUser.get());
+        teamInviteService.create(team, invitedUser);
 
         return new TeamInviteController.TeamInviteResponse(true, "초대 메세지를 전송하였습니다.");
     }

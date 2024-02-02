@@ -33,6 +33,7 @@ public class MessageService {
                 .user(user)
                 .content(content)
                 .sendUserId(id)
+                .receiverName(this.userService.findById(id).getNickname())
                 .build();
 
         this.sendMessageRepository.save(sendMessage);
@@ -48,6 +49,7 @@ public class MessageService {
                 .user(user)
                 .content(content)
                 .receiveUserId(id)
+                .senderName(this.userService.findById(id).getNickname())
                 .build();
 
         this.receiveMessageRepository.save(receiveMessage);
