@@ -4,10 +4,13 @@ package devcom.main.domain.user.service;
 import devcom.main.domain.follow.entity.Following;
 import devcom.main.domain.follow.repository.FollowingRepository;
 import devcom.main.domain.skill.entity.Skill;
+import devcom.main.domain.user.ConfirmForm;
 import devcom.main.domain.user.UserCreateForm;
+import devcom.main.domain.user.UserModifyForm;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -27,9 +31,19 @@ public class UserService {
     private final FollowingRepository followingRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    @Value("${custom.fileDirPath}")
+    private String fileDirPath;
+
+
     public void signup(UserCreateForm userCreateForm, List<Skill> skillList, MultipartFile file) throws IOException {
-        file.transferTo(new File("C:\\Work\\devCom\\src\\main\\resources\\static\\images\\"+file.getOriginalFilename()));
-        String profileImg = "/images/"+file.getOriginalFilename();
+        // 프로젝트 내부 저장
+        String localProfileImg = UUID.randomUUID().toString() + file.getOriginalFilename();
+        file.transferTo(new File("C:\\Work\\devCom\\src\\main\\resources\\static\\images\\" + localProfileImg));
+        String localProfileImgPath = "/images/" + localProfileImg;
+        // 외부 저장
+        // String outOflocalProfileImg = fileDirPath + UUID.randomUUID().toString() + file.getOriginalFilename();
+        // file.transferTo(new File(outOflocalProfileImg));
         SiteUser user = SiteUser.builder()
                 .username(userCreateForm.getUsername())
                 .nickname(userCreateForm.getNickname())
@@ -39,7 +53,7 @@ public class UserService {
                 .sex(userCreateForm.getSex())
                 .age(userCreateForm.getAge())
                 .salary(userCreateForm.getSalary())
-                .profileImg(profileImg)
+                .profileImg(localProfileImgPath)
                 .skillList(skillList)
                 .build();
 
@@ -63,8 +77,37 @@ public class UserService {
         this.userRepository.save(user);
     }
 
+    public void modify(UserModifyForm userModifyForm, SiteUser modifyUser, List<Skill> skillList, MultipartFile file) throws IOException {
+        // 프로젝트 내부 저장
+        String localProfileImg = UUID.randomUUID().toString() + file.getOriginalFilename();
+        file.transferTo(new File("C:\\Work\\devCom\\src\\main\\resources\\static\\images\\" + localProfileImg));
+        String localProfileImgPath = "/images/" + localProfileImg;
+        // 외부 저장
+        // String outOflocalProfileImg = fileDirPath + UUID.randomUUID().toString() + file.getOriginalFilename();
+        // file.transferTo(new File(outOflocalProfileImg));
+        SiteUser user = modifyUser.toBuilder()
+                .nickname(userModifyForm.getNickname())
+                .password(passwordEncoder.encode(userModifyForm.getPassword2()))
+                .phoneNumber(userModifyForm.getPhoneNumber())
+                .email(userModifyForm.getEmail())
+                .salary(userModifyForm.getSalary())
+                .profileImg(localProfileImgPath)
+                .skillList(skillList)
+                .build();
+
+        this.userRepository.save(user);
+    }
+
     public SiteUser findByUsername(String username) {
         Optional<SiteUser> user = this.userRepository.findByUsername(username);
+        if(user.isEmpty()) {
+            throw new RuntimeException("존재하지 않은 사용자입니다.");
+        }
+        return user.get();
+    }
+
+    public SiteUser findByNickname(String usernickname) {
+        Optional<SiteUser> user = this.userRepository.findByNickname(usernickname);
         if(user.isEmpty()) {
             throw new RuntimeException("존재하지 않은 사용자입니다.");
         }
@@ -79,6 +122,7 @@ public class UserService {
         return user.get();
     }
 
+    // 회원 가입 시 검증
     public BindingResult checkErrors(UserCreateForm userCreateForm, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             return bindingResult;
@@ -90,6 +134,33 @@ public class UserService {
         }
         return bindingResult;
     }
+
+    // 프로필 수정 시 검증
+    public BindingResult checkErrors(UserModifyForm userModifyForm, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            return bindingResult;
+        }
+        if(!userModifyForm.getPassword1().equals(userModifyForm.getPassword2())) {
+            bindingResult.rejectValue("password2", "passwordInCorrect",
+                    "2개의 패스워드가 일치하지 않습니다.");
+            return bindingResult;
+        }
+        return bindingResult;
+    }
+
+    // 이메일 인증번호 검증
+    public BindingResult checkErrors(ConfirmForm confirmForm, BindingResult bindingResult, int confirmNumber) {
+        if(bindingResult.hasErrors()) {
+            return bindingResult;
+        }
+        if(confirmForm.getConfirmNum()!=confirmNumber) {
+            bindingResult.rejectValue("confirmNum", "passwordInCorrect",
+                    "인증번호가 일치하지 않습니다.");
+            return bindingResult;
+        }
+        return bindingResult;
+    }
+
 
 
     @Transactional

@@ -29,4 +29,26 @@ public class EmailService {
         }
 
     }
+
+    public int sendConfirm(String to) {
+
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+
+        int randomNumber = (int) (Math.random()*10000);
+        String subject = "[devCom] ID찾기 인증번호입니다.";
+        String content = "인증번호 [" + randomNumber + "] 를 입력해주세요.";
+
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
+            mimeMessageHelper.setTo(to); // 메일 수신자
+            mimeMessageHelper.setSubject(subject); // 메일 제목
+            mimeMessageHelper.setText(content, true); // 메일 본문 내용, HTML 여부
+            mailSender.send(mimeMessage); // 메일방송
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return randomNumber;
+
+    }
 }

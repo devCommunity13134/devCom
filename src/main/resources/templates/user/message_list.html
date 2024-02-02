@@ -1,19 +1,67 @@
 <html layout:decorate="~{layout}">
-    <div layout:fragment="content" class="container my-3" style="width:800px;">
-        <h5>쪽지함</h5>
-        <div>보낸 쪽지
-            <ul th:each="sendMessageList : ${sendMessageList}">
-                <li th:text="${sendMessageList.content}"></li>
-                <li th:text="${sendMessageList.user.nickname}"></li>
-                <li th:text="${sendMessageList.createDate}"></li>
+<div layout:fragment="content" class="container my-3" style="width:800px;">
+    <div class="card mb-3">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" id="bologna-list" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#allmessage">전체보기</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#sendmessage" role="tab" aria-selected="false">보낸쪽지함</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#receivemessage">받은쪽지함</a>
+                </li>
             </ul>
         </div>
-        <div>받은 쪽지
-            <ul th:each="receiveMessageList : ${receiveMessageList}">
-                <li th:text="${receiveMessageList.content}"></li>
-                <li th:text="${receiveMessageList.user.nickname}"></li>
-                <li th:text="${receiveMessageList.createDate}"></li>
-            </ul>
+        <div class="card-body">
+            <!-- 쪽지 전체 목록 -->
+            <div class="tab-content mt-3">
+                <div class="tab-pane" id="allmessage" role="tabpanel">
+                    <div class="mb-3">
+                        액티브
+                    </div>
+                    <div class="mb-3">
+                        액티브
+                    </div>
+                </div>
+            </div>
+            <!-- 보낸 쪽지 목록 -->
+            <div class="tab-content mt-3">
+                <div class="tab-pane" id="sendmessage" role="tabpanel">
+                    <div>
+                        <ul th:each="sendMessageList : ${sendMessageList}">
+                            <li th:text="|번호 : ${sendMessageList.id}|"></li>
+                            <li th:text="|내용 : ${sendMessageList.content}|"></li>
+                            <li th:text="|받는 사람 : ${sendMessageList.receiverName}|"></li>
+                            <li th:text="|날짜 : ${sendMessageList.createDate}|"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- 받은 쪽지 목록 -->
+            <div class="tab-content mt-3">
+                <div class="tab-pane" id="receivemessage" role="tabpanel">
+                    <div>
+                        <ul th:each="receiveMessageList : ${receiveMessageList}">
+                            <li th:text="|번호 : ${receiveMessageList.id}|"></li>
+                            <li th:text="|내용 : ${receiveMessageList.content}|"></li>
+                            <li th:text="|보낸 사람 : ${receiveMessageList.senderName}|"></li>
+                            <li th:text="|날짜 : ${receiveMessageList.createDate}|"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+
+    <!-- tab 활성화 js -->
+    <script th:inline="javascript">
+        $('#bologna-list a').on('click', function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+        });
+    </script>
+</div>
 </html>

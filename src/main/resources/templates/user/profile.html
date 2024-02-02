@@ -47,13 +47,17 @@
                     </div>
                 </div>
             </div>
+            <!-- 다른 사람 프로필 조회 시 -->
             <a th:if="${#authentication.getPrincipal().getUsername() != user.username}"
                href="#" class="btn btn-success btn-sm" style="margin-left:3px;">팀 초대하기</a>
-            <a th:if="${#authentication.getPrincipal().getUsername() == user.username}"
-               th:href="@{/user/message}" class="btn btn-success btn-sm" style="margin-left:3px;">쪽지함</a>
             <a th:if="${#authentication.getPrincipal().getUsername() != user.username}"
                th:href="@{|/user/follow/${user.id}|}" class="btn btn-success btn-sm"
                style="margin-left:3px;">팔로우</a>
+            <!-- 나의 프로필 조회 시 -->
+            <a th:if="${#authentication.getPrincipal().getUsername() == user.username}"
+               th:href="@{/user/message}" class="btn btn-success btn-sm" style="margin-left:3px;">쪽지함</a>
+            <a th:if="${#authentication.getPrincipal().getUsername() == user.username}"
+               th:href="@{|/user/modify/${user.id}|}" class="btn btn-success btn-sm" style="margin-left:3px;">정보수정</a>
         </div>
     </div>
     <div class="card" style="margin-left:30px; width:650px;">
