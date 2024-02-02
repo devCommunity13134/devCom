@@ -32,6 +32,8 @@ public class Article extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    private String thumbnailImg;
+
     // 조회수
     @Column
     @Builder.Default()
