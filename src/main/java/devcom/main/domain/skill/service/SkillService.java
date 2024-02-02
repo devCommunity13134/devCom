@@ -4,6 +4,7 @@ package devcom.main.domain.skill.service;
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.domain.skill.repository.SkillRepository;
 import devcom.main.domain.user.entity.SiteUser;
+import devcom.main.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public class SkillService {
 
     private final SkillRepository skillRepository;
+
 
     public void save(Skill skill) {
         this.skillRepository.save(skill);
@@ -28,6 +30,17 @@ public class SkillService {
     public void create(List<String> skills, SiteUser user) {
         for(int i = 0; i < skills.size(); i++) {
             Skill skill = Skill.builder()
+                    .skillName(skills.get(i))
+                    .user(user)
+                    .build();
+
+            this.skillRepository.save(skill);
+        }
+    }
+
+    public void modify(List<String> skills, SiteUser user) {
+        for(int i = 0; i < skills.size(); i++) {
+            Skill skill = user.getSkillList().get(i).toBuilder()
                     .skillName(skills.get(i))
                     .user(user)
                     .build();

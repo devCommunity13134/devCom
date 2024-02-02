@@ -1,14 +1,42 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3" style="width:500px;">
-    <form th:action="@{/user/findid/confirm}" method="post">
+    <form th:action="@{/user/findid/confirm}" method="post" th:object="${confirmForm}">
+        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
         <div class="mb-3">
             <label for="confirmNum" class="form-label">인증번호</label>
-            <input type="text" id="confirmNum" class="form-control">
+            <input type="text" id="confirmNum" name="confirmNum" class="form-control">
         </div>
-        <button type="submit" class="btn btn-primary btn-sm">인증하기</button>
+        <button type="submit" class="btn btn-primary btn-sm" style="margin-bottom:20px;">인증하기</button>
     </form>
-    <div th:if="${user != null}" class="mb-3">
-        <div th:text="아이디 : ${user.username}"></div>
+
+
+    <!-- 토스트 창 -->
+    <button th:if="${user != null}" type="button" class="btn btn-primary btn-sm" id="liveToastBtn">ID 확인하기</button>
+
+    <div class="toast-container d-flex justify-content-center align-items-center">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="fa-brands fa-dev rounded me-2"></i>
+                <strong class="me-auto">ID 찾기</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" th:text="|회원님의 아이디는 [ ${user.username} ] 입니다.|">
+            </div>
+        </div>
     </div>
+
+    <!-- button click 시 토스트 활성화 js-->
+    <script>
+        const toastTrigger = document.getElementById('liveToastBtn')
+        const toastLiveExample = document.getElementById('liveToast')
+
+        if (toastTrigger) {
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+        toastTrigger.addEventListener('click', () => {
+        toastBootstrap.show()
+        })
+        }
+    </script>
+
 </div>
 </html>

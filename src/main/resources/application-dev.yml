@@ -17,3 +17,5 @@ spring:
     hibernate:
       ddl-auto: create
     defer-datasource-initialization: true
+custom:
+  fileDirPath: C:\devCom\UserProfileImg

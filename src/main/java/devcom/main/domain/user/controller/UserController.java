@@ -7,7 +7,9 @@ import devcom.main.domain.message.entity.SendMessage;
 import devcom.main.domain.message.service.MessageService;
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.domain.skill.service.SkillService;
+import devcom.main.domain.user.ConfirmForm;
 import devcom.main.domain.user.UserCreateForm;
+import devcom.main.domain.user.UserModifyForm;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
 import devcom.main.global.email.service.EmailService;
@@ -59,8 +61,7 @@ public class UserController {
         this.userService.signup(userCreateForm, skillList, file);
         SiteUser user = this.userService.findByUsername(userCreateForm.getUsername());
         this.skillService.create(userCreateForm.getSkill(), user);
-
-        this.emailService.send(userCreateForm.getEmail(),"이메일 발송 테스트","잘 가냐?");
+        this.emailService.send(userCreateForm.getEmail(),"[devCom]회원가입을 환영합니다!","[devCom] 서비스에 가입해주셔서 감사합니다.");
 
         //
         return "redirect:/";
@@ -109,25 +110,51 @@ public class UserController {
         return "/user/profile";
     }
 
+    @GetMapping("/modify/{id}")
+    public String modifyProfile(UserCreateForm userCreateForm, Model model, @PathVariable(value = "id") Long id) {
+        SiteUser user = this.userService.findById(id);
+        model.addAttribute("user",user);
+        return "/user/modify_profile";
+    }
+
+    @PostMapping("/modify/{id}")
+    public String modifyProfileAccept(Principal principal, @Valid UserModifyForm userModifyForm, BindingResult bindingResult, @RequestParam(value = "profileImg") MultipartFile file) throws IOException {
+        List<Skill> skillList = this.skillService.findByskillList(userModifyForm.getSkill());
+        SiteUser modifyUser = this.userService.findByUsername(principal.getName());
+        if (this.userService.checkErrors(userModifyForm, bindingResult).hasErrors()) {
+            return String.format("redirect:/user/modify/%d",modifyUser.getId());
+        }
+        // facade pattern : userService + skillService
+        this.userService.modify(userModifyForm, modifyUser, skillList, file);
+        SiteUser user = this.userService.findByUsername(modifyUser.getUsername());
+        this.skillService.create(userModifyForm.getSkill(), user);
+        //
+        return this.logout();
+    }
+
     @GetMapping("/findaccount")
     public String findAccount() {
         return "/user/find_account";
     }
 
     @PostMapping("/findid/email")
-    public String findAccountByEmail(@RequestParam(value = "email") String emailAddress, @RequestParam(value = "usernameEmail") String username) {
+    public String findAccountByEmail(ConfirmForm confirmForm, @RequestParam(value = "email") String emailAddress, @RequestParam(value = "usernameEmail") String username) {
         confirmUsername = username;
+        confirmNumber = this.emailService.sendConfirm(emailAddress);
         return "/user/confirm_form";
     }
 
     @PostMapping("/findid/confirm")
-    public String confirm(Model model, @RequestParam(value = "confirmNum") int confirmNum) {
-        if (confirmNum != confirmNumber) {
-            return "/findid/confirm";
+    public String confirm(Model model, @Valid ConfirmForm confirmForm, BindingResult bindingResult) {
+
+        if (this.userService.checkErrors(confirmForm, bindingResult, confirmNumber).hasErrors()) {
+            return "/user/confirm_form";
         }
-        SiteUser user = this.userService.findByUsername(confirmUsername);
+
+        SiteUser user = this.userService.findByNickname(confirmUsername);
         model.addAttribute("user", user);
-        return "redirect:/user/confirm_form";
+
+        return "/user/confirm_form";
     }
 
     @GetMapping("/follow/{id}")

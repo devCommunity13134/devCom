@@ -7,6 +7,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -20,12 +21,14 @@ public class SendMessage extends BaseEntity {
 
     @ManyToOne
     private SiteUser user;
-    // 받는 사람
+    // 보낸 사람
 
     private Long sendUserId;
-    // 보낸 사람 id(pk)
+    // 받는 사람 id
 
     @Column(columnDefinition = "TEXT")
     private String content;
+
+    private String receiverName;
 
 }
