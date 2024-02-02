@@ -6,13 +6,11 @@ import devcom.main.domain.team.service.TeamAndProjectService;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
 import jakarta.validation.Valid;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -23,6 +21,35 @@ public class ProjectStateController {
 
     private final TeamAndProjectService teamAndProjectService;
     private final UserService userService;
+
+    @Getter
+    public static class ChangeProjectRequest{
+        private Long projectId;
+        private Long projectStateId;
+        private String state;
+    }
+
+    @Getter
+    public static class changeProjectStateResponse{
+        private Boolean isSuccess;
+        private String message;
+
+        public changeProjectStateResponse(Boolean isSuccess, String message) {
+            this.isSuccess = isSuccess;
+            this.message = message;
+        }
+    }
+
+    @PostMapping("/changeProjectState")
+    @ResponseBody
+    public changeProjectStateResponse changeProjectState(@RequestBody ChangeProjectRequest changeProjectRequest, Principal principal){
+
+        SiteUser siteUser = userService.findByUsername(principal.getName());
+
+        Project project = teamAndProjectService.getProjectById(changeProjectRequest.getProjectId(),siteUser);
+
+        return teamAndProjectService.changeProjectState(project,changeProjectRequest.getProjectStateId(),changeProjectRequest.getState());
+    }
 
     @PostMapping("/createProjectState")
     public String createProjectState(@Valid ProjectStateCreateForm projectStateCreateForm, BindingResult bindingResult, Principal principal){

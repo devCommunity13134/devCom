@@ -25,6 +25,16 @@ public class TeamController {
     private final TeamAndProjectService teamAndProjectService;
     private final UserService userService;
 
+    @GetMapping("/leave/{teamId}")
+    public String leave(@PathVariable("teamId") Long teamId, Principal principal) {
+
+        SiteUser siteUser = userService.findByUsername(principal.getName());
+
+        teamAndProjectService.leaveTeam(teamId,siteUser);
+
+        return "redirect:/team/list";
+    }
+
     @GetMapping("/delete/{teamId}")
     public String delete(@PathVariable("teamId") Long teamId, Principal principal,Model model) {
 

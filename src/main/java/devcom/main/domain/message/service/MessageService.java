@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -75,4 +76,13 @@ public class MessageService {
 
         return receiveUserList;
     }
+
+    public SendMessage findById(Long id) {
+        Optional<SendMessage> sendMessage = this.sendMessageRepository.findById(id);
+        if(sendMessage.isEmpty()) {
+            new RuntimeException("존재하지 않는 메세지입니다.");
+        }
+        return sendMessage.get();
+    }
+
 }

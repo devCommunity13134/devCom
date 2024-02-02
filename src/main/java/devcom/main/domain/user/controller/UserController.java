@@ -7,7 +7,8 @@ import devcom.main.domain.message.entity.SendMessage;
 import devcom.main.domain.message.service.MessageService;
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.domain.skill.service.SkillService;
-import devcom.main.domain.user.ConfirmForm;
+import devcom.main.domain.user.ConfirmNumberForm;
+import devcom.main.domain.user.EmailConfirmForm;
 import devcom.main.domain.user.UserCreateForm;
 import devcom.main.domain.user.UserModifyForm;
 import devcom.main.domain.user.entity.SiteUser;
@@ -43,7 +44,8 @@ public class UserController {
 
     private final EmailService emailService;
     private static int confirmNumber;
-    private static String confirmUsername;
+
+    private static String confirmName;
 
     @GetMapping("/signup")
     public String signup(UserCreateForm userCreateForm) {
@@ -133,25 +135,28 @@ public class UserController {
     }
 
     @GetMapping("/findaccount")
-    public String findAccount() {
+    public String findAccount(EmailConfirmForm emailConfirmForm) {
         return "/user/find_account";
     }
 
     @PostMapping("/findid/email")
-    public String findAccountByEmail(ConfirmForm confirmForm, @RequestParam(value = "email") String emailAddress, @RequestParam(value = "usernameEmail") String username) {
-        confirmUsername = username;
-        confirmNumber = this.emailService.sendConfirm(emailAddress);
+    public String findAccountByEmail(ConfirmNumberForm confirmNumberForm, @Valid EmailConfirmForm emailConfirmForm, BindingResult bindingResult, @RequestParam(value = "usernameEmail") String username) {
+        confirmName = username;
+        SiteUser user = this.userService.findByNickname(username);
+        if (this.userService.checkEmailAndUser(emailConfirmForm,bindingResult,user.getEmail()).hasErrors()) {
+            return "/user/find_account";
+        }
+        confirmNumber = this.emailService.sendConfirm(emailConfirmForm.getEmail());
         return "/user/confirm_form";
     }
 
     @PostMapping("/findid/confirm")
-    public String confirm(Model model, @Valid ConfirmForm confirmForm, BindingResult bindingResult) {
-
-        if (this.userService.checkErrors(confirmForm, bindingResult, confirmNumber).hasErrors()) {
+    public String confirm(Model model, @Valid ConfirmNumberForm confirmNumberForm, BindingResult bindingResult) {
+        if (this.userService.checkErrors(confirmNumberForm, bindingResult, confirmNumber).hasErrors()) {
             return "/user/confirm_form";
         }
 
-        SiteUser user = this.userService.findByNickname(confirmUsername);
+        SiteUser user = this.userService.findByNickname(confirmName);
         model.addAttribute("user", user);
 
         return "/user/confirm_form";
@@ -172,6 +177,21 @@ public class UserController {
         List<ReceiveMessage> receiveMessageList = user.getReceiveMessageList();
         model.addAttribute("sendMessageList",sendMessageList);
         model.addAttribute("receiveMessageList",receiveMessageList);
+        return "/user/message_list";
+    }
+
+
+    // 보낸 쪽지 삭제
+    @PostMapping("/message/remove/send")
+    public String removeSendMessage(@RequestParam(value = "id") List<Long> messageIdList) {
+        this.userService.removeSendMessage(messageIdList);
+        return "/user/message_list";
+    }
+
+
+    // 받은 쪽지 삭제
+    @PostMapping("/message/remove/receive")
+    public String removeReceiveMessage() {
         return "/user/message_list";
     }
 

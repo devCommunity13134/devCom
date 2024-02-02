@@ -1,10 +1,12 @@
 package devcom.main.domain.user.service;
 
 
-import devcom.main.domain.follow.entity.Following;
 import devcom.main.domain.follow.repository.FollowingRepository;
+import devcom.main.domain.message.entity.SendMessage;
+import devcom.main.domain.message.repository.SendMessageRepository;
 import devcom.main.domain.skill.entity.Skill;
-import devcom.main.domain.user.ConfirmForm;
+import devcom.main.domain.user.ConfirmNumberForm;
+import devcom.main.domain.user.EmailConfirmForm;
 import devcom.main.domain.user.UserCreateForm;
 import devcom.main.domain.user.UserModifyForm;
 import devcom.main.domain.user.entity.SiteUser;
@@ -29,6 +31,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final FollowingRepository followingRepository;
+
+    private final SendMessageRepository sendMessageRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -101,7 +105,7 @@ public class UserService {
     public SiteUser findByUsername(String username) {
         Optional<SiteUser> user = this.userRepository.findByUsername(username);
         if(user.isEmpty()) {
-            throw new RuntimeException("존재하지 않은 사용자입니다.");
+            throw new RuntimeException("존재하지 않는 사용자입니다.");
         }
         return user.get();
     }
@@ -109,7 +113,7 @@ public class UserService {
     public SiteUser findByNickname(String usernickname) {
         Optional<SiteUser> user = this.userRepository.findByNickname(usernickname);
         if(user.isEmpty()) {
-            throw new RuntimeException("존재하지 않은 사용자입니다.");
+            throw new RuntimeException("존재하지 않는 사용자입니다.");
         }
         return user.get();
     }
@@ -117,7 +121,7 @@ public class UserService {
     public SiteUser findById(Long id) {
         Optional<SiteUser> user = this.userRepository.findById(id);
         if(user.isEmpty()) {
-            throw new RuntimeException("존재하지 않은 사용자입니다.");
+            throw new RuntimeException("존재하지 않는 사용자입니다.");
         }
         return user.get();
     }
@@ -148,19 +152,39 @@ public class UserService {
         return bindingResult;
     }
 
-    // 이메일 인증번호 검증
-    public BindingResult checkErrors(ConfirmForm confirmForm, BindingResult bindingResult, int confirmNumber) {
+
+    // ID 찾기 시, 회원 가입할 때 입력한 이메일 주소와 맞는지 지금 입력한 이메일 주소가 맞는지 검증
+    public BindingResult checkEmailAndUser(EmailConfirmForm confirmForm, BindingResult bindingResult, String emailAddress) {
         if(bindingResult.hasErrors()) {
             return bindingResult;
         }
-        if(confirmForm.getConfirmNum()!=confirmNumber) {
-            bindingResult.rejectValue("confirmNum", "passwordInCorrect",
+        if(!confirmForm.getEmail().equals(emailAddress)) {
+            bindingResult.rejectValue("email", "passwordInCorrect",
+                    "이메일 주소가 일치하지 않습니다.");
+            return bindingResult;
+        }
+        return bindingResult;
+    }
+
+
+    // 이메일 인증번호 검증
+    public BindingResult checkErrors(ConfirmNumberForm confirmForm, BindingResult bindingResult, int confirmNumber) {
+        if(bindingResult.hasErrors()) {
+            return bindingResult;
+        }
+        if(confirmForm.getConfirmNumber()!=confirmNumber) {
+            bindingResult.rejectValue("confirmNumber", "passwordInCorrect",
                     "인증번호가 일치하지 않습니다.");
             return bindingResult;
         }
         return bindingResult;
     }
 
+    public void removeSendMessage(List<Long> sendMessageList) {
+        for ( int i = 0 ; i < sendMessageList.size(); i++) {
+            SendMessage sendMessage = this.sendMessageRepository.findById(sendMessageList.get(i));
+        }
+    }
 
 
     @Transactional

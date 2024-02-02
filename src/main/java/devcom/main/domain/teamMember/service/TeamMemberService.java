@@ -21,7 +21,7 @@ public class TeamMemberService {
     private final TeamMemberRepository teamMemberRepository;
 
     @Transactional
-    public void createTeamMemberAdmin(Team team, SiteUser teamAdminUser) {
+    public void createTeamMember(Team team, SiteUser teamAdminUser) {
 
         TeamMember tm = TeamMember.builder()
                 .team(team)
@@ -36,5 +36,17 @@ public class TeamMemberService {
         Optional<TeamMember> teamMember = teamMemberRepository.findByTeamAndSiteUser(team,siteUser);
 
         return teamMember.isPresent();
+    }
+
+    public TeamMember findById(Long teamMemberId) {
+        return teamMemberRepository.findById(teamMemberId).get();
+    }
+
+    public void deleteTeamMember(TeamMember teamMember) {
+        teamMemberRepository.delete(teamMember);
+    }
+
+    public TeamMember findByTeamAndSiteUser(Team team, SiteUser siteUser) {
+        return teamMemberRepository.findByTeamAndSiteUser(team, siteUser).get();
     }
 }

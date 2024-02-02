@@ -7,11 +7,12 @@ import devcom.main.domain.projectState.repository.ProjectStateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class ProjectStateService {
     private final ProjectStateRepository projectStateRepository;
-
 
     public void create(Project project, ProjectStateCreateForm projectStateCreateForm) {
 
@@ -30,5 +31,10 @@ public class ProjectStateService {
 
     public void delete(ProjectState ps) {
         projectStateRepository.delete(ps);
+    }
+
+    public void update(ProjectState ps, String state) {
+        ps = ps.toBuilder().state(state).modifiedDate(LocalDateTime.now()).build();
+        projectStateRepository.save(ps);
     }
 }
