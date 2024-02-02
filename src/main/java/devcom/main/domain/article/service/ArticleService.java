@@ -68,6 +68,19 @@ public class ArticleService {
 
 
     }
+    // create for test
+    public void create(Category category, String subject, String content, SiteUser author) {
+            Article article = Article.builder()
+                    .category(category)
+                    .subject(subject)
+                    .content(content)
+                    .author(author)
+                    .thumbnailImg(null)
+                    .build();
+
+            this.articleRepository.save(article);
+
+    }
 
     //article modify
     public void modify(Category category, Article article, String subject, String content) {
