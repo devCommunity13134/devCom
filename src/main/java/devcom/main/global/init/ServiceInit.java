@@ -112,11 +112,11 @@ public class ServiceInit implements InitializingBean {
             teamMemberService.createTeamMember(teamService.create(team1, st), st);
         }
 
-        Team team = teamService.getTeamById(1L);
-
-        for(int i = 2; i <10; i++) {
-            teamMemberService.createTeamMember(team, userService.findByUsername("user"+i));
-        }
+//        Team team = teamService.getTeamById(1L);
+//
+//        for(int i = 2; i <10; i++) {
+//            teamMemberService.createTeamMember(team, userService.findByUsername("user"+i));
+//        }
 
         this.categoryService.create("frontEnd");
         this.categoryService.create("backEnd");

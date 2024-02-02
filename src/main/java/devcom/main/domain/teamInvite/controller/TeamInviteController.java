@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import devcom.main.domain.team.entity.Team;
 import devcom.main.domain.team.service.TeamAndProjectService;
 import devcom.main.domain.teamInvite.TeamInviteForm;
+import devcom.main.domain.teamInvite.entity.TeamInvite;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
 import jakarta.validation.Valid;
@@ -36,6 +37,15 @@ public class TeamInviteController {
         }
     }
 
+    @GetMapping("/inviteRes/{inviteId}/{yesOrNo}")
+    public String inviteRes(@PathVariable("inviteId") Long inviteId,@PathVariable("yesOrNo") String yesOrNo, Principal principal) {
+
+        SiteUser siteUser = userService.findByUsername(principal.getName());
+
+        teamAndProjectService.inviteResponse(inviteId,yesOrNo,siteUser);
+
+        return "redirect:/";
+    }
 
     @PostMapping("/inviteMember")
     @ResponseBody

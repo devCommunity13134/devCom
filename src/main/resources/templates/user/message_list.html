@@ -45,7 +45,7 @@
                     <div>
                         <ul th:each="receiveMessageList : ${receiveMessageList}">
                             <li th:text="|번호 : ${receiveMessageList.id}|"></li>
-                            <li th:text="|내용 : ${receiveMessageList.content}|"></li>
+                            <li th:utext="|내용 : ${receiveMessageList.content}|"></li>
                             <li th:text="|보낸 사람 : ${receiveMessageList.senderName}|"></li>
                             <li th:text="|날짜 : ${receiveMessageList.createDate}|"></li>
                         </ul>
