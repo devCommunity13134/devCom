@@ -4,7 +4,7 @@
         <!--  top_section      -->
         <div class="d-flex  mb-2">
             <!-- category           -->
-            <span class="fs-1 flex-grow-1">#[[${categoryName}]]</span>
+            <span style="text-transform : uppercase;" class="fs-1 flex-grow-1">#[[${categoryName}]]</span>
             <!-- search -->
             <div class="input-group p-3 flex-grow-1">
                 <input type="text" id="search_kw" class="form-control" th:value="${keyword}">
@@ -13,11 +13,12 @@
             <!-- popular, new, like item-box     -->
             <div class="d-flex align-items-center text-secondary flex-grow-2">
                 <span class="fw-bold text-secondary">sort by:</span>
-                <a th:href="@{|/article/${categoryName}|}" class="btn active fw-bold" role="button" data-bs-toggle="button" aria-pressed="true">
+                <a th:href="@{|/article/${categoryName}|}" class="btn fw-bold" role="button">
                     <span class="mx-1">✨ </span> New</a>
-                <a href="#" class="btn fw-bold" role="button" data-bs-toggle="button">
-                    <span class="mx-1">💥</span>Popular</a>
-                <a href="#" class="btn fw-bold" role="button" data-bs-toggle="button">
+                <button type="submit" class="btn fw-bold" name="sortBy" value="popular" >
+                    <span class="mx-1" >💥</span>Popular</button>
+
+                <a href="#" class="btn fw-bold" role="button">
                     <span class="mx-1">👍</span>Like</a>
             </div>
         </div>

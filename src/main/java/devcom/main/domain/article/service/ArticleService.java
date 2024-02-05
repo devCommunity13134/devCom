@@ -115,9 +115,16 @@ public class ArticleService {
         return this.articleRepository.findAll(pageable);
     }
 
-    public Page<Article> getArticleList(int page, String keyword, Category category) {
+    public Page<Article> getArticleList(int page, String keyword, Category category, String sortBy) {
         List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("createDate"));
+        if(sortBy.equals("createDate")){
+            sorts.add(Sort.Order.desc("createDate"));
+        } else if(sortBy.equals("popular")){
+            sorts.add(Sort.Order.desc("hit"));
+        } else if(sortBy.equals("like")){
+            sorts.add(Sort.Order.desc("likes"));
+        }
+
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         return this.articleRepository.findAllByKeywordAndCategory( category, keyword, pageable);
     }

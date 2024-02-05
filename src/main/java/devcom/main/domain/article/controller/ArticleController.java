@@ -42,15 +42,18 @@ public class ArticleController {
     // article list
     @GetMapping("/{category}")
     public String articleList(Model model, @PathVariable("category") String category, @RequestParam(value = "page", defaultValue = "0") int page
-            , @RequestParam(value = "keyword", defaultValue = "") String keyword) {
+            , @RequestParam(value = "keyword", defaultValue = "") String keyword, @RequestParam(value = "sortBy", defaultValue = "createDate") String sortBy) {
         Category category1 = this.categoryService.getCategory(category);
-        Page<Article> paging = this.articleService.getArticleList(page, keyword, category1);
+        Page<Article> paging = this.articleService.getArticleList(page, keyword, category1, sortBy);
         model.addAttribute("paging", paging);
         model.addAttribute("categoryName", category1.getCategoryName());
         model.addAttribute("keyword", keyword);
         return "article/list";
     }
-    // navbar search
+
+
+
+    // navbar searchList
     @GetMapping("/list")
     public String articleSearchList(Model model,  @RequestParam(value = "page", defaultValue = "0") int page
             , @RequestParam(value = "keywordN", defaultValue = "") String keyword){
