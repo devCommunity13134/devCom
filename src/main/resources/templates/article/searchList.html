@@ -4,7 +4,7 @@
         <!--  top_section      -->
         <div class="d-flex  mb-2">
             <!-- category           -->
-            <span class="fs-1 flex-grow-1">#[[${categoryName}]]</span>
+            <span class="fs-1 flex-grow-1">#SearchList</span>
             <!-- search -->
             <div class="input-group p-3 flex-grow-1">
                 <input type="text" id="search_kw" class="form-control" th:value="${keyword}">
@@ -103,7 +103,7 @@
         </div>
         <!-- paging_end -->
         <!-- searchForm  -->
-        <form th:action="@{|/article/${categoryName}|}" method="get" id="searchForm">
+        <form th:action="@{|/article/detail/1|}" method="get" id="searchForm">
             <input type="hidden" id="keyword" name="keyword" th:value="${keyword}">
             <input type="hidden" id="page" name="page" th:value="${paging.number}">
         </form>
