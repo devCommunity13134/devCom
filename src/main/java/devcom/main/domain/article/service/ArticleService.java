@@ -121,6 +121,12 @@ public class ArticleService {
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         return this.articleRepository.findAllByKeywordAndCategory( category, keyword, pageable);
     }
+    public Page<Article> getArticleSearchList(int page, String keyword) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return this.articleRepository.findAllByKeyword(keyword, pageable);
+    }
 
     // same as above, smaller size
     public Page<Article> getArticleListSmallSize(int page, Category category) {

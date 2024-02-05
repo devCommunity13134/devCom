@@ -50,6 +50,17 @@ public class ArticleController {
         model.addAttribute("keyword", keyword);
         return "article/list";
     }
+    // navbar search
+    @GetMapping("/list")
+    public String articleSearchList(Model model,  @RequestParam(value = "page", defaultValue = "0") int page
+            , @RequestParam(value = "keywordN", defaultValue = "") String keyword){
+
+        Page<Article> paging = this.articleService.getArticleSearchList(page, keyword);
+        model.addAttribute("paging", paging);
+        model.addAttribute("keywordN", keyword);
+        return "article/searchList";
+    }
+
 
     // create article
     @PreAuthorize("isAuthenticated()")

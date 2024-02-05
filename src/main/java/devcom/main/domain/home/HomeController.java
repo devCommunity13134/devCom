@@ -58,6 +58,8 @@ public class HomeController {
         model.addAttribute("dataEngineerPage", dataEngineerPage);
         model.addAttribute("AIPage", AIPage);
 
+//        Page<Article> page1 = this.articleService.getArticleList(page);
+//        model.addAttribute("paging", page1);
         return "home/index";
     }
 }

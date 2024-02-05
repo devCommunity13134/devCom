@@ -41,12 +41,12 @@
                     </ul>
                 </li>
                 <li style="width:70%;" >
-                    <form class="d-flex" role="search">
+                    <div class="d-flex">
                         <div class="input-group">
-                            <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="검색어를 입력하세요!">
-                            <button class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            <input type="text" class="form-control" id="search_kwN" placeholder="검색어를 입력하세요!" th:value="${keywordN}">
+                            <button class="btn" type="button" id="btn_searchN"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
-                    </form>
+                    </div>
                 </li>
                 <li style="width:240px;" class="d-flex justify-content-center gap-2 align-items-center" sec:authorize="isAnonymous()">
                     <a class="btn btn-outline-primary btn-sm" th:href="@{/user/login}">로그인</a>
@@ -147,8 +147,23 @@
     <div class="container mt-4">
         <th:block layout:fragment="content"></th:block>
     </div>
+
+    <!-- searchFormN -->
+    <form th:action="@{|/article/list|}" method="get" id="searchFormN">
+        <input type="hidden" id="keywordN" name="keywordN" th:value="${keywordN}">
+        <input type="hidden" id="page" name="page" value="0">
+    </form>
 </div>
 
 
+<script th:inline="javascript">
+    const btn_searchN = document.getElementById("btn_searchN");
+    btn_searchN.addEventListener('click', function() {
+        document.getElementById('keywordN').value = document.getElementById('search_kwN').value;
+        document.getElementById('page').value = 0;
+        document.getElementById('searchFormN').submit();
+    });
+</script>
 </body>
+
 </html>
