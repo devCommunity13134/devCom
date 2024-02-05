@@ -54,7 +54,7 @@ public class FollowService {
     public List<SiteUser> getFollowerUserList(SiteUser user) {
         List<SiteUser> followerUserList = new ArrayList<>();
 
-        for(int i = 0; i < user.getFollowerList().size(); i++) {
+        for (int i = 0; i < user.getFollowerList().size(); i++) {
             followerUserList.add(this.userService.findById(user.getFollowerList().get(i).getFollowerUserId()));
         }
         return followerUserList;
@@ -64,32 +64,32 @@ public class FollowService {
     public List<SiteUser> getFollowingUserList(SiteUser user) {
         List<SiteUser> followingUserList = new ArrayList<>();
 
-        for(int i = 0; i < user.getFollowingList().size(); i++) {
+        for (int i = 0; i < user.getFollowingList().size(); i++) {
             followingUserList.add(this.userService.findById(user.getFollowingList().get(i).getFollowingUserId()));
         }
         return followingUserList;
     }
 
     public void removeFollower(SiteUser user, Long id) {
-        for( int i = 0 ; i < user.getFollowerList().size(); i++) {
-            if( user.getFollowerList().get(i).getFollowerUserId() == id) {
-                Follower follower = this.getFollowerFindById(id);
+        for (int i = 0; i < user.getFollowerList().size(); i++) {
+            if (user.getFollowerList().get(i).getFollowerUserId() == id) {
+                Follower follower = user.getFollowerList().get(i);
                 this.followerRepository.delete(follower);
             }
         }
     }
 
     public void removeFollowing(SiteUser user, Long id) {
-        for( int i = 0 ; i < user.getFollowingList().size(); i++) {
-            if( user.getFollowingList().get(i).getFollowingUserId() == id) {
-                Following following = this.getFollowingFindById(id);
+        for (int i = 0; i < user.getFollowingList().size(); i++) {
+            if (user.getFollowingList().get(i).getFollowingUserId() == id) {
+                Following following = user.getFollowingList().get(i);
                 this.followingRepository.delete(following);
             }
         }
     }
 
     public Follower getFollowerFindById(Long id) {
-        Optional<Follower> follower = this.followerRepository.findById(id);
+        Optional<Follower> follower = this.followerRepository.findByFollowerUserId(id);
         if (follower.isEmpty()) {
             throw new RuntimeException("팔로워 목록이 존재하지 않습니다.");
         }
@@ -97,7 +97,7 @@ public class FollowService {
     }
 
     public Following getFollowingFindById(Long id) {
-        Optional<Following> following = this.followingRepository.findById(id);
+        Optional<Following> following = this.followingRepository.findByFollowingUserId(id);
         if (following.isEmpty()) {
             throw new RuntimeException("팔로워 목록이 존재하지 않습니다.");
         }

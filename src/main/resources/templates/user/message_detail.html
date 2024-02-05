@@ -1,6 +1,6 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3" style="width:800px;">
-    <div th:text="${ReceiveMessage.content}"></div>
-    <div>test</div>
+    <div th:utext="${Message.content}"></div>
+    <div th:text="${Message.user.username}"></div>
 </div>
 </html>

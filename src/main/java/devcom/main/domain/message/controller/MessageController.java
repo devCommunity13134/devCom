@@ -2,6 +2,7 @@ package devcom.main.domain.message.controller;
 
 
 import devcom.main.domain.message.entity.ReceiveMessage;
+import devcom.main.domain.message.entity.SendMessage;
 import devcom.main.domain.message.service.MessageService;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
@@ -46,10 +47,17 @@ public class MessageController {
     }
 
     @GetMapping("/user/message/receive/detail/{id}")
-    public String messageDetail(Model model, @PathVariable(value = "id") Long id) {
+    public String receiveMessageDetail(Model model, @PathVariable(value = "id") Long id) {
         ReceiveMessage rm = this.messageService.findRmById(String.valueOf(id));
         this.messageService.receiveMessageChecked(rm);
-        model.addAttribute("ReceiveMessage",rm);
+        model.addAttribute("Message",rm);
+        return "/user/message_detail";
+    }
+
+    @GetMapping("/user/message/send/detail/{id}")
+    public String sendMessageDetail(Model model, @PathVariable(value = "id") Long id) {
+        SendMessage sm = this.messageService.findSmById(String.valueOf(id));
+        model.addAttribute("Message",sm);
         return "/user/message_detail";
     }
 

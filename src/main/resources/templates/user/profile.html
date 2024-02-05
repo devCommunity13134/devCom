@@ -48,8 +48,6 @@
                 </div>
             </div>
             <!-- 다른 사람 프로필 조회 시 -->
-            <a th:if="${#authentication.getPrincipal().getUsername() != user.username}"
-               href="#" class="btn btn-success btn-sm" style="margin-left:3px;">팀 초대하기</a>
             <a th:if="${#authentication.getPrincipal().getUsername() != user.username and isFollow=='false'}"
                th:href="@{|/user/follow/${user.id}|}" class="btn btn-success btn-sm"
                style="margin-left:3px;">팔로우</a>

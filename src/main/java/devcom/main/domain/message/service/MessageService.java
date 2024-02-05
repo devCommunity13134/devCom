@@ -5,6 +5,9 @@ import devcom.main.domain.message.entity.ReceiveMessage;
 import devcom.main.domain.message.entity.SendMessage;
 import devcom.main.domain.message.repository.ReceiveMessageRepository;
 import devcom.main.domain.message.repository.SendMessageRepository;
+import devcom.main.domain.team.service.TeamAndProjectService;
+import devcom.main.domain.teamInvite.entity.TeamInvite;
+import devcom.main.domain.teamInvite.service.TeamInviteService;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +22,7 @@ import java.util.Optional;
 public class MessageService {
 
     private final SendMessageRepository sendMessageRepository;
-
+    private final TeamInviteService teamInviteService;
     private final ReceiveMessageRepository receiveMessageRepository;
 
     private final UserService userService;
@@ -42,7 +45,7 @@ public class MessageService {
         user.getSendMessageList().add(sendMessage);
     }
 
-    public void addReceiveMessage(SiteUser user, Long id, String content) {
+    public ReceiveMessage addReceiveMessage(SiteUser user, Long id, String content) {
         // 받은 메세지 저장 → 상대방 user에 저장
         // 받는 사람 == user = findById(id)
         // id == 보낸 사람 user_id
@@ -57,6 +60,8 @@ public class MessageService {
 
         this.receiveMessageRepository.save(receiveMessage);
         user.getReceiveMessageList().add(receiveMessage);
+
+        return receiveMessage;
     }
 
     public List<SiteUser> getSendUserList(SiteUser user) {
@@ -105,6 +110,11 @@ public class MessageService {
     public void removeReceiveMessage(List<String> messageIdList) {
         for (int i = 0; i < messageIdList.size(); i++) {
             ReceiveMessage receiveMessage = this.findRmById(messageIdList.get(i));
+            Optional<TeamInvite> ti = teamInviteService.getTeamInviteByReceiveMessage(receiveMessage);
+            if(ti.isPresent()){
+                this.teamInviteService.delete(ti.get());
+                continue;
+            }
             this.receiveMessageRepository.delete(receiveMessage);
         }
     }

@@ -176,7 +176,8 @@ public class UserController {
     @GetMapping("/unfollow/{id}")
     public String unfollowUser(Model model, Principal principal, @PathVariable(value = "id") Long id) {
         SiteUser user = this.userService.findByUsername(principal.getName());
-        this.followService.removeFollower(user, id);
+        // 쟤의 팔로워, 나의 팔로잉을 삭제해야한다
+        this.followService.removeFollower(this.userService.findById(id), user.getId());
         this.followService.removeFollowing(user, id);
         return String.format("redirect:/user/profile/%d", id);
     }
