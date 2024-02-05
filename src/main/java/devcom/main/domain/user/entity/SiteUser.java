@@ -29,7 +29,7 @@ public class SiteUser extends BaseEntity {
     @Column(unique = true)
     private String username;
 
-    @Column(columnDefinition = "varchar(100)")
+    @Column(columnDefinition = "varchar(100)", unique = true)
     private String nickname;
 
     @Column(columnDefinition = "varchar(100)")
