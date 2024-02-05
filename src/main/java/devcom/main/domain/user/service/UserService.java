@@ -4,6 +4,7 @@ package devcom.main.domain.user.service;
 import devcom.main.domain.follow.repository.FollowingRepository;
 import devcom.main.domain.message.entity.SendMessage;
 import devcom.main.domain.message.repository.SendMessageRepository;
+import devcom.main.domain.message.service.MessageService;
 import devcom.main.domain.skill.entity.Skill;
 import devcom.main.domain.user.ConfirmNumberForm;
 import devcom.main.domain.user.EmailConfirmForm;
@@ -31,8 +32,6 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final FollowingRepository followingRepository;
-
-    private final SendMessageRepository sendMessageRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -178,12 +177,6 @@ public class UserService {
             return bindingResult;
         }
         return bindingResult;
-    }
-
-    public void removeSendMessage(List<Long> sendMessageList) {
-        for ( int i = 0 ; i < sendMessageList.size(); i++) {
-            SendMessage sendMessage = this.sendMessageRepository.findById(sendMessageList.get(i));
-        }
     }
 
 

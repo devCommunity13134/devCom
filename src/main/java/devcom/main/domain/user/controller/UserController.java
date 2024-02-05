@@ -180,19 +180,4 @@ public class UserController {
         return "/user/message_list";
     }
 
-
-    // 보낸 쪽지 삭제
-    @PostMapping("/message/remove/send")
-    public String removeSendMessage(@RequestParam(value = "id") List<Long> messageIdList) {
-        this.userService.removeSendMessage(messageIdList);
-        return "/user/message_list";
-    }
-
-
-    // 받은 쪽지 삭제
-    @PostMapping("/message/remove/receive")
-    public String removeReceiveMessage() {
-        return "/user/message_list";
-    }
-
 }

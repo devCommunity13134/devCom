@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,6 +28,21 @@ public class MessageController {
         this.messageService.addReceiveMessage(this.userService.findById(id), user.getId(), content);
         model.addAttribute("user",user);
         return String.format("redirect:/user/profile/%d",id);
+    }
+
+    // 보낸 쪽지 삭제
+    @PostMapping("/remove/send")
+    public String removeSendMessage(@RequestParam(value = "id") List<String> messageIdList) {
+        this.messageService.removeSendMessage(messageIdList);
+        return "redirect:/user/message";
+    }
+
+
+    // 받은 쪽지 삭제
+    @PostMapping("/remove/receive")
+    public String removeReceiveMessage(@RequestParam(value = "id") List<String> messageIdList) {
+        this.messageService.removeReceiveMessage(messageIdList);
+        return "redirect:/user/message";
     }
 
 
