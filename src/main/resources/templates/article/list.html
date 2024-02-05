@@ -13,15 +13,12 @@
             <!-- popular, new, like item-box     -->
             <div class="d-flex align-items-center text-secondary flex-grow-2">
                 <span class="fw-bold text-secondary">sort by:</span>
-                <button type="button" class="btn fw-bold">
-                    <span class="mx-1">✨ </span> New
-                </button>
-                <button type="button" class="btn fw-bold">
-                    <span class="mx-1">💥</span>Popular
-                </button>
-                <button type="button" class="btn fw-bold">
-                    <span class="mx-1">👍</span>Like
-                </button>
+                <a th:href="@{|/article/${categoryName}|}" class="btn active fw-bold" role="button" data-bs-toggle="button" aria-pressed="true">
+                    <span class="mx-1">✨ </span> New</a>
+                <a href="#" class="btn fw-bold" role="button" data-bs-toggle="button">
+                    <span class="mx-1">💥</span>Popular</a>
+                <a href="#" class="btn fw-bold" role="button" data-bs-toggle="button">
+                    <span class="mx-1">👍</span>Like</a>
             </div>
         </div>
         <!--  articles     -->
