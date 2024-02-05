@@ -314,13 +314,13 @@ public class TeamAndProjectService {
 
         Optional<TeamInvite> teamInvite = teamInviteService.findById(inviteId);
 
-        if(!teamInvite.get().getSiteUser().getUsername().equals(siteUser.getUsername())){
-            throw new Exception("잘못된 접근");
-        }
-
         if(teamInvite.isEmpty() || teamInvite.get().getExpireDate().isBefore(LocalDateTime.now())){
             teamInvite.ifPresent(teamInviteService::delete);
             throw new Exception("삭제되었거나, 만료된 요청이에요~");
+        }
+
+        if(!teamInvite.get().getSiteUser().getUsername().equals(siteUser.getUsername())){
+            throw new Exception("잘못된 접근");
         }
 
         if(yesOrNo.equals("Y")){
@@ -329,10 +329,9 @@ public class TeamAndProjectService {
         }else if(yesOrNo.equals("N")){
 
         }else{
-            throw new Exception("잘못된 반환");
+            throw new Exception("잘못된 접근");
         }
 
         teamInviteService.delete(teamInvite.get());
-
     }
 }
