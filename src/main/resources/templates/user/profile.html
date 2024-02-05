@@ -17,7 +17,7 @@
             <li class="list-group-item" th:text="|이메일 : ${user.email}|"></li>
         </ul>
         <div class="card-body" style="display:flex; align-items:center;">
-            <!-- 쪽지 보내기 -->
+            <!-- 쪽지 보내기 모달 -->
             <a class="btn btn-success btn-sm open-modal" data-bs-toggle="modal" data-bs-target="#exampleModal"
                data-bs-whatever="@mdo" data-id="message-text" th:if="${#authentication.getPrincipal().getUsername() != user.username}">쪽지 보내기</a>
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -50,9 +50,12 @@
             <!-- 다른 사람 프로필 조회 시 -->
             <a th:if="${#authentication.getPrincipal().getUsername() != user.username}"
                href="#" class="btn btn-success btn-sm" style="margin-left:3px;">팀 초대하기</a>
-            <a th:if="${#authentication.getPrincipal().getUsername() != user.username}"
+            <a th:if="${#authentication.getPrincipal().getUsername() != user.username and isFollow=='false'}"
                th:href="@{|/user/follow/${user.id}|}" class="btn btn-success btn-sm"
                style="margin-left:3px;">팔로우</a>
+            <a th:if="${#authentication.getPrincipal().getUsername() != user.username and isFollow=='true'}"
+               th:href="@{|/user/unfollow/${user.id}|}" class="btn btn-success btn-sm"
+               style="margin-left:3px;">팔로우 취소</a>
             <!-- 나의 프로필 조회 시 -->
             <a th:if="${#authentication.getPrincipal().getUsername() == user.username}"
                th:href="@{/user/message}" class="btn btn-success btn-sm" style="margin-left:3px;">쪽지함</a>

@@ -20,8 +20,10 @@ import java.util.List;
 public class Follower extends BaseEntity {
 
     @ManyToOne
+    // 나를
     private SiteUser user;
 
-    // 팔로워 user_id
+    // 팔로우 하는 user_id
     private Long followerUserId;
+
 }

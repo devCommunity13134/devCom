@@ -35,6 +35,7 @@ public class MessageService {
                 .content(content)
                 .sendUserId(id)
                 .receiverName(this.userService.findById(id).getNickname())
+                .checked(false)
                 .build();
 
         this.sendMessageRepository.save(sendMessage);
@@ -51,6 +52,7 @@ public class MessageService {
                 .content(content)
                 .receiveUserId(id)
                 .senderName(this.userService.findById(id).getNickname())
+                .checked(false)
                 .build();
 
         this.receiveMessageRepository.save(receiveMessage);
@@ -105,6 +107,14 @@ public class MessageService {
             ReceiveMessage receiveMessage = this.findRmById(messageIdList.get(i));
             this.receiveMessageRepository.delete(receiveMessage);
         }
+    }
+
+    public void receiveMessageChecked(ReceiveMessage receiveMessage) {
+        ReceiveMessage rm = receiveMessage.toBuilder()
+                .checked(true)
+                .build();
+
+        this.receiveMessageRepository.save(rm);
     }
 
 }

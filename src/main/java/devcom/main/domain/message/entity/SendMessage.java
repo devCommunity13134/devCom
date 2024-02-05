@@ -31,4 +31,6 @@ public class SendMessage extends BaseEntity {
 
     private String receiverName;
 
+    private boolean checked;
+
 }

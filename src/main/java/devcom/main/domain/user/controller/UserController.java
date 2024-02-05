@@ -63,7 +63,7 @@ public class UserController {
         this.userService.signup(userCreateForm, skillList, file);
         SiteUser user = this.userService.findByUsername(userCreateForm.getUsername());
         this.skillService.create(userCreateForm.getSkill(), user);
-        this.emailService.send(userCreateForm.getEmail(),"[devCom]회원가입을 환영합니다!","[devCom] 서비스에 가입해주셔서 감사합니다.");
+        // this.emailService.send(userCreateForm.getEmail(),"[devCom]회원가입을 환영합니다!","[devCom] 서비스에 가입해주셔서 감사합니다.");
 
         //
         return "redirect:/";
@@ -102,10 +102,13 @@ public class UserController {
 
     @GetMapping("/profile/{id}")
     // 다른 유저 프로필 조회
-    public String userProfile(Model model, @PathVariable(value = "id") Long id) {
+    public String userProfile(Model model, @PathVariable(value = "id") Long id, Principal principal) {
         SiteUser user = this.userService.findById(id);
+        SiteUser loginedUser = this.userService.findByUsername(principal.getName());
         List<SiteUser> followerUserList = this.followService.getFollowerUserList(user);
         List<SiteUser> followingUserList = this.followService.getFollowingUserList(user);
+        String isFollow = this.userService.isFollow(loginedUser, id);
+        model.addAttribute("isFollow", isFollow);
         model.addAttribute("user", user);
         model.addAttribute("followerUserList", followerUserList);
         model.addAttribute("followingUserList", followingUserList);
@@ -115,7 +118,7 @@ public class UserController {
     @GetMapping("/modify/{id}")
     public String modifyProfile(UserCreateForm userCreateForm, Model model, @PathVariable(value = "id") Long id) {
         SiteUser user = this.userService.findById(id);
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
         return "/user/modify_profile";
     }
 
@@ -124,7 +127,7 @@ public class UserController {
         List<Skill> skillList = this.skillService.findByskillList(userModifyForm.getSkill());
         SiteUser modifyUser = this.userService.findByUsername(principal.getName());
         if (this.userService.checkErrors(userModifyForm, bindingResult).hasErrors()) {
-            return String.format("redirect:/user/modify/%d",modifyUser.getId());
+            return String.format("redirect:/user/modify/%d", modifyUser.getId());
         }
         // facade pattern : userService + skillService
         this.userService.modify(userModifyForm, modifyUser, skillList, file);
@@ -143,7 +146,7 @@ public class UserController {
     public String findAccountByEmail(ConfirmNumberForm confirmNumberForm, @Valid EmailConfirmForm emailConfirmForm, BindingResult bindingResult, @RequestParam(value = "usernameEmail") String username) {
         confirmName = username;
         SiteUser user = this.userService.findByNickname(username);
-        if (this.userService.checkEmailAndUser(emailConfirmForm,bindingResult,user.getEmail()).hasErrors()) {
+        if (this.userService.checkEmailAndUser(emailConfirmForm, bindingResult, user.getEmail()).hasErrors()) {
             return "/user/find_account";
         }
         confirmNumber = this.emailService.sendConfirm(emailConfirmForm.getEmail());
@@ -170,13 +173,21 @@ public class UserController {
         return String.format("redirect:/user/profile/%d", id);
     }
 
+    @GetMapping("/unfollow/{id}")
+    public String unfollowUser(Model model, Principal principal, @PathVariable(value = "id") Long id) {
+        SiteUser user = this.userService.findByUsername(principal.getName());
+        this.followService.removeFollower(user, id);
+        this.followService.removeFollowing(user, id);
+        return String.format("redirect:/user/profile/%d", id);
+    }
+
     @GetMapping("/message")
     public String messageList(Model model, Principal principal) {
         SiteUser user = this.userService.findByUsername(principal.getName());
         List<SendMessage> sendMessageList = user.getSendMessageList();
         List<ReceiveMessage> receiveMessageList = user.getReceiveMessageList();
-        model.addAttribute("sendMessageList",sendMessageList);
-        model.addAttribute("receiveMessageList",receiveMessageList);
+        model.addAttribute("sendMessageList", sendMessageList);
+        model.addAttribute("receiveMessageList", receiveMessageList);
         return "/user/message_list";
     }
 

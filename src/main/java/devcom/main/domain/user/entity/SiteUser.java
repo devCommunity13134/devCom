@@ -58,12 +58,12 @@ public class SiteUser extends BaseEntity {
     private List<Skill> skillList;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Follower> followerList;
     // 팔로워 리스트
+    private List<Follower> followerList;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Following> followingList;
     // 팔로잉 리스트
+    private List<Following> followingList;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<SendMessage> sendMessageList;

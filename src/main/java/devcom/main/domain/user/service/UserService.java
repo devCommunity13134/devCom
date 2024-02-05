@@ -179,6 +179,22 @@ public class UserService {
         return bindingResult;
     }
 
+    // 로그인한 유저가 조회하고 있는 프로필의 유저(id)를 팔로우 하는지 검증
+    public String isFollow(SiteUser LoginedUser, Long id) {
+        String isFollow = "false";
+        if (LoginedUser.getFollowingList().isEmpty()) {
+            return isFollow;
+        } else {
+            for ( int i = 0 ; i < LoginedUser.getFollowingList().size(); i++) {
+                if (LoginedUser.getFollowingList().get(i).getFollowingUserId() == id) {
+                    isFollow = "true";
+                    break;
+                }
+            }
+        }
+        return isFollow;
+    }
+
 
     @Transactional
     public SiteUser whenSocialLogin(String providerTypeCode, String username, String nickname) {

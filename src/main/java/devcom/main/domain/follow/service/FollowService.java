@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -69,4 +70,37 @@ public class FollowService {
         return followingUserList;
     }
 
+    public void removeFollower(SiteUser user, Long id) {
+        for( int i = 0 ; i < user.getFollowerList().size(); i++) {
+            if( user.getFollowerList().get(i).getFollowerUserId() == id) {
+                Follower follower = this.getFollowerFindById(id);
+                this.followerRepository.delete(follower);
+            }
+        }
+    }
+
+    public void removeFollowing(SiteUser user, Long id) {
+        for( int i = 0 ; i < user.getFollowingList().size(); i++) {
+            if( user.getFollowingList().get(i).getFollowingUserId() == id) {
+                Following following = this.getFollowingFindById(id);
+                this.followingRepository.delete(following);
+            }
+        }
+    }
+
+    public Follower getFollowerFindById(Long id) {
+        Optional<Follower> follower = this.followerRepository.findById(id);
+        if (follower.isEmpty()) {
+            throw new RuntimeException("팔로워 목록이 존재하지 않습니다.");
+        }
+        return follower.get();
+    }
+
+    public Following getFollowingFindById(Long id) {
+        Optional<Following> following = this.followingRepository.findById(id);
+        if (following.isEmpty()) {
+            throw new RuntimeException("팔로워 목록이 존재하지 않습니다.");
+        }
+        return following.get();
+    }
 }

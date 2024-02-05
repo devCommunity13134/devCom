@@ -1,6 +1,7 @@
 package devcom.main.domain.message.controller;
 
 
+import devcom.main.domain.message.entity.ReceiveMessage;
 import devcom.main.domain.message.service.MessageService;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
@@ -14,14 +15,13 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/message")
 public class MessageController {
 
     private final MessageService messageService;
 
     private final UserService userService;
 
-    @PostMapping("/send/{id}")
+    @PostMapping("/message/send/{id}")
     public String sendMessage(Model model, Principal principal, @PathVariable(value = "id") Long id, @RequestParam(value = "message-text") String content) {
         SiteUser user = this.userService.findByUsername(principal.getName());
         this.messageService.addSendMessage(user, id, content);
@@ -31,7 +31,7 @@ public class MessageController {
     }
 
     // 보낸 쪽지 삭제
-    @PostMapping("/remove/send")
+    @PostMapping("/message/remove/send")
     public String removeSendMessage(@RequestParam(value = "id") List<String> messageIdList) {
         this.messageService.removeSendMessage(messageIdList);
         return "redirect:/user/message";
@@ -39,10 +39,18 @@ public class MessageController {
 
 
     // 받은 쪽지 삭제
-    @PostMapping("/remove/receive")
+    @PostMapping("/message/remove/receive")
     public String removeReceiveMessage(@RequestParam(value = "id") List<String> messageIdList) {
         this.messageService.removeReceiveMessage(messageIdList);
         return "redirect:/user/message";
+    }
+
+    @GetMapping("/user/message/receive/detail/{id}")
+    public String messageDetail(Model model, @PathVariable(value = "id") Long id) {
+        ReceiveMessage rm = this.messageService.findRmById(String.valueOf(id));
+        this.messageService.receiveMessageChecked(rm);
+        model.addAttribute("ReceiveMessage",rm);
+        return "/user/message_detail";
     }
 
 

@@ -4,65 +4,65 @@
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs" id="bologna-list" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#allmessage">전체보기</a>
+                    <a class="nav-link active" aria-current="page" href="#receivemessage" aria-selected="true">받은쪽지함</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#sendmessage" role="tab" aria-selected="false">보낸쪽지함</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#receivemessage">받은쪽지함</a>
-                </li>
             </ul>
         </div>
         <div class="card-body">
-            <!-- 쪽지 전체 목록 -->
+            <!-- 받은 쪽지 목록 -->
             <div class="tab-content mt-3">
-                <div class="tab-pane" id="allmessage" role="tabpanel">
-                    <div class="mb-3">
-                        액티브
-                    </div>
-                    <div class="mb-3">
-                        액티브
-                    </div>
+                <div class="tab-pane active" id="receivemessage" role="tabpanel">
+                    <form th:action="@{/message/remove/receive}" method="post">
+                        <div class="form-check position-relative boder-bottom" th:each="receiveMessageList : ${receiveMessageList}" style="border-bottom:1px solid rgba(0,0,0,0.2);">
+                            <span th:if="${receiveMessageList.checked == false}" class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                <span class="visually-hidden">New alerts</span>
+                            </span>
+                            <input class="form-check-input" type="checkbox" name="id"
+                                   th:value="${receiveMessageList.id}"
+                                   id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault"></label>
+                            <div>
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                                   th:href="@{|message/receive/detail/${receiveMessageList.id}|}">
+                                    <div th:text="${receiveMessageList.content}"></div>
+                                </a>
+                            </div>
+                            <div class="d-flex justify-content-end" style="margin-bottom:10px;">
+                                <div class="badge bg-light text-dark p-2 text-start">
+                                    <div th:text="|보낸사람 : ${receiveMessageList.senderName}|"></div>
+                                    <div th:text="${#temporals.format(receiveMessageList.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-danger btn-sm" style="margin-top:20px;">삭제</button>
+                    </form>
                 </div>
             </div>
             <!-- 보낸 쪽지 목록 -->
             <div class="tab-content mt-3">
                 <div class="tab-pane" id="sendmessage" role="tabpanel">
                     <form th:action="@{/message/remove/send}" method="post">
-                        <div class="form-check" th:each="sendMessageList : ${sendMessageList}">
+                        <div class="form-check" th:each="sendMessageList : ${sendMessageList}" style="border-bottom:1px solid rgba(0,0,0,0.2);">
                             <input class="form-check-input" type="checkbox" name="id" th:value="${sendMessageList.id}"
                                    id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                <ul>
-                                    <li th:text="|번호 : ${sendMessageList.id}|"></li>
-                                    <li th:text="|내용 : ${sendMessageList.content}|"></li>
-                                    <li th:text="|받는 사람 : ${sendMessageList.receiverName}|"></li>
-                                    <li th:text="|날짜 : ${sendMessageList.createDate}|"></li>
-                                </ul>
-                            </label>
+                            <label class="form-check-label" for="flexCheckDefault"></label>
+                            <div>
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                                   th:href="@{|message/send/detail/${sendMessageList.id}|}">
+                                    <div th:text="${sendMessageList.content}"></div>
+                                </a>
+                            </div>
+                            <div class="d-flex justify-content-end" style="margin-bottom:10px;">
+                                <div class="badge bg-light text-dark p-2 text-start">
+                                    <div th:text="|받는사람 : ${sendMessageList.receiverName}|"></div>
+                                    <div th:text="${#temporals.format(sendMessageList.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                                </div>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-danger btn-sm">삭제</button>
-                    </form>
-                </div>
-            </div>
-            <!-- 받은 쪽지 목록 -->
-            <div class="tab-content mt-3">
-                <div class="tab-pane" id="receivemessage" role="tabpanel">
-                    <form th:action="@{/message/remove/receive}" method="post">
-                        <div class="form-check" th:each="receiveMessageList : ${receiveMessageList}">
-                            <input class="form-check-input" type="checkbox" name="id" th:value="${receiveMessageList.id}"
-                                   id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                <ul>
-                                    <li th:text="|번호 : ${receiveMessageList.id}|"></li>
-                                    <li th:text="|내용 : ${receiveMessageList.content}|"></li>
-                                    <li th:text="|보낸 사람 : ${receiveMessageList.senderName}|"></li>
-                                    <li th:text="|날짜 : ${receiveMessageList.createDate}|"></li>
-                                </ul>
-                            </label>
-                        </div>
-                        <button type="submit" class="btn btn-danger btn-sm">삭제</button>
+                        <button type="submit" class="btn btn-danger btn-sm" style="margin-top:20px;">삭제</button>
                     </form>
                 </div>
             </div>
