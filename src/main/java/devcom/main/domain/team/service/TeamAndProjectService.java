@@ -1,5 +1,7 @@
 package devcom.main.domain.team.service;
 
+import devcom.main.domain.message.entity.ReceiveMessage;
+import devcom.main.domain.message.service.MessageService;
 import devcom.main.domain.project.ProjectCreateForm;
 import devcom.main.domain.project.ProjectModifyForm;
 import devcom.main.domain.project.entity.Project;
@@ -25,6 +27,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +39,7 @@ import java.util.Optional;
 public class TeamAndProjectService {
 
     private final UserService userService;
+    private final MessageService messageService;
 
     private final TeamService teamService;
     private final TeamMemberService teamMemberService;
@@ -192,7 +199,46 @@ public class TeamAndProjectService {
             return new TeamInviteController.TeamInviteResponse(false, "이미 팀 멤버인 회원입니다.");
         }
 
-        teamInviteService.create(team, invitedUser);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        // 이미 초대 되었다면 시간 갱신
+        Optional<TeamInvite> ti = teamInviteService.getTeamInviteByTeamAndSiteUser(team, invitedUser);
+        if(ti.isPresent()) {
+            if(ti.get().getReceiveMessage() != null){
+                List<String> rmList = new ArrayList<>();
+                rmList.add(ti.get().getReceiveMessage().getId().toString());
+                messageService.removeReceiveMessage(rmList);
+            }
+
+            LocalDateTime dateTime = ti.get().getExpireDate();
+            String formattedDateTime = dateTime.format(formatter);
+
+            String message =  "<br>" + team.getName() +
+                            "에서 재 초대 요청을 보냈습니다.<br>"+
+                    formattedDateTime+
+                    "까지 아래 수락 거절 버튼을 눌러주세요. <br>"+
+                    "<a class=\"btn btn-sm btn-primary\" href=\"/teamInvite/inviteRes/"+ti.get().getId()+"/Y\">수락</a>&nbsp;<a class=\"btn btn-sm btn-danger\" href=\"/teamInvite/inviteRes/"+ti.get().getId()+"/N\">거절</a>";
+
+            ReceiveMessage rm = messageService.addReceiveMessage(invitedUser,team.getTeamAdmin().getId(),message);
+
+            teamInviteService.reInvite(ti.get(), dateTime,rm);
+            return new TeamInviteController.TeamInviteResponse(true, "초대 메세지를 갱신 했습니다.");
+        }
+
+        LocalDateTime dateTime = LocalDateTime.now();
+        String formattedDateTime = dateTime.format(formatter);
+
+        TeamInvite invite = teamInviteService.create(team, invitedUser,dateTime.plusDays(3));
+
+        String message =  "<br>" + team.getName() +
+                "에서 초대 요청을 보냈습니다.<br>" +
+                formattedDateTime +
+                "까지 아래 수락 거절 버튼을 눌러주세요. <br>" +
+                "<a class=\"btn btn-sm btn-primary\" href=\"/teamInvite/inviteRes/"+invite.getId()+"/Y\">수락</a>&nbsp;<a class=\"btn btn-sm btn-danger\" href=\"/teamInvite/inviteRes/"+invite.getId()+"/N\">거절</a>";
+
+        ReceiveMessage rm = messageService.addReceiveMessage(invitedUser,team.getTeamAdmin().getId(),message);
+
+        teamInviteService.setMessage(invite, rm);
 
         return new TeamInviteController.TeamInviteResponse(true, "초대 메세지를 전송하였습니다.");
     }
@@ -200,15 +246,20 @@ public class TeamAndProjectService {
     @SneakyThrows
     @Transactional
     public Long deleteInvite(Long inviteId, SiteUser siteUser) {
-        TeamInvite invite = teamInviteService.findById(inviteId);
-        Team team = invite.getTeam();
+        Optional<TeamInvite> invite = teamInviteService.findById(inviteId);
+
+        if(invite.isEmpty()){
+            throw new Exception("잘못된 접근");
+        }
+
+        Team team = invite.get().getTeam();
         if(!team.getTeamAdmin().getUsername().equals(siteUser.getUsername())){
             throw new Exception("권한이 없습니다.");
         }
 
-        teamInviteService.delete(invite);
+        teamInviteService.delete(invite.get());
 
-        return invite.getTeam().getId();
+        return invite.get().getTeam().getId();
     }
 
     public TeamMember getTeamMemberById(Long teamMemberId) {
@@ -268,5 +319,40 @@ public class TeamAndProjectService {
         projectStateService.update(ps,state);
 
         return new ProjectStateController.changeProjectStateResponse(true, "변경됨");
+    }
+
+    @SneakyThrows
+    public void inviteResponse(Long inviteId, String yesOrNo, SiteUser siteUser) {
+
+        Optional<TeamInvite> teamInvite = teamInviteService.findById(inviteId);
+
+        if(teamInvite.isEmpty() || teamInvite.get().getExpireDate().isBefore(LocalDateTime.now())){
+            teamInvite.ifPresent(teamInviteService::delete);
+            throw new Exception("삭제되었거나, 만료된 요청이에요~");
+        }
+
+        if(!teamInvite.get().getSiteUser().getUsername().equals(siteUser.getUsername())){
+            throw new Exception("잘못된 접근");
+        }
+
+        if(yesOrNo.equals("Y")){
+            teamMemberService.createTeamMember(teamInvite.get().getTeam(),teamInvite.get().getSiteUser());
+
+        }else if(yesOrNo.equals("N")){
+
+        }else{
+            throw new Exception("잘못된 접근");
+        }
+
+        teamInviteService.delete(teamInvite.get());
+    }
+
+
+    public Optional<TeamInvite> findTeamInviteByReceiveMessage(ReceiveMessage receiveMessage) {
+        return teamInviteService.getTeamInviteByReceiveMessage(receiveMessage);
+    }
+
+    public void deleteTeamInvite(TeamInvite teamInvite) {
+        teamInviteService.delete(teamInvite);
     }
 }
