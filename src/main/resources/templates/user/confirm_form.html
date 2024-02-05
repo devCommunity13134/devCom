@@ -1,10 +1,10 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3" style="width:500px;">
-    <form th:action="@{/user/findid/confirm}" method="post" th:object="${confirmForm}">
+    <form th:action="@{/user/findid/confirm}" method="post" th:object="${confirmNumberForm}">
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
         <div class="mb-3">
-            <label for="confirmNum" class="form-label">인증번호</label>
-            <input type="text" id="confirmNum" name="confirmNum" class="form-control">
+            <label for="confirmNumber" class="form-label">인증번호</label>
+            <input type="text" id="confirmNumber" name="confirmNumber" class="form-control">
         </div>
         <button type="submit" class="btn btn-primary btn-sm" style="margin-bottom:20px;">인증하기</button>
     </form>
@@ -20,7 +20,7 @@
                 <strong class="me-auto">ID 찾기</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="toast-body" th:text="${user.username}">
+            <div th:if="${user != null}" class="toast-body" th:text="|회원님의 아이디는 [ ${user.username} ] 입니다.|">
             </div>
         </div>
     </div>
