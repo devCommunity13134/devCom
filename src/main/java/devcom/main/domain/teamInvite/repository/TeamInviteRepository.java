@@ -1,5 +1,6 @@
 package devcom.main.domain.teamInvite.repository;
 
+import devcom.main.domain.message.entity.ReceiveMessage;
 import devcom.main.domain.team.entity.Team;
 import devcom.main.domain.teamInvite.entity.TeamInvite;
 import devcom.main.domain.teamMember.entity.TeamMember;
@@ -10,4 +11,6 @@ import java.util.Optional;
 
 public interface TeamInviteRepository extends JpaRepository<TeamInvite, Long> {
     Optional<TeamInvite> findByTeamAndSiteUser(Team team, SiteUser invitedUser);
+
+    Optional<TeamInvite> findByReceiveMessage(ReceiveMessage receiveMessage);
 }

@@ -1,6 +1,7 @@
 package devcom.main.domain.teamInvite.controller;
 
 import com.google.gson.Gson;
+import devcom.main.domain.message.service.MessageService;
 import devcom.main.domain.team.entity.Team;
 import devcom.main.domain.team.service.TeamAndProjectService;
 import devcom.main.domain.teamInvite.TeamInviteForm;
@@ -25,6 +26,7 @@ public class TeamInviteController {
 
     private final UserService userService;
     private final TeamAndProjectService teamAndProjectService;
+    private final MessageService messageService;
 
     @Getter
     public static class TeamInviteResponse{
@@ -44,7 +46,7 @@ public class TeamInviteController {
 
         teamAndProjectService.inviteResponse(inviteId,yesOrNo,siteUser);
 
-        return "redirect:/";
+        return "redirect:/user/message";
     }
 
     @PostMapping("/inviteMember")

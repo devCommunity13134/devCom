@@ -1,5 +1,6 @@
 package devcom.main.domain.team.service;
 
+import devcom.main.domain.message.entity.ReceiveMessage;
 import devcom.main.domain.message.service.MessageService;
 import devcom.main.domain.project.ProjectCreateForm;
 import devcom.main.domain.project.ProjectModifyForm;
@@ -29,6 +30,7 @@ import org.springframework.validation.BindingResult;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -199,10 +201,15 @@ public class TeamAndProjectService {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-        // 이미 초대된 회원인지 검사
         // 이미 초대 되었다면 시간 갱신
         Optional<TeamInvite> ti = teamInviteService.getTeamInviteByTeamAndSiteUser(team, invitedUser);
         if(ti.isPresent()) {
+            if(ti.get().getReceiveMessage() != null){
+                List<String> rmList = new ArrayList<>();
+                rmList.add(ti.get().getReceiveMessage().getId().toString());
+                messageService.removeReceiveMessage(rmList);
+            }
+
             LocalDateTime dateTime = ti.get().getExpireDate();
             String formattedDateTime = dateTime.format(formatter);
 
@@ -210,23 +217,28 @@ public class TeamAndProjectService {
                             "에서 재 초대 요청을 보냈습니다.<br>"+
                     formattedDateTime+
                     "까지 아래 수락 거절 버튼을 눌러주세요. <br>"+
-                    "<div class=\"btn btn-sm btn-primary\">수락</div><div class=\"ml-1 btn btn-sm btn-primary\">거절</div>";
+                    "<a class=\"btn btn-sm btn-primary\" href=\"/teamInvite/inviteRes/"+ti.get().getId()+"/Y\">수락</a>&nbsp;<a class=\"btn btn-sm btn-danger\" href=\"/teamInvite/inviteRes/"+ti.get().getId()+"/N\">거절</a>";
 
-            messageService.addReceiveMessage(invitedUser,team.getTeamAdmin().getId(),message);
+            ReceiveMessage rm = messageService.addReceiveMessage(invitedUser,team.getTeamAdmin().getId(),message);
+
+            teamInviteService.reInvite(ti.get(), dateTime,rm);
             return new TeamInviteController.TeamInviteResponse(true, "초대 메세지를 갱신 했습니다.");
         }
 
-        TeamInvite invite = teamInviteService.create(team, invitedUser);
-        LocalDateTime dateTime = invite.getExpireDate();
+        LocalDateTime dateTime = LocalDateTime.now();
         String formattedDateTime = dateTime.format(formatter);
 
-        String message =  "<br>" + team.getName() +
-                            "에서 초대 요청을 보냈습니다.<br>" +
-                             formattedDateTime +
-                            "까지 아래 수락 거절 버튼을 눌러주세요. <br>" +
-                            "<a class=\"btn btn-sm btn-primary\" href=\"/teamInvite/inviteRes/"+invite.getId()+"/Y\">수락</a>&nbsp;<a class=\"btn btn-sm btn-danger\" href=\"/teamInvite/inviteRes/"+invite.getId()+"/N\">거절</a>";
+        TeamInvite invite = teamInviteService.create(team, invitedUser,dateTime.plusDays(3));
 
-        messageService.addReceiveMessage(invitedUser,team.getTeamAdmin().getId(),message);
+        String message =  "<br>" + team.getName() +
+                "에서 초대 요청을 보냈습니다.<br>" +
+                formattedDateTime +
+                "까지 아래 수락 거절 버튼을 눌러주세요. <br>" +
+                "<a class=\"btn btn-sm btn-primary\" href=\"/teamInvite/inviteRes/"+invite.getId()+"/Y\">수락</a>&nbsp;<a class=\"btn btn-sm btn-danger\" href=\"/teamInvite/inviteRes/"+invite.getId()+"/N\">거절</a>";
+
+        ReceiveMessage rm = messageService.addReceiveMessage(invitedUser,team.getTeamAdmin().getId(),message);
+
+        teamInviteService.setMessage(invite, rm);
 
         return new TeamInviteController.TeamInviteResponse(true, "초대 메세지를 전송하였습니다.");
     }
@@ -333,5 +345,14 @@ public class TeamAndProjectService {
         }
 
         teamInviteService.delete(teamInvite.get());
+    }
+
+
+    public Optional<TeamInvite> findTeamInviteByReceiveMessage(ReceiveMessage receiveMessage) {
+        return teamInviteService.getTeamInviteByReceiveMessage(receiveMessage);
+    }
+
+    public void deleteTeamInvite(TeamInvite teamInvite) {
+        teamInviteService.delete(teamInvite);
     }
 }

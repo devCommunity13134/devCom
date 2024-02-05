@@ -16,18 +16,20 @@
         <div class="card-body">
             <div class="tab-content mt-3 ">
                 <div class="tab-pane active" id="findid" role="tabpanel">
-                        <form th:action="@{/user/findid/email}" method="post">
-                            <div class="mb-3">
-                                <label for="usernameEmail" class="form-label">닉네임</label>
-                                <input type="text" name="usernameEmail" id="usernameEmail" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">이메일</label>
-                                <input type="email" name="email" id="email" class="form-control"
-                                       placeholder="'회원가입 시 등록한 이메일 주소 입력'">
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-sm" style="margin-bottom:10px;">이메일 인증하기</button>
-                        </form>
+                    <form th:action="@{/user/findid/email}" method="post" th:object="${emailConfirmForm}">
+                        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+                        <div class="mb-3">
+                            <label for="usernameEmail" class="form-label">닉네임</label>
+                            <input type="text" name="usernameEmail" id="usernameEmail" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">이메일</label>
+                            <input type="email" name="email" id="email" class="form-control"
+                                   placeholder="'회원가입 시 등록한 이메일 주소 입력'">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm" style="margin-bottom:10px;">이메일 인증하기
+                        </button>
+                    </form>
                     <form th:action="@{/user/findid/tel}" method="post" class="tab-pane active" id="findid"
                           role="tabpanel">
                         <div class="mb-3">

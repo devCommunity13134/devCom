@@ -1,5 +1,6 @@
 package devcom.main.domain.teamInvite.service;
 
+import devcom.main.domain.message.entity.ReceiveMessage;
 import devcom.main.domain.team.entity.Team;
 import devcom.main.domain.teamInvite.entity.TeamInvite;
 import devcom.main.domain.teamInvite.repository.TeamInviteRepository;
@@ -17,10 +18,9 @@ import java.util.Optional;
 public class TeamInviteService {
     private final TeamInviteRepository teamInviteRepository;
 
-    public TeamInvite create(Team team, SiteUser siteUser) {
+    public TeamInvite create(Team team, SiteUser siteUser,LocalDateTime expireDate) {
 
-        LocalDateTime now = LocalDateTime.now();
-        TeamInvite teamInvite = TeamInvite.builder().team(team).siteUser(siteUser).expireDate(now.plusDays(3)).build();
+        TeamInvite teamInvite = TeamInvite.builder().team(team).siteUser(siteUser).expireDate(expireDate).build();
         teamInviteRepository.save(teamInvite);
 
         return teamInvite;
@@ -38,9 +38,17 @@ public class TeamInviteService {
         return teamInviteRepository.findByTeamAndSiteUser(team,invitedUser);
     }
 
-    public TeamInvite expireDateUpdate(TeamInvite teamInvite) {
-        teamInvite = teamInvite.toBuilder().expireDate(LocalDateTime.now().plusDays(3)).build();
+    public void reInvite(TeamInvite teamInvite, LocalDateTime dateTime, ReceiveMessage rm) {
+        teamInvite = teamInvite.toBuilder().expireDate(dateTime).receiveMessage(rm).build();
         teamInviteRepository.save(teamInvite);
-        return teamInvite;
+    }
+
+    public void setMessage(TeamInvite invite, ReceiveMessage rm) {
+        invite = invite.toBuilder().receiveMessage(rm).build();
+        teamInviteRepository.save(invite);
+    }
+
+    public Optional<TeamInvite> getTeamInviteByReceiveMessage(ReceiveMessage receiveMessage) {
+        return teamInviteRepository.findByReceiveMessage(receiveMessage);
     }
 }

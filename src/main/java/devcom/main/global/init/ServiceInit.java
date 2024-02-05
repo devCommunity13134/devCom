@@ -11,20 +11,29 @@ import devcom.main.domain.team.TeamCreateForm;
 import devcom.main.domain.team.entity.Team;
 import devcom.main.domain.team.service.TeamAndProjectService;
 import devcom.main.domain.team.service.TeamService;
+import devcom.main.domain.teamInvite.TeamInviteForm;
+import devcom.main.domain.teamInvite.entity.TeamInvite;
+import devcom.main.domain.teamInvite.service.TeamInviteService;
 import devcom.main.domain.teamMember.service.TeamMemberService;
 import devcom.main.domain.user.UserCreateForm;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.PropertyEditorRegistry;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.beans.PropertyEditor;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -33,6 +42,8 @@ public class ServiceInit implements InitializingBean {
     private final UserService userService;
     private final TeamService teamService;
     private final TeamMemberService teamMemberService;
+    private final TeamAndProjectService teamAndProjectService;
+
     private final SkillService skillService;
     private final CategoryService categoryService;
     private final ArticleService articleService;
@@ -112,11 +123,95 @@ public class ServiceInit implements InitializingBean {
             teamMemberService.createTeamMember(teamService.create(team1, st), st);
         }
 
-//        Team team = teamService.getTeamById(1L);
-//
-//        for(int i = 2; i <10; i++) {
-//            teamMemberService.createTeamMember(team, userService.findByUsername("user"+i));
-//        }
+        for(long i = 1; i <10; i++) {
+            BindingResult br = new BindingResult() {
+                @Override
+                public String getObjectName() {
+                    return null;
+                }
+
+                @Override
+                public void reject(String errorCode, Object[] errorArgs, String defaultMessage) {
+
+                }
+
+                @Override
+                public void rejectValue(String field, String errorCode, Object[] errorArgs, String defaultMessage) {
+
+                }
+
+                @Override
+                public List<ObjectError> getGlobalErrors() {
+                    return null;
+                }
+
+                @Override
+                public List<FieldError> getFieldErrors() {
+                    return null;
+                }
+
+                @Override
+                public Object getFieldValue(String field) {
+                    return null;
+                }
+
+                @Override
+                public String toString() {
+                    return null;
+                }
+
+                @Override
+                public Object getTarget() {
+                    return null;
+                }
+
+                @Override
+                public Map<String, Object> getModel() {
+                    return null;
+                }
+
+                @Override
+                public Object getRawFieldValue(String field) {
+                    return null;
+                }
+
+                @Override
+                public PropertyEditor findEditor(String field, Class<?> valueType) {
+                    return null;
+                }
+
+                @Override
+                public PropertyEditorRegistry getPropertyEditorRegistry() {
+                    return null;
+                }
+
+                @Override
+                public String[] resolveMessageCodes(String errorCode) {
+                    return new String[0];
+                }
+
+                @Override
+                public String[] resolveMessageCodes(String errorCode, String field) {
+                    return new String[0];
+                }
+
+                @Override
+                public void addError(ObjectError error) {
+
+                }
+                public boolean hasErrors(){
+                    return false;
+                }
+            };
+
+            Team team = teamService.getTeamById(i);
+
+            TeamInviteForm tf = new TeamInviteForm();
+            tf.setNickname(userService.findByUsername("user2").getNickname());
+            tf.setTeamId(team.getId());
+
+            teamAndProjectService.inviteMember(tf, team.getTeamAdmin() , br);
+        }
 
         this.categoryService.create("frontEnd");
         this.categoryService.create("backEnd");
