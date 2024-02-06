@@ -83,7 +83,7 @@
         <div class="dropdown mt-3">
 
             <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="position:relative;">
-                <img th:src="${@rq.getSiteUser().profileImg}" alt="" width="32" height="32" class="rounded-circle me-2">
+                <img th:src="${@rq.getSiteUser().profileImg}" alt="" width="32" height="32" class="rounded-circle me-2" style="object-fit:cover;">
                 <strong th:text="${@rq.getSiteUser().nickname}"></strong>
                 <div th:if="${@rq.isThereNewMessage() == false}" class="spinner-grow spinner-grow-sm text-danger position-absolute top-0 start-100" role="status">
                     <span class="visually-hidden">Loading...</span>
