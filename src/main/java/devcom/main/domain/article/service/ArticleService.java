@@ -115,11 +115,24 @@ public class ArticleService {
         return this.articleRepository.findAll(pageable);
     }
 
-    public Page<Article> getArticleList(int page, Category category) {
+    public Page<Article> getArticleList(int page, String keyword, Category category, String sortBy) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        if(sortBy.equals("createDate")){
+            sorts.add(Sort.Order.desc("createDate"));
+        } else if(sortBy.equals("popular")){
+            sorts.add(Sort.Order.desc("hit"));
+        } else if(sortBy.equals("like")){
+            sorts.add(Sort.Order.desc("likes"));
+        }
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return this.articleRepository.findAllByKeywordAndCategory( category, keyword, pageable);
+    }
+    public Page<Article> getArticleSearchList(int page, String keyword) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-        return this.articleRepository.findAllByCategory(category, pageable);
+        return this.articleRepository.findAllByKeyword(keyword, pageable);
     }
 
     // same as above, smaller size
@@ -134,7 +147,7 @@ public class ArticleService {
     // main page top section list
     public Page<Article> getArticleListSortByLikes(int page) {
         List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("likes"));
+        sorts.add(Sort.Order.desc("voter"));
         Pageable pageable = PageRequest.of(page, 4, Sort.by(sorts));
         return this.articleRepository.findAll(pageable);
     }
@@ -156,6 +169,7 @@ public class ArticleService {
 
     public void voteArticle(Article article, SiteUser siteUser) {
         article.getVoter().add(siteUser);
+
         this.articleRepository.save(article);
     }
 
@@ -170,7 +184,7 @@ public class ArticleService {
     //
     public void likesArticle(Article article) {
         Article aritlce1 = article.toBuilder()
-                .likes(article.getLikes() + 1)
+                .likes(article.getVoter().size())
                 .build();
         this.articleRepository.save(aritlce1);
     }
