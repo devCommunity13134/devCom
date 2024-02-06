@@ -36,6 +36,8 @@
                 <div style="width:700px; height: 160px; overflow:hidden">
                     <a th:if="${article.thumbnailImg != null}" th:href="@{|detail/${article.id}|}"><img
                             th:src="@{|/file/${article.thumbnailImg}|}" alt="사진"></a>
+                    <a th:if="${article.thumbnailImg == null}" th:href="@{|detail/${article.id}|}"><img
+                            th:src="@{|/file/thumbnailPic.png|}" alt="사진"></a>
                 </div>
                 <!--content-->
                 <p style="max-width: 850px; text-overflow: ellipsis; overflow: hidden; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; word-wrap:break-word; line-height:20px; max-height: 60px; text-align: left;"

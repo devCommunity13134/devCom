@@ -15,10 +15,9 @@
                 <span class="fw-bold text-secondary">sort by:</span>
                 <a th:href="@{|/article/${categoryName}|}" class="btn fw-bold" role="button">
                     <span class="mx-1">✨ </span> New</a>
-                <button type="submit" class="btn fw-bold" name="sortBy" value="popular" >
-                    <span class="mx-1" >💥</span>Popular</button>
-
-                <a href="#" class="btn fw-bold" role="button">
+                <a th:href="@{|/article/${categoryName}?sortBy=popular|}" class="btn fw-bold" role="button">
+                    <span class="mx-1" >💥</span>Popular</a>
+                <a th:href="@{|/article/${categoryName}?sortBy=like|}" class="btn fw-bold" role="button">
                     <span class="mx-1">👍</span>Like</a>
             </div>
         </div>
