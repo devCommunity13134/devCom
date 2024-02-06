@@ -16,13 +16,14 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/message")
 public class MessageController {
 
     private final MessageService messageService;
 
     private final UserService userService;
 
-    @PostMapping("/message/send/{id}")
+    @PostMapping("/send/{id}")
     public String sendMessage(Model model, Principal principal, @PathVariable(value = "id") Long id, @RequestParam(value = "message-text") String content) {
         SiteUser user = this.userService.findByUsername(principal.getName());
         this.messageService.addSendMessage(user, id, content);
@@ -32,33 +33,32 @@ public class MessageController {
     }
 
     // 보낸 쪽지 삭제
-    @PostMapping("/message/remove/send")
+    @PostMapping("/remove/send")
     public String removeSendMessage(@RequestParam(value = "id") List<String> messageIdList) {
         this.messageService.removeSendMessage(messageIdList);
         return "redirect:/user/message";
     }
 
-
     // 받은 쪽지 삭제
-    @PostMapping("/message/remove/receive")
+    @PostMapping("/remove/receive")
     public String removeReceiveMessage(@RequestParam(value = "id") List<String> messageIdList) {
         this.messageService.removeReceiveMessage(messageIdList);
         return "redirect:/user/message";
     }
 
-    @GetMapping("/user/message/receive/detail/{id}")
+    @GetMapping("/receive/detail/{id}")
     public String receiveMessageDetail(Model model, @PathVariable(value = "id") Long id) {
         ReceiveMessage rm = this.messageService.findRmById(String.valueOf(id));
         this.messageService.receiveMessageChecked(rm);
         model.addAttribute("Message",rm);
-        return "/user/message_detail";
+        return "/user/receive_message_detail";
     }
 
-    @GetMapping("/user/message/send/detail/{id}")
+    @GetMapping("/send/detail/{id}")
     public String sendMessageDetail(Model model, @PathVariable(value = "id") Long id) {
         SendMessage sm = this.messageService.findSmById(String.valueOf(id));
         model.addAttribute("Message",sm);
-        return "/user/message_detail";
+        return "/user/send_message_detail";
     }
 
 

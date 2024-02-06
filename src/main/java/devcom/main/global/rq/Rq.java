@@ -120,4 +120,16 @@ public class Rq {
         return user.getUsername();
     }
 
+    public boolean isThereNewMessage() {
+        if (isLogout()) return true;
+
+        SiteUser user = this.getSiteUser();
+        for ( int i = 0 ; i < user.getReceiveMessageList().size(); i++ ) {
+            if(!user.getReceiveMessageList().get(i).isChecked()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

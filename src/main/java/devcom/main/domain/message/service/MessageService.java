@@ -38,6 +38,7 @@ public class MessageService {
                 .content(content)
                 .sendUserId(id)
                 .receiverName(this.userService.findById(id).getNickname())
+                .receiveUserProfile(this.userService.findById(id).getProfileImg())
                 .checked(false)
                 .build();
 
@@ -55,6 +56,7 @@ public class MessageService {
                 .content(content)
                 .receiveUserId(id)
                 .senderName(this.userService.findById(id).getNickname())
+                .sendUserProfile(this.userService.findById(id).getProfileImg())
                 .checked(false)
                 .build();
 

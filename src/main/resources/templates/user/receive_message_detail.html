@@ -1,0 +1,48 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3" style="width:800px;">
+    <div class="card">
+        <div class="card-header">
+            <h5>받은 메세지</h5>
+        </div>
+        <div class="card-body">
+            <p class="card-text" th:utext="${Message.content}"></p>
+            <div th:text="|보낸 사람 : ${Message.senderName}|"></div>
+        </div>
+        <div class="card-footer text-body-secondary">
+            <a th:href="@{/user/message}" class="btn btn-primary btn-sm">뒤로가기</a>
+            <!-- Modal 답장하기 창 -->
+            <a class="btn btn-success btn-sm open-modal" data-bs-toggle="modal" data-bs-target="#exampleModal"
+               data-bs-whatever="@mdo" data-id="message-text">답장하기</a>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">답장하기</h1>
+                            <span th:text="|(받는 사람 : ${Message.senderName})|"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <form th:action="@{|/message/send/${Message.receiveUserId}|}" method="post">
+                                    <div class="mb-3">
+                                        <label for="message-text" class="col-form-label"></label>
+                                        <textarea class="form-control" id="message-text" name="message-text"
+                                                  rows="10"></textarea>
+                                    </div>
+                                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">닫기
+                                    </button>
+                                    <button type="submit" class="btn btn-primary btn-sm">보내기</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</div>
+</html>

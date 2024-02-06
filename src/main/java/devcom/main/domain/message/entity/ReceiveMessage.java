@@ -30,6 +30,8 @@ public class ReceiveMessage extends BaseEntity {
 
     private String senderName;
 
+    private String sendUserProfile;
+
     private boolean checked;
 
 }

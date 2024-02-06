@@ -14,6 +14,9 @@ import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -202,8 +205,8 @@ public class UserService {
         // 소셜 로그인를 통한 가입시 비번은 없다.
         this.kakaoSignup(username, nickname);
 
-        return findByUsername(username);
         // 최초 로그인 시 딱 한번 실행
+        return findByUsername(username);
     }
 }
 
