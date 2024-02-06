@@ -72,8 +72,7 @@
                 <a th:href="@{|/user/profile/${article.author.id}|}">
                     <div style="width: 150px; height: 150px; border-radius: 70%; overflow: hidden; "
                          class="border border-black">
-                        <img th:src="${article.author.profileImg}"
-                             alt="testImg" style="">
+                        <img th:src="${article.author.profileImg}" alt="" width="150" height="150" class="rounded-circle me-2" style="object-fit:cover;">
                     </div>
                 </a>
             </div>

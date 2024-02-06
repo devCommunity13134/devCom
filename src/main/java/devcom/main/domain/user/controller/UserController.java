@@ -185,10 +185,10 @@ public class UserController {
     }
 
     @GetMapping("/message")
-    public String messageList(Model model, Principal principal) {
+    public String messageList(Model model, Principal principal, @RequestParam(value = "page", defaultValue = "0") int page) {
         SiteUser user = this.userService.findByUsername(principal.getName());
-        List<SendMessage> sendMessageList = user.getSendMessageList();
-        List<ReceiveMessage> receiveMessageList = user.getReceiveMessageList();
+        Page<SendMessage> sendMessageList = this.messageService.getSendMessageList(page, user);
+        Page<ReceiveMessage> receiveMessageList = this.messageService.getReceiveMessageList(page,user);
         model.addAttribute("sendMessageList", sendMessageList);
         model.addAttribute("receiveMessageList", receiveMessageList);
         return "/user/message_list";
