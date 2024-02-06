@@ -120,7 +120,15 @@ public class ArticleController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String articleModify(ArticleForm articleForm) {
+    public String articleModify(ArticleForm articleForm, @PathVariable("id") Long id, Model model) {
+        Article article = this.articleService.getArticle(id);
+
+        // article subject
+        articleForm.setSubject(article.getSubject());
+        // article content
+        articleForm.setContent(article.getContent());
+        // article category
+        articleForm.setCategoryName(article.getCategory().getCategoryName());
         return "article/form";
     }
 
