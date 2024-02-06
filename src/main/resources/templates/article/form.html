@@ -11,8 +11,8 @@
         </div>
         <div class="form-floating">
             <select class="form-select" id="floatingSelect" name="categoryName" aria-label="Floating label select example">
-                <option selected value="frontEnd">카테고리를 선택하세요</option>
-                <option value="frontEnd">FrontEnd</option>
+                <option value="frontEnd">카테고리를 선택하세요</option>
+                <option selected value="frontEnd">FrontEnd</option>
                 <option value="backEnd">BackEnd</option>
                 <option value="dataEngineer">DataEngineer</option>
                 <option value="AI">AI</option>
@@ -21,11 +21,23 @@
         </div>
         <div class="mb-3">
             <label for="content" class="form-label">내용</label>
-            <textarea style="resize: none;" th:field="*{content}" id="content" cols="30" rows="10" class="form-control"></textarea>
+                <textarea style="resize: none;" th:field="*{content}" id="content" cols="30" rows="10"
+                      class="form-control"></textarea>
         </div>
         <h3>사진</h3>
         <input type="file" name="thumbnail" accept="image/png, image/gif, image/jpeg">
         <button type="submit" class="btn btn-primary">등록하기</button>
     </form>
+
+<!--    <script th:inline="javascript" src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>-->
+<!--    <script th:inline="javascript">-->
+<!--        const editor = new toastui.Editor({-->
+<!--            el: document.querySelector('#content'), // 에디터를 적용할 요소 (컨테이너)-->
+<!--            height: '500px',                        // 에디터 영역의 높이 값 (OOOpx || auto)-->
+<!--            initialEditType: 'markdown',            // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)-->
+<!--            initialValue: '내용을 입력해 주세요.',     // 내용의 초기 값으로, 반드시 마크다운 문자열 형태여야 함-->
+<!--            previewStyle: 'vertical'                // 마크다운 프리뷰 스타일 (tab || vertical)-->
+<!--        });-->
+<!--    </script>-->
 </div>
 </html>

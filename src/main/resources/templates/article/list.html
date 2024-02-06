@@ -15,10 +15,20 @@
                 <span class="fw-bold text-secondary">sort by:</span>
                 <a th:href="@{|/article/${categoryName}|}" class="btn fw-bold" role="button">
                     <span class="mx-1">✨ </span> New</a>
-                <a th:href="@{|/article/${categoryName}?sortBy=popular|}" class="btn fw-bold" role="button">
-                    <span class="mx-1" >💥</span>Popular</a>
-                <a th:href="@{|/article/${categoryName}?sortBy=like|}" class="btn fw-bold" role="button">
-                    <span class="mx-1">👍</span>Like</a>
+
+                <input type="hidden" id="sort_param" class=" form-control" th:value="popular">
+                <button  class="btn fw-bold" role="button" id="btn_sort">
+                    <span class="mx-1" >💥</span>Popular</button>
+
+                <input type="hidden" id="sort_param2" class=" form-control" th:value="like">
+                <button  class=" btn fw-bold" role="button" id="btn_sort2">
+                    <span class="mx-1">👍</span>Like</button>
+<!--                <a th:href="@{|/article/${categoryName}?sortBy=popular|}" class="sortBy btn fw-bold" role="button">-->
+<!--                    <span class="mx-1" >💥</span>Popular-->
+<!--                </a>-->
+<!--                <a th:href="@{|/article/${categoryName}?sortBy=like|}" class="sortBy btn fw-bold" role="button">-->
+<!--                    <span class="mx-1">👍</span>Like-->
+<!--                </a>-->
             </div>
         </div>
         <!--  articles     -->
@@ -107,6 +117,7 @@
         <form th:action="@{|/article/${categoryName}|}" method="get" id="searchForm">
             <input type="hidden" id="keyword" name="keyword" th:value="${keyword}">
             <input type="hidden" id="page" name="page" th:value="${paging.number}">
+            <input type="hidden" id="sortBy" name="sortBy" th:value="${sortBy}">
         </form>
     </div>
     <!-- popover JS -->
@@ -133,6 +144,20 @@
         const btn_search = document.getElementById("btn_search");
         btn_search.addEventListener('click', function() {
             document.getElementById('keyword').value = document.getElementById('search_kw').value;
+            document.getElementById('page').value = 0;
+            document.getElementById('searchForm').submit();
+        });
+
+        const btn_sort = document.getElementById("btn_sort");
+        btn_sort.addEventListener('click', function() {
+            document.getElementById('sortBy').value = document.getElementById('sort_param').value;
+            document.getElementById('page').value = 0;
+            document.getElementById('searchForm').submit();
+        });
+
+        const btn_sort2 = document.getElementById("btn_sort2");
+        btn_sort2.addEventListener('click', function() {
+            document.getElementById('sortBy').value = document.getElementById('sort_param2').value;
             document.getElementById('page').value = 0;
             document.getElementById('searchForm').submit();
         });
