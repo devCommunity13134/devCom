@@ -19,15 +19,19 @@ import lombok.experimental.SuperBuilder;
 public class ReceiveMessage extends BaseEntity {
 
     @ManyToOne
-    private SiteUser user;
     // 보낸 사람
+    private SiteUser user;
 
-    private Long receiveUserId;
     // 받는 사람 id(pk)
+    private Long receiveUserId;
 
     @Column(columnDefinition = "TEXT")
     private String content;
 
     private String senderName;
+
+    private String sendUserProfile;
+
+    private boolean checked;
 
 }

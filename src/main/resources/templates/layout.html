@@ -82,14 +82,24 @@
     <div class="d-flex flex-column flex-shrink-0 p-1 h-100" style="width: 200px;" sec:authorize="isAuthenticated()">
         <div class="dropdown mt-3">
 
-            <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="position:relative;">
                 <img th:src="${@rq.getSiteUser().profileImg}" alt="" width="32" height="32" class="rounded-circle me-2">
                 <strong th:text="${@rq.getSiteUser().nickname}"></strong>
+                <div th:if="${@rq.isThereNewMessage() == false}" class="spinner-grow spinner-grow-sm text-danger position-absolute top-0 start-100" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
             </a>
             <ul class="dropdown-menu text-small shadow">
                 <li><a class="dropdown-item" href="/team/list">My Team</a></li>
                 <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
-                <li><a class="dropdown-item" href="/user/message">Message</a></li>
+                <li style="position:relative;">
+                    <a class="dropdown-item" href="/user/message">Message
+                        <span th:if="${@rq.isThereNewMessage() == false}"
+                              class="position-absolute top-0 start-0 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                <span class="visually-hidden">New alerts</span>
+                            </span>
+                    </a>
+                </li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="/user/logout">Sign out</a></li>
             </ul>

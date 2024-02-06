@@ -19,9 +19,10 @@ import java.util.List;
 public class Following extends BaseEntity {
 
     @ManyToOne
+    // 내가
     private SiteUser user;
 
-    // 팔로잉 user_id_list
+    // 팔로잉 하는 user_id_list
     private Long followingUserId;
 
 }

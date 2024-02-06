@@ -14,6 +14,9 @@ import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -179,6 +182,22 @@ public class UserService {
         return bindingResult;
     }
 
+    // 로그인한 유저가 조회하고 있는 프로필의 유저(id)를 팔로우 하는지 검증
+    public String isFollow(SiteUser LoginedUser, Long id) {
+        String isFollow = "false";
+        if (LoginedUser.getFollowingList().isEmpty()) {
+            return isFollow;
+        } else {
+            for ( int i = 0 ; i < LoginedUser.getFollowingList().size(); i++) {
+                if (LoginedUser.getFollowingList().get(i).getFollowingUserId() == id) {
+                    isFollow = "true";
+                    break;
+                }
+            }
+        }
+        return isFollow;
+    }
+
 
     @Transactional
     public SiteUser whenSocialLogin(String providerTypeCode, String username, String nickname) {
@@ -186,8 +205,8 @@ public class UserService {
         // 소셜 로그인를 통한 가입시 비번은 없다.
         this.kakaoSignup(username, nickname);
 
-        return findByUsername(username);
         // 최초 로그인 시 딱 한번 실행
+        return findByUsername(username);
     }
 }
 
