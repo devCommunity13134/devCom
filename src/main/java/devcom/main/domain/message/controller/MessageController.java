@@ -1,6 +1,8 @@
 package devcom.main.domain.message.controller;
 
 
+import devcom.main.domain.message.entity.ReceiveMessage;
+import devcom.main.domain.message.entity.SendMessage;
 import devcom.main.domain.message.service.MessageService;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
@@ -37,12 +39,26 @@ public class MessageController {
         return "redirect:/user/message";
     }
 
-
     // 받은 쪽지 삭제
     @PostMapping("/remove/receive")
     public String removeReceiveMessage(@RequestParam(value = "id") List<String> messageIdList) {
         this.messageService.removeReceiveMessage(messageIdList);
         return "redirect:/user/message";
+    }
+
+    @GetMapping("/receive/detail/{id}")
+    public String receiveMessageDetail(Model model, @PathVariable(value = "id") Long id) {
+        ReceiveMessage rm = this.messageService.findRmById(String.valueOf(id));
+        this.messageService.receiveMessageChecked(rm);
+        model.addAttribute("Message",rm);
+        return "/user/receive_message_detail";
+    }
+
+    @GetMapping("/send/detail/{id}")
+    public String sendMessageDetail(Model model, @PathVariable(value = "id") Long id) {
+        SendMessage sm = this.messageService.findSmById(String.valueOf(id));
+        model.addAttribute("Message",sm);
+        return "/user/send_message_detail";
     }
 
 

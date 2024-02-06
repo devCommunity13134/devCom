@@ -11,6 +11,10 @@ import devcom.main.domain.teamInvite.service.TeamInviteService;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,6 +42,8 @@ public class MessageService {
                 .content(content)
                 .sendUserId(id)
                 .receiverName(this.userService.findById(id).getNickname())
+                .receiveUserProfile(this.userService.findById(id).getProfileImg())
+                .checked(false)
                 .build();
 
         this.sendMessageRepository.save(sendMessage);
@@ -54,6 +60,8 @@ public class MessageService {
                 .content(content)
                 .receiveUserId(id)
                 .senderName(this.userService.findById(id).getNickname())
+                .sendUserProfile(this.userService.findById(id).getProfileImg())
+                .checked(false)
                 .build();
 
         this.receiveMessageRepository.save(receiveMessage);
@@ -115,6 +123,28 @@ public class MessageService {
             }
             this.receiveMessageRepository.delete(receiveMessage);
         }
+    }
+
+    public void receiveMessageChecked(ReceiveMessage receiveMessage) {
+        ReceiveMessage rm = receiveMessage.toBuilder()
+                .checked(true)
+                .build();
+
+        this.receiveMessageRepository.save(rm);
+    }
+
+    public Page<SendMessage> getSendMessageList(int page, SiteUser user) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return this.sendMessageRepository.findAllByUser(user,pageable);
+    }
+
+    public Page<ReceiveMessage> getReceiveMessageList(int page, SiteUser user) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return this.receiveMessageRepository.findAllByUser(user,pageable);
     }
 
 }

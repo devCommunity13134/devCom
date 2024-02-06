@@ -1,10 +1,15 @@
 package devcom.main.domain.message.repository;
 
 import devcom.main.domain.message.entity.SendMessage;
+import devcom.main.domain.user.entity.SiteUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
 public interface SendMessageRepository extends JpaRepository<SendMessage, Long> {
+
+    Page<SendMessage> findAllByUser(SiteUser user, Pageable pageable);
 }
