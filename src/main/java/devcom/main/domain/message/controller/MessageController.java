@@ -32,6 +32,15 @@ public class MessageController {
         return String.format("redirect:/user/profile/%d",id);
     }
 
+    @PostMapping("/send/reply/{id}")
+    public String sendReplyMessage(Model model, Principal principal, @PathVariable(value = "id") Long id, @RequestParam(value = "message-text") String content) {
+        SiteUser user = this.userService.findByUsername(principal.getName());
+        this.messageService.addSendMessage(user, id, content);
+        this.messageService.addReceiveMessage(this.userService.findById(id), user.getId(), content);
+        model.addAttribute("user",user);
+        return "redirect:/user/message";
+    }
+
     // 보낸 쪽지 삭제
     @PostMapping("/remove/send")
     public String removeSendMessage(@RequestParam(value = "id") List<String> messageIdList) {

@@ -27,21 +27,7 @@
                             <input type="email" name="email" id="email" class="form-control"
                                    placeholder="'회원가입 시 등록한 이메일 주소 입력'">
                         </div>
-                        <button type="submit" class="btn btn-primary btn-sm" style="margin-bottom:10px;">이메일 인증하기
-                        </button>
-                    </form>
-                    <form th:action="@{/user/findid/tel}" method="post" class="tab-pane active" id="findid"
-                          role="tabpanel">
-                        <div class="mb-3">
-                            <label for="usernametel" class="form-label">이름</label>
-                            <input type="text" id="usernametel" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="phoneNumberId" class="form-label">휴대폰 번호</label>
-                            <input type="tel" id="phoneNumberId" class="form-control"
-                                   placeholder="'회원가입 시 등록한 휴대폰 번호 입력'">
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-sm disabled">휴대폰 인증하기</button>
+                        <button type="submit" class="btn btn-primary btn-sm">이메일 인증하기</button>
                     </form>
                 </div>
             </div>
@@ -58,7 +44,7 @@
                             <input type="email" id="phoneNumberPw" class="form-control"
                                    placeholder="'회원가입 시 등록한 휴대폰 번호 입력'">
                         </div>
-                        <button type="submit" class="btn btn-primary btn-sm disabled">비밀번호 찾기</button>
+                        <button type="submit" class="btn btn-primary btn-sm">비밀번호 찾기</button>
                     </form>
                 </div>
             </div>

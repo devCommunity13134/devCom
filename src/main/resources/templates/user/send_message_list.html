@@ -4,10 +4,10 @@
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs" id="bologna-list" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#receivemessage" aria-selected="true">받은쪽지함</a>
+                    <a class="nav-link" href="#receivemessage" aria-current="page" role="tab" aria-selected="false">받은쪽지함</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#sendmessage" role="tab" aria-selected="false">보낸쪽지함</a>
+                    <a class="nav-link active" aria-current="page" href="#sendmessage" role="tab" aria-selected="true">보낸쪽지함</a>
                 </li>
             </ul>
         </div>
@@ -16,7 +16,7 @@
             <!-- 받은 쪽지 목록 -->
 
             <div class="tab-content mt-3">
-                <div class="tab-pane active" id="receivemessage" role="tabpanel">
+                <div class="tab-pane" id="receivemessage" role="tabpanel">
                     <form th:action="@{/message/remove/receive}" method="post">
                         <div class="form-check position-relative boder-bottom"
                              th:each="receiveMessageList : ${receiveMessageList}"
@@ -32,8 +32,7 @@
                             <div>
                                 <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
                                    th:href="@{|/message/receive/detail/${receiveMessageList.id}|}">
-                                    <div th:utext="${receiveMessageList.content}"
-                                         style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 300px; height: 50px;"></div>
+                                    <div th:utext="${receiveMessageList.content}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 300px; height: 50px;"></div>
                                 </a>
                             </div>
 
@@ -43,8 +42,7 @@
                                     <div th:text="${#temporals.format(receiveMessageList.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                                 </div>
                                 <a th:href="@{|/user/profile/${receiveMessageList.receiveUserId}|}">
-                                    <img th:src="${receiveMessageList.sendUserProfile}" alt="" width="40" height="40"
-                                         class="rounded-circle me-2"
+                                    <img th:src="${receiveMessageList.sendUserProfile}" alt="" width="40" height="40" class="rounded-circle me-2"
                                          style="border:1px solid gray; object-fit:cover;">
                                 </a>
                             </div>
@@ -54,18 +52,17 @@
                             <ul class="pagination justify-content-center">
                                 <li class="page-item" th:classappend="${!receiveMessageList.hasPrevious} ? 'disabled'">
                                     <a class="page-link"
-                                       th:href="@{|?page=${receiveMessageList.number-1}|}">
+                                       th:href="@{|/user/message/receive?page=${receiveMessageList.number-1}|}">
                                         <span>이전</span>
                                     </a>
                                 </li>
                                 <li th:each="page: ${#numbers.sequence(0, receiveMessageList.totalPages-1)}"
                                     th:classappend="${page == receiveMessageList.number} ? 'active'"
                                     class="page-item">
-                                    <a th:text="${page+1}" class="page-link"
-                                       th:href="@{|?page=${page}|}"></a>
+                                    <a th:text="${page+1}" class="page-link" th:href="@{|/user/message/receive?page=${page}|}"></a>
                                 </li>
                                 <li class="page-item" th:classappend="${!receiveMessageList.hasNext} ? 'disabled'">
-                                    <a class="page-link" th:href="@{|?page=${receiveMessageList.number+1}|}">
+                                    <a class="page-link" th:href="@{|/user/message/receive?page=${receiveMessageList.number+1}|}">
                                         <span>다음</span>
                                     </a>
                                 </li>
@@ -81,7 +78,7 @@
             <!-- 보낸 쪽지 목록 -->
 
             <div class="tab-content mt-3">
-                <div class="tab-pane" id="sendmessage" role="tabpanel">
+                <div class="tab-pane active" id="sendmessage" role="tabpanel">
                     <form th:action="@{/message/remove/send}" method="post">
                         <div class="form-check" th:each="sendMessageList : ${sendMessageList}"
                              style="border-bottom:1px solid rgba(0,0,0,0.2);">
@@ -91,8 +88,7 @@
                             <div>
                                 <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
                                    th:href="@{|/message/send/detail/${sendMessageList.id}|}">
-                                    <div th:utext="${sendMessageList.content}"
-                                         style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 300px; height: 50px;"></div>
+                                    <div th:utext="${sendMessageList.content}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 300px; height: 50px;"></div>
                                 </a>
                             </div>
                             <div class="d-flex justify-content-end" style="margin-bottom:10px;">
@@ -101,8 +97,7 @@
                                     <div th:text="${#temporals.format(sendMessageList.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                                 </div>
                                 <a th:href="@{|/user/profile/${sendMessageList.sendUserId}|}">
-                                    <img th:src="${sendMessageList.receiveUserProfile}" alt="" width="40" height="40"
-                                         class="rounded-circle me-2"
+                                    <img th:src="${sendMessageList.receiveUserProfile}" alt="" width="40" height="40" class="rounded-circle me-2"
                                          style="border:1px solid gray; object-fit:cover;">
                                 </a>
                             </div>
@@ -119,8 +114,7 @@
                                 <li th:each="page: ${#numbers.sequence(0, sendMessageList.totalPages-1)}"
                                     th:classappend="${page == sendMessageList.number} ? 'active'"
                                     class="page-item">
-                                    <a th:text="${page+1}" class="page-link"
-                                       th:href="@{|/user/message/send?page=${page}|}"></a>
+                                    <a th:text="${page+1}" class="page-link" th:href="@{|?page=${page}|}"></a>
                                 </li>
                                 <li class="page-item" th:classappend="${!sendMessageList.hasNext} ? 'disabled'">
                                     <a class="page-link" th:href="@{|?page=${sendMessageList.number+1}|}">
@@ -137,6 +131,7 @@
             </div>
         </div>
     </div>
+
 
 
     <!-- tab 활성화 js -->

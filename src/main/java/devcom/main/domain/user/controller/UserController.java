@@ -105,6 +105,9 @@ public class UserController {
     @GetMapping("/profile/{id}")
     // 다른 유저 프로필 조회
     public String userProfile(Model model, @PathVariable(value = "id") Long id, Principal principal) {
+        if (principal == null) {
+            return "redirect:/user/login";
+        }
         SiteUser user = this.userService.findById(id);
         SiteUser loginedUser = this.userService.findByUsername(principal.getName());
         List<SiteUser> followerUserList = this.followService.getFollowerUserList(user);
@@ -191,7 +194,27 @@ public class UserController {
         Page<ReceiveMessage> receiveMessageList = this.messageService.getReceiveMessageList(page,user);
         model.addAttribute("sendMessageList", sendMessageList);
         model.addAttribute("receiveMessageList", receiveMessageList);
-        return "/user/message_list";
+        return "/user/receive_message_list";
+    }
+
+    @GetMapping("/message/send")
+    public String sendMessageList(Model model, Principal principal, @RequestParam(value = "page", defaultValue = "0") int page) {
+        SiteUser user = this.userService.findByUsername(principal.getName());
+        Page<SendMessage> sendMessageList = this.messageService.getSendMessageList(page, user);
+        Page<ReceiveMessage> receiveMessageList = this.messageService.getReceiveMessageList(page,user);
+        model.addAttribute("sendMessageList", sendMessageList);
+        model.addAttribute("receiveMessageList", receiveMessageList);
+        return "/user/send_message_list";
+    }
+
+    @GetMapping("/message/receive")
+    public String receiveMessageList(Model model, Principal principal, @RequestParam(value = "page", defaultValue = "0") int page) {
+        SiteUser user = this.userService.findByUsername(principal.getName());
+        Page<SendMessage> sendMessageList = this.messageService.getSendMessageList(page, user);
+        Page<ReceiveMessage> receiveMessageList = this.messageService.getReceiveMessageList(page,user);
+        model.addAttribute("sendMessageList", sendMessageList);
+        model.addAttribute("receiveMessageList", receiveMessageList);
+        return "/user/receive_message_list";
     }
 
 }
