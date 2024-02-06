@@ -4,21 +4,24 @@
         <!--  top_section      -->
         <div class="d-flex  mb-2">
             <!-- category           -->
-            <span style="text-transform : capitalize;" class="fs-1 flex-grow-1">#[[${categoryName}]]</span>
+            <span class="fs-1 flex-grow-1">#SearchList</span>
             <!-- search -->
-            <div class="input-group p-3 flex-grow-1">
-                <input type="text" id="search_kw" class="form-control" th:value="${keyword}">
-                <button class="btn btn-outline-secondary" type="button" id="btn_search">찾기</button>
-            </div>
+<!--            <div class="input-group p-3 flex-grow-1">-->
+<!--                <input type="text" id="search_kw" class="form-control" th:value="${keyword}">-->
+<!--                <button class="btn btn-outline-secondary" type="button" id="btn_search">찾기</button>-->
+<!--            </div>-->
             <!-- popular, new, like item-box     -->
             <div class="d-flex align-items-center text-secondary flex-grow-2">
                 <span class="fw-bold text-secondary">sort by:</span>
-                <a th:href="@{|/article/${categoryName}|}" class="btn fw-bold" role="button">
-                    <span class="mx-1">✨ </span> New</a>
-                <a th:href="@{|/article/${categoryName}?sortBy=popular|}" class="btn fw-bold" role="button">
-                    <span class="mx-1" >💥</span>Popular</a>
-                <a th:href="@{|/article/${categoryName}?sortBy=like|}" class="btn fw-bold" role="button">
-                    <span class="mx-1">👍</span>Like</a>
+                <button type="button" class="btn fw-bold">
+                    <span class="mx-1">✨ </span> New
+                </button>
+                <button type="button" class="btn fw-bold">
+                    <span class="mx-1">💥</span>Popular
+                </button>
+                <button type="button" class="btn fw-bold">
+                    <span class="mx-1">👍</span>Like
+                </button>
             </div>
         </div>
         <!--  articles     -->
@@ -33,10 +36,8 @@
                 <div style="width:700px; height: 160px; overflow:hidden">
                     <a th:if="${article.thumbnailImg != null}" th:href="@{|detail/${article.id}|}"><img
                             th:src="@{|/file/${article.thumbnailImg}|}" alt="사진"></a>
-                            <!-- put thumbnail pic in fileDirPath: and change th:src="@{|/file/{{!this part!}}|}"  -->
                     <a th:if="${article.thumbnailImg == null}" th:href="@{|detail/${article.id}|}"><img
                             th:src="@{|/file/thumbnailPic.png|}" alt="사진"></a>
-
                 </div>
                 <!--content-->
                 <p style="max-width: 850px; text-overflow: ellipsis; overflow: hidden; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; word-wrap:break-word; line-height:20px; max-height: 60px; text-align: left;"
@@ -104,30 +105,30 @@
         </div>
         <!-- paging_end -->
         <!-- searchForm  -->
-        <form th:action="@{|/article/${categoryName}|}" method="get" id="searchForm">
-            <input type="hidden" id="keyword" name="keyword" th:value="${keyword}">
-            <input type="hidden" id="page" name="page" th:value="${paging.number}">
-        </form>
+<!--        <form th:action="@{|/article/list|}" method="get" id="searchForm">-->
+<!--            <input type="hidden" id="keyword" name="keyword" th:value="${keyword}">-->
+<!--            <input type="hidden" id="page" name="page" th:value="${paging.number}">-->
+<!--        </form>-->
     </div>
     <!-- popover JS -->
-<!--    <script th:inline="javascript">-->
-<!--        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))-->
-<!--var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {-->
-<!--  return new bootstrap.Popover(popoverTriggerEl)-->
-<!--})-->
+    <script th:inline="javascript">
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+  return new bootstrap.Popover(popoverTriggerEl)
+})
 
-<!--        var popover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {-->
-<!--   trigger: 'focus'-->
-<!-- })-->
+        var popover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {
+   trigger: 'focus'
+ })
 
-<!--    </script>-->
+    </script>
     <!-- search JS -->
     <script th:inline="javascript">
         const page_elements = document.getElementsByClassName("page-link");
         Array.from(page_elements).forEach(function(element) {
             element.addEventListener('click', function() {
                 document.getElementById('page').value = this.dataset.page;
-                document.getElementById('searchForm').submit();
+                document.getElementById('searchFormN').submit();
             });
         });
         const btn_search = document.getElementById("btn_search");

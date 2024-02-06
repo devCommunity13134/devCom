@@ -3,8 +3,11 @@
 
 
     <div style="max-width:1200px" class="px-3 py-2 w-100 bg-body rounded-3">
-        <div class="border-bottom border-black">
+        <div class="border-bottom border-black d-flex justify-content-between mx-1">
             <h1>DevComMain</h1>
+            <div style="width:100px;" class="py-2">
+            <a th:if="${@rq.isLogin()}" th:href="@{/article/create}" class="btn btn-outline-primary fw-bold">글쓰기</a>
+            </div>
         </div>
         <!--    like_hit_comment navigation   -->
         <div class="container mt-3">
