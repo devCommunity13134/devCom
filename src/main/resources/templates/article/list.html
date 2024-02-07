@@ -15,10 +15,20 @@
                 <span class="fw-bold text-secondary">sort by:</span>
                 <a th:href="@{|/article/${categoryName}|}" class="btn fw-bold" role="button">
                     <span class="mx-1">✨ </span> New</a>
-                <a th:href="@{|/article/${categoryName}?sortBy=popular|}" class="btn fw-bold" role="button">
-                    <span class="mx-1" >💥</span>Popular</a>
-                <a th:href="@{|/article/${categoryName}?sortBy=like|}" class="btn fw-bold" role="button">
-                    <span class="mx-1">👍</span>Like</a>
+
+                <input type="hidden" id="sort_param" class=" form-control" th:value="popular">
+                <button  class="btn fw-bold" role="button" id="btn_sort">
+                    <span class="mx-1" >💥</span>Popular</button>
+
+                <input type="hidden" id="sort_param2" class=" form-control" th:value="like">
+                <button  class=" btn fw-bold" role="button" id="btn_sort2">
+                    <span class="mx-1">👍</span>Like</button>
+<!--                <a th:href="@{|/article/${categoryName}?sortBy=popular|}" class="sortBy btn fw-bold" role="button">-->
+<!--                    <span class="mx-1" >💥</span>Popular-->
+<!--                </a>-->
+<!--                <a th:href="@{|/article/${categoryName}?sortBy=like|}" class="sortBy btn fw-bold" role="button">-->
+<!--                    <span class="mx-1">👍</span>Like-->
+<!--                </a>-->
             </div>
         </div>
         <!--  articles     -->
@@ -39,8 +49,8 @@
 
                 </div>
                 <!--content-->
-                <p style="max-width: 850px; text-overflow: ellipsis; overflow: hidden; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; word-wrap:break-word; line-height:20px; max-height: 60px; text-align: left;"
-                   class="text-body-secondary flex-grow-1" th:text="${article.content}"></p>
+<!--                <p style="max-width: 850px; text-overflow: ellipsis; overflow: hidden; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; word-wrap:break-word; line-height:20px; max-height: 60px; text-align: left;"-->
+<!--                   class="text-body-secondary flex-grow-1" th:text="${article.content}"></p>-->
 
                 <!-- author, createTime, comment, like, hit    -->
                 <div style="font-size: 14px;" class="d-flex flex-grow-1 text-secondary align-items-center ">
@@ -68,7 +78,7 @@
                 </div>
             </div>
             <!-- 프로필 이미지 -->
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center px-2">
                 <a th:href="@{|/user/profile/${article.author.id}|}">
                     <div style="width: 150px; height: 150px; border-radius: 70%; overflow: hidden; "
                          class="border border-black">
@@ -106,6 +116,7 @@
         <form th:action="@{|/article/${categoryName}|}" method="get" id="searchForm">
             <input type="hidden" id="keyword" name="keyword" th:value="${keyword}">
             <input type="hidden" id="page" name="page" th:value="${paging.number}">
+            <input type="hidden" id="sortBy" name="sortBy" th:value="${sortBy}">
         </form>
     </div>
     <!-- popover JS -->
@@ -132,6 +143,20 @@
         const btn_search = document.getElementById("btn_search");
         btn_search.addEventListener('click', function() {
             document.getElementById('keyword').value = document.getElementById('search_kw').value;
+            document.getElementById('page').value = 0;
+            document.getElementById('searchForm').submit();
+        });
+
+        const btn_sort = document.getElementById("btn_sort");
+        btn_sort.addEventListener('click', function() {
+            document.getElementById('sortBy').value = document.getElementById('sort_param').value;
+            document.getElementById('page').value = 0;
+            document.getElementById('searchForm').submit();
+        });
+
+        const btn_sort2 = document.getElementById("btn_sort2");
+        btn_sort2.addEventListener('click', function() {
+            document.getElementById('sortBy').value = document.getElementById('sort_param2').value;
             document.getElementById('page').value = 0;
             document.getElementById('searchForm').submit();
         });

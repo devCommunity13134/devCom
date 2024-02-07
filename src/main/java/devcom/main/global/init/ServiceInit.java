@@ -2,6 +2,7 @@ package devcom.main.global.init;
 
 import devcom.main.domain.answer.Service.AnswerService;
 import devcom.main.domain.article.entity.Article;
+import devcom.main.domain.article.repository.ArticleRepository;
 import devcom.main.domain.article.service.ArticleService;
 import devcom.main.domain.category.entity.Category;
 import devcom.main.domain.category.service.CategoryService;
@@ -48,6 +49,7 @@ public class ServiceInit implements InitializingBean {
     private final CategoryService categoryService;
     private final ArticleService articleService;
     private final AnswerService answerService;
+    private final ArticleRepository articleRepository;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -273,5 +275,9 @@ public class ServiceInit implements InitializingBean {
         }
         Article article1 = this.articleService.getArticle(1);
         this.answerService.create(article1,"testAnswerContent", author);
+        Article article3 = article1.toBuilder()
+                .commentSize(1)
+                .build();
+        this.articleRepository.save(article3);
     }
 }
