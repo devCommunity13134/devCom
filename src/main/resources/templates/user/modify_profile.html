@@ -4,18 +4,18 @@
             <h4>프로필 수정</h4>
         </div>
         <!-- 정보 수정 입력 폼 -->
-        <form th:action="@{|/user/modify/${user.id}|}" th:object="${userCreateForm}" method="post" enctype="multipart/form-data">
+        <form th:action="@{|/user/modify/${user.id}|}" th:object="${userModifyForm}" method="post" enctype="multipart/form-data">
             <div th:replace="~{form_errors :: formErrorsFragment}"></div>
             <div class="mb-3">
                 <label for="nickname" class="form-label">닉네임</label>
                 <input type="text" th:field="${user.nickname}" class="form-control">
             </div>
             <div class="mb-3">
-                <label for="password1" class="form-label">비밀번호</label>
+                <label for="password1" class="form-label">비밀번호 변경</label>
                 <input type="password" th:field="*{password1}" class="form-control">
             </div>
             <div class="mb-3">
-                <label for="password2" class="form-label">비밀번호 확인</label>
+                <label for="password2" class="form-label">비밀번호 변경 확인</label>
                 <input type="password" th:field="*{password2}" class="form-control">
             </div>
             <div class="mb-3">
@@ -36,7 +36,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">보유스킬</label>
-                <div style="display:flex; height:80px;">
+                <div style="display:flex; flex-wrap:wrap; height:80px;">
                     <div style="margin-right:20px;">
                         <input class="btn-check" type="checkbox" id="1" name="skill" value="HTML">
                         <label class="btn btn-secondary btn-sm" for="1">HTML</label>
@@ -68,6 +68,10 @@
                     <div style="margin-right:20px;">
                         <input class="btn-check" type="checkbox" id="8" name="skill" value="SQL">
                         <label class="btn btn-secondary btn-sm" for="8">SQL</label>
+                    </div>
+                    <div style="margin-right:20px;">
+                        <input class="btn-check" type="checkbox" id="9" name="skill" value="없음">
+                        <label class="btn btn-secondary btn-sm" for="9">없음</label>
                     </div>
                 </div>
             </div>

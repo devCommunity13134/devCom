@@ -1,6 +1,6 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3" style="width:500px;">
-    <form th:action="@{/user/findid/confirm}" method="post" th:object="${confirmNumberForm}">
+    <form th:action="@{/user/findpw/confirm}" method="post" th:object="${confirmNumberForm}">
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
         <div class="mb-3">
             <label for="confirmNumber" class="form-label">인증번호</label>
@@ -11,16 +11,16 @@
 
 
     <!-- 토스트 창 -->
-    <button th:if="${user != null}" type="button" class="btn btn-danger btn-sm" id="liveToastBtn">ID 확인하기</button>
+    <button th:if="${pw != null}" type="button" class="btn btn-danger btn-sm" id="liveToastBtn">임시 비밀번호 확인하기</button>
 
     <div class="toast-container d-flex justify-content-center align-items-center">
         <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <i class="fa-brands fa-dev rounded me-2"></i>
-                <strong class="me-auto">ID 찾기</strong>
+                <strong class="me-auto">임시 비밀번호</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div th:if="${user != null}" class="toast-body" th:text="|회원님의 아이디는 [ ${user.username} ] 입니다.|">
+            <div th:if="${pw != null}" class="toast-body" th:utext="|임시 비밀번호는 [ ${pw} ] 입니다.<br>해당 비밀번호로 로그인 후 비밀번호를 변경해주세요.|">
             </div>
         </div>
     </div>

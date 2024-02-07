@@ -65,7 +65,7 @@ public class UserController {
         this.userService.signup(userCreateForm, skillList, file);
         SiteUser user = this.userService.findByUsername(userCreateForm.getUsername());
         this.skillService.create(userCreateForm.getSkill(), user);
-        // this.emailService.send(userCreateForm.getEmail(),"[devCom]회원가입을 환영합니다!","[devCom] 서비스에 가입해주셔서 감사합니다.");
+        this.emailService.send(userCreateForm.getEmail(),"[devCom]회원가입을 환영합니다!","[devCom] 서비스에 가입해주셔서 감사합니다.");
 
         //
         return "redirect:/";
@@ -121,19 +121,19 @@ public class UserController {
     }
 
     @GetMapping("/modify/{id}")
-    public String modifyProfile(UserCreateForm userCreateForm, Model model, @PathVariable(value = "id") Long id) {
+    public String modifyProfile(UserModifyForm userModifyForm, Model model, @PathVariable(value = "id") Long id) {
         SiteUser user = this.userService.findById(id);
         model.addAttribute("user", user);
         return "/user/modify_profile";
     }
 
     @PostMapping("/modify/{id}")
-    public String modifyProfileAccept(Principal principal, @Valid UserModifyForm userModifyForm, BindingResult bindingResult, @RequestParam(value = "profileImg") MultipartFile file) throws IOException {
-        List<Skill> skillList = this.skillService.findByskillList(userModifyForm.getSkill());
+    public String modifyProfileAccept(@Valid UserModifyForm userModifyForm, BindingResult bindingResult, @RequestParam(value = "profileImg") MultipartFile file, Principal principal) throws IOException {
         SiteUser modifyUser = this.userService.findByUsername(principal.getName());
-        if (this.userService.checkErrors(userModifyForm, bindingResult).hasErrors()) {
+        if (this.userService.checkModifyErrors(userModifyForm, bindingResult).hasErrors()) {
             return String.format("redirect:/user/modify/%d", modifyUser.getId());
         }
+        List<Skill> skillList = this.skillService.findByskillList(userModifyForm.getSkill());
         // facade pattern : userService + skillService
         this.userService.modify(userModifyForm, modifyUser, skillList, file);
         SiteUser user = this.userService.findByUsername(modifyUser.getUsername());
@@ -147,7 +147,7 @@ public class UserController {
         return "/user/find_account";
     }
 
-    @PostMapping("/findid/email")
+    @PostMapping("/findid")
     public String findAccountByEmail(ConfirmNumberForm confirmNumberForm, @Valid EmailConfirmForm emailConfirmForm, BindingResult bindingResult, @RequestParam(value = "usernameEmail") String username) {
         confirmName = username;
         SiteUser user = this.userService.findByNickname(username);
@@ -159,7 +159,7 @@ public class UserController {
     }
 
     @PostMapping("/findid/confirm")
-    public String confirm(Model model, @Valid ConfirmNumberForm confirmNumberForm, BindingResult bindingResult) {
+    public String confirmId(Model model, @Valid ConfirmNumberForm confirmNumberForm, BindingResult bindingResult) {
         if (this.userService.checkErrors(confirmNumberForm, bindingResult, confirmNumber).hasErrors()) {
             return "/user/confirm_form";
         }
@@ -168,6 +168,31 @@ public class UserController {
         model.addAttribute("user", user);
 
         return "/user/confirm_form";
+    }
+
+    @PostMapping("/findpw")
+    public String findPasswordByEmail(ConfirmNumberForm confirmNumberForm, @Valid EmailConfirmForm emailConfirmForm, BindingResult bindingResult, @RequestParam(value = "userid") String userId) {
+        confirmName = userId;
+        SiteUser user = this.userService.findByUsername(userId);
+        if (this.userService.checkEmailAndUser(emailConfirmForm, bindingResult, user.getEmail()).hasErrors()) {
+            return "/user/find_account";
+        }
+        confirmNumber = this.emailService.sendConfirm(emailConfirmForm.getEmail());
+        return "/user/confirm_form_pw";
+    }
+
+    @PostMapping("/findpw/confirm")
+    public String confirmPw(Model model, @Valid ConfirmNumberForm confirmNumberForm, BindingResult bindingResult) {
+        if (this.userService.checkErrors(confirmNumberForm, bindingResult, confirmNumber).hasErrors()) {
+            return "/user/confirm_form_pw";
+        }
+
+        SiteUser user = this.userService.findByUsername(confirmName);
+        String pw = this.userService.modifyPw(user);
+
+        model.addAttribute("pw", pw);
+
+        return "/user/confirm_form_pw";
     }
 
     @GetMapping("/follow/{id}")
@@ -188,33 +213,21 @@ public class UserController {
     }
 
     @GetMapping("/message")
-    public String messageList(Model model, Principal principal, @RequestParam(value = "page", defaultValue = "0") int page) {
+    // 받은 쪽지 화면(default)
+    public String messageList(Model model, Principal principal, @RequestParam(value = "sendpage", defaultValue = "0") int sendpage, @RequestParam(value = "receivepage", defaultValue = "0") int receivepage) {
         SiteUser user = this.userService.findByUsername(principal.getName());
-        Page<SendMessage> sendMessageList = this.messageService.getSendMessageList(page, user);
-        Page<ReceiveMessage> receiveMessageList = this.messageService.getReceiveMessageList(page,user);
-        model.addAttribute("sendMessageList", sendMessageList);
+        Page<ReceiveMessage> receiveMessageList = this.messageService.getReceiveMessageList(receivepage,user);
         model.addAttribute("receiveMessageList", receiveMessageList);
-        return "/user/receive_message_list";
+        return "/user/message_list";
     }
 
     @GetMapping("/message/send")
+    // 보낸 쪽지 화면
     public String sendMessageList(Model model, Principal principal, @RequestParam(value = "page", defaultValue = "0") int page) {
         SiteUser user = this.userService.findByUsername(principal.getName());
         Page<SendMessage> sendMessageList = this.messageService.getSendMessageList(page, user);
-        Page<ReceiveMessage> receiveMessageList = this.messageService.getReceiveMessageList(page,user);
         model.addAttribute("sendMessageList", sendMessageList);
-        model.addAttribute("receiveMessageList", receiveMessageList);
         return "/user/send_message_list";
-    }
-
-    @GetMapping("/message/receive")
-    public String receiveMessageList(Model model, Principal principal, @RequestParam(value = "page", defaultValue = "0") int page) {
-        SiteUser user = this.userService.findByUsername(principal.getName());
-        Page<SendMessage> sendMessageList = this.messageService.getSendMessageList(page, user);
-        Page<ReceiveMessage> receiveMessageList = this.messageService.getReceiveMessageList(page,user);
-        model.addAttribute("sendMessageList", sendMessageList);
-        model.addAttribute("receiveMessageList", receiveMessageList);
-        return "/user/receive_message_list";
     }
 
 }

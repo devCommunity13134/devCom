@@ -16,7 +16,7 @@
         <div class="card-body">
             <div class="tab-content mt-3 ">
                 <div class="tab-pane active" id="findid" role="tabpanel">
-                    <form th:action="@{/user/findid/email}" method="post" th:object="${emailConfirmForm}">
+                    <form th:action="@{/user/findid}" method="post" th:object="${emailConfirmForm}">
                         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
                         <div class="mb-3">
                             <label for="usernameEmail" class="form-label">닉네임</label>
@@ -34,15 +34,15 @@
             <!-- 비밀번호 찾기 -->
             <div class="tab-content mt-3">
                 <div class="tab-pane" id="findpw" role="tabpanel" aria-labelledby="findpw-tab">
-                    <form th:action="@{/user/findpw}">
+                    <form th:action="@{/user/findpw}" method="post">
                         <div class="mb-3">
                             <label for="userid" class="form-label">사용자ID</label>
-                            <input type="text" id="userid" class="form-control">
+                            <input type="text" id="userid" name="userid" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label for="phoneNumberPw" class="form-label">휴대폰 번호</label>
-                            <input type="email" id="phoneNumberPw" class="form-control"
-                                   placeholder="'회원가입 시 등록한 휴대폰 번호 입력'">
+                            <label for="email" class="form-label">이메일</label>
+                            <input type="email" name="email" id="email" class="form-control"
+                                   placeholder="'회원가입 시 등록한 이메일 주소 입력'">
                         </div>
                         <button type="submit" class="btn btn-primary btn-sm">비밀번호 찾기</button>
                     </form>
