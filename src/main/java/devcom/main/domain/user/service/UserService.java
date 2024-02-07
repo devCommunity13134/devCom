@@ -112,6 +112,14 @@ public class UserService {
         return user.get();
     }
 
+    public SiteUser checkUsername(String username) {
+        Optional<SiteUser> user = this.userRepository.findByUsername(username);
+        if(user.isEmpty()) {
+            return null;
+        }
+        return user.get();
+    }
+
     public SiteUser findByNickname(String usernickname) {
         Optional<SiteUser> user = this.userRepository.findByNickname(usernickname);
         if(user.isEmpty()) {
@@ -120,7 +128,7 @@ public class UserService {
         return user.get();
     }
 
-    public SiteUser modifyNickname(String usernickname) {
+    public SiteUser checkNickname(String usernickname) {
         Optional<SiteUser> user = this.userRepository.findByNickname(usernickname);
         if(user.isEmpty()) {
             return null;
@@ -141,12 +149,12 @@ public class UserService {
         if(bindingResult.hasErrors()) {
             return bindingResult;
         }
-        if(this.findByUsername(userCreateForm.getUsername())!=null) {
+        if(this.checkUsername(userCreateForm.getUsername())!=null) {
             bindingResult.rejectValue("username","usernameDoubling",
                     "이미 사용중인 ID입니다.");
             return bindingResult;
         }
-        if(this.findByNickname(userCreateForm.getNickname())!=null) {
+        if(this.checkNickname(userCreateForm.getNickname())!=null) {
             bindingResult.rejectValue("nickname","nicknameDoubling",
                     "이미 사용중인 닉네임입니다.");
             return bindingResult;
@@ -163,11 +171,6 @@ public class UserService {
     // 프로필 수정 시 검증
     public BindingResult checkModifyErrors(UserModifyForm userModifyForm, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            return bindingResult;
-        }
-        if(this.modifyNickname(userModifyForm.getNickname())!=null) {
-            bindingResult.rejectValue("nickname","nicknameDoubling",
-                    "이미 사용중인 닉네임입니다.");
             return bindingResult;
         }
         if(!userModifyForm.getPassword1().equals(userModifyForm.getPassword2())) {

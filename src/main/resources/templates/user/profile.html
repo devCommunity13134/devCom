@@ -60,7 +60,7 @@
             <!-- 나의 프로필 조회 시 -->
             <div th:if="${#authentication.getPrincipal().getUsername() == user.username}" style="width:100%; display:flex; align-item:center;">
                 <a th:href="@{/user/message}" class="btn btn-success btn-sm" style="margin-left:3px;">쪽지함</a>
-                <a th:href="@{|/user/modify/${user.id}|}" class="btn btn-success btn-sm" style="margin-left:3px;">정보수정</a>
+                <a th:href="@{/user/modify}" class="btn btn-success btn-sm" style="margin-left:3px;">정보수정</a>
             </div>
         </div>
     </div>

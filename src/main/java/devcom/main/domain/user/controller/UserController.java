@@ -17,6 +17,7 @@ import devcom.main.global.email.service.EmailService;
 import devcom.main.global.rq.Rq;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -56,18 +57,27 @@ public class UserController {
 
     @PostMapping("/signup")
     public String signupPost(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, @RequestParam(value = "profileImg") MultipartFile file) throws IOException {
-        List<Skill> skillList = this.skillService.findByskillList(userCreateForm.getSkill());
-
+        List<Skill> skillList = null;
+        if(userCreateForm.getSkill()!=null) {
+            skillList = this.skillService.findByskillList(userCreateForm.getSkill());
+        }
         if (this.userService.checkErrors(userCreateForm, bindingResult).hasErrors()) {
             return "/user/signup";
         }
-        // facade pattern : userService + skillService
-        this.userService.signup(userCreateForm, skillList, file);
-        SiteUser user = this.userService.findByUsername(userCreateForm.getUsername());
-        this.skillService.create(userCreateForm.getSkill(), user);
-        this.emailService.send(userCreateForm.getEmail(),"[devCom]회원가입을 환영합니다!","[devCom] 서비스에 가입해주셔서 감사합니다.");
-
-        //
+        try {
+            // facade pattern : userService + skillService
+            this.userService.signup(userCreateForm, skillList, file);
+            SiteUser user = this.userService.findByUsername(userCreateForm.getUsername());
+            this.skillService.create(userCreateForm.getSkill(), user);
+            this.emailService.send(userCreateForm.getEmail(),"[devCom]회원가입을 환영합니다!","[devCom] 서비스에 가입해주셔서 감사합니다.");
+            //
+        } catch(DataIntegrityViolationException e) {
+            bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
+            return "/user/signup";
+        }catch(Exception e) {
+            bindingResult.reject("signupFailed", e.getMessage());
+            return "/user/signup";
+        }
         return "redirect:/";
     }
 
@@ -120,25 +130,36 @@ public class UserController {
         return "/user/profile";
     }
 
-    @GetMapping("/modify/{id}")
-    public String modifyProfile(UserModifyForm userModifyForm, Model model, @PathVariable(value = "id") Long id) {
-        SiteUser user = this.userService.findById(id);
+    @GetMapping("/modify")
+    public String modifyProfile(UserModifyForm userModifyForm, Model model, Principal principal) {
+        SiteUser user = this.userService.findByUsername(principal.getName());
         model.addAttribute("user", user);
         return "/user/modify_profile";
     }
 
     @PostMapping("/modify/{id}")
-    public String modifyProfileAccept(@Valid UserModifyForm userModifyForm, BindingResult bindingResult, @RequestParam(value = "profileImg") MultipartFile file, Principal principal) throws IOException {
-        SiteUser modifyUser = this.userService.findByUsername(principal.getName());
+    public String modifyProfileAccept(Model model, @Valid UserModifyForm userModifyForm, BindingResult bindingResult,
+                                      @PathVariable(value = "id") Long id,
+                                      @RequestParam(value = "profileImg") MultipartFile file) throws IOException {
+        SiteUser modifyUser = this.userService.findById(id);
+        model.addAttribute("user", modifyUser);
         if (this.userService.checkModifyErrors(userModifyForm, bindingResult).hasErrors()) {
-            return String.format("redirect:/user/modify/%d", modifyUser.getId());
+            return "/user/modify_profile";
         }
         List<Skill> skillList = this.skillService.findByskillList(userModifyForm.getSkill());
-        // facade pattern : userService + skillService
-        this.userService.modify(userModifyForm, modifyUser, skillList, file);
-        SiteUser user = this.userService.findByUsername(modifyUser.getUsername());
-        this.skillService.create(userModifyForm.getSkill(), user);
-        //
+        try {
+            // facade pattern : userService + skillService
+            this.userService.modify(userModifyForm, modifyUser, skillList, file);
+            SiteUser user = this.userService.findByUsername(modifyUser.getUsername());
+            this.skillService.create(userModifyForm.getSkill(), user);
+            //
+        } catch(DataIntegrityViolationException e) {
+            bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
+            return "/user/modify_profile";
+        }catch(Exception e) {
+            bindingResult.reject("signupFailed", e.getMessage());
+            return "/user/modify_profile";
+        }
         return this.logout();
     }
 
