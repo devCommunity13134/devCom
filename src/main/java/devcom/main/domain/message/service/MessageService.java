@@ -136,14 +136,14 @@ public class MessageService {
     public Page<SendMessage> getSendMessageList(int page, SiteUser user) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        Pageable pageable = PageRequest.of(page, 5, Sort.by(sorts));
         return this.sendMessageRepository.findAllByUser(user,pageable);
     }
 
     public Page<ReceiveMessage> getReceiveMessageList(int page, SiteUser user) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        Pageable pageable = PageRequest.of(page, 5, Sort.by(sorts));
         return this.receiveMessageRepository.findAllByUser(user,pageable);
     }
 

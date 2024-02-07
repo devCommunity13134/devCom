@@ -37,6 +37,7 @@ public class UserModifyForm {
 
     private MultipartFile profileImg;
 
+    @NotEmpty(message = "보유 스킬을 선택해주세요.")
     private List<String> skill;
 
 }

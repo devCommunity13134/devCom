@@ -2,7 +2,8 @@
 <div layout:fragment="content" class="container my-3" style="display:flex;">
     <div class="card" style="width: 18rem;">
         <div style="display:flex; align-items:center; justify-content:center;">
-            <img th:src="${user.profileImg}" alt="프로필사진" style="width:280px; height:280px; object-fit:cover;">
+            <img th:src="${user.profileImg}" alt="프로필사진" width="280" height="280"
+                 style="object-fit:cover; text-align:center;">
         </div>
         <div class="card-body">
             <h5 class="card-title" th:text="${user.nickname}"></h5>
@@ -48,22 +49,23 @@
                 </div>
             </div>
             <!-- 다른 사람 프로필 조회 시 -->
-            <a th:if="${#authentication.getPrincipal().getUsername() != user.username and isFollow=='false'}"
-               th:href="@{|/user/follow/${user.id}|}" class="btn btn-success btn-sm"
-               style="margin-left:3px;">팔로우</a>
-            <a th:if="${#authentication.getPrincipal().getUsername() != user.username and isFollow=='true'}"
-               th:href="@{|/user/unfollow/${user.id}|}" class="btn btn-success btn-sm"
-               style="margin-left:3px;">팔로우 취소</a>
+            <div th:if="${#authentication.getPrincipal().getUsername() != user.username}" style="display:flex; align-item:center;">
+                <a th:if="${isFollow=='false'}"
+                   th:href="@{|/user/follow/${user.id}|}" class="btn btn-success btn-sm"
+                   style="margin-left:3px;">팔로우</a>
+                <a th:if="${isFollow=='true'}"
+                   th:href="@{|/user/unfollow/${user.id}|}" class="btn btn-success btn-sm"
+                   style="margin-left:3px;">팔로우 취소</a>
+            </div>
             <!-- 나의 프로필 조회 시 -->
-            <a th:if="${#authentication.getPrincipal().getUsername() == user.username}"
-               th:href="@{/user/message}" class="btn btn-success btn-sm" style="margin-left:3px;">쪽지함</a>
-            <a th:if="${#authentication.getPrincipal().getUsername() == user.username}"
-               th:href="@{|/user/modify/${user.id}|}" class="btn btn-success btn-sm" style="margin-left:3px;">정보수정</a>
+            <div th:if="${#authentication.getPrincipal().getUsername() == user.username}" style="width:100%; display:flex; align-item:center;">
+                <a th:href="@{/user/message}" class="btn btn-success btn-sm" style="margin-left:3px;">쪽지함</a>
+                <a th:href="@{/user/modify}" class="btn btn-success btn-sm" style="margin-left:3px;">정보수정</a>
+            </div>
         </div>
     </div>
     <div class="card" style="margin-left:30px; width:650px;">
         <h5 class="card-header">작성한 게시글
-            <a href="#" style="font-size:14px;">전체보기</a>
         </h5>
         <div style="height:350px; overflow:scroll;">
             <div class="card-body" th:each="article : ${user.articleList}">
@@ -77,7 +79,6 @@
         </div>
         <h5 class="card-header">팔로워
             <span th:text="|${#lists.size(user.followerList)}명|"></span>
-            <a href="#" style="font-size:14px;">전체보기</a>
         </h5>
         <div style="display:flex; overflow:scroll;">
             <div class="card-body" th:each="follower : ${followerUserList}" style="text-align:center;">
@@ -90,7 +91,6 @@
         </div>
         <h5 class="card-header">팔로잉
             <span th:text="|${#lists.size(user.followingList)}명|"></span>
-            <a href="#" style="font-size:14px;">전체보기</a>
         </h5>
         <div style="display:flex; overflow:scroll;">
             <div class="card-body" th:each="following : ${followingUserList}" style="text-align:center;">
