@@ -4,10 +4,10 @@
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs" id="bologna-list" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#receivemessage" aria-selected="true">받은쪽지함</a>
+                    <a class="nav-link active" aria-current="page" href="#receivemessage" role="tab" aria-selected="true">받은쪽지함</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#sendmessage" role="tab" aria-selected="false">보낸쪽지함</a>
+                    <a class="nav-link" th:href="@{/user/message/send}" role="tab" aria-selected="false">보낸쪽지함</a>
                 </li>
             </ul>
         </div>
@@ -32,7 +32,8 @@
                             <div>
                                 <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
                                    th:href="@{|/message/receive/detail/${receiveMessageList.id}|}">
-                                    <div th:utext="${receiveMessageList.content}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 300px; height: 50px;"></div>
+                                    <div th:utext="${receiveMessageList.content}"
+                                         style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 300px; height: 50px;"></div>
                                 </a>
                             </div>
 
@@ -42,8 +43,9 @@
                                     <div th:text="${#temporals.format(receiveMessageList.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                                 </div>
                                 <a th:href="@{|/user/profile/${receiveMessageList.receiveUserId}|}">
-                                    <img th:src="${receiveMessageList.sendUserProfile}" alt="" width="40" height="40" class="rounded-circle me-2"
-                                         style="border:1px solid gray;">
+                                    <img th:src="${receiveMessageList.sendUserProfile}" alt="" width="40" height="40"
+                                         class="rounded-circle me-2"
+                                         style="border:1px solid gray; object-fit:cover;">
                                 </a>
                             </div>
                         </div>
@@ -52,17 +54,18 @@
                             <ul class="pagination justify-content-center">
                                 <li class="page-item" th:classappend="${!receiveMessageList.hasPrevious} ? 'disabled'">
                                     <a class="page-link"
-                                       th:href="@{|?page=${receiveMessageList.number-1}|}">
+                                       th:href="@{|?receivepage=${receiveMessageList.number-1}|}">
                                         <span>이전</span>
                                     </a>
                                 </li>
                                 <li th:each="page: ${#numbers.sequence(0, receiveMessageList.totalPages-1)}"
                                     th:classappend="${page == receiveMessageList.number} ? 'active'"
                                     class="page-item">
-                                    <a th:text="${page+1}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                                    <a th:text="${page+1}" class="page-link"
+                                       th:href="@{|?receivepage=${page}|}"></a>
                                 </li>
                                 <li class="page-item" th:classappend="${!receiveMessageList.hasNext} ? 'disabled'">
-                                    <a class="page-link" th:href="@{|?page=${receiveMessageList.number+1}|}">
+                                    <a class="page-link" th:href="@{|?receivepage=${receiveMessageList.number+1}|}">
                                         <span>다음</span>
                                     </a>
                                 </li>
@@ -75,69 +78,13 @@
                 </div>
             </div>
 
-            <!-- 보낸 쪽지 목록 -->
-
-            <div class="tab-content mt-3">
-                <div class="tab-pane" id="sendmessage" role="tabpanel">
-                    <form th:action="@{/message/remove/send}" method="post">
-                        <div class="form-check" th:each="sendMessageList : ${sendMessageList}"
-                             style="border-bottom:1px solid rgba(0,0,0,0.2);">
-                            <input class="form-check-input" type="checkbox" name="id" th:value="${sendMessageList.id}"
-                                   id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault"></label>
-                            <div>
-                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
-                                   th:href="@{|/message/send/detail/${sendMessageList.id}|}">
-                                    <div th:utext="${sendMessageList.content}" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 300px; height: 50px;"></div>
-                                </a>
-                            </div>
-                            <div class="d-flex justify-content-end" style="margin-bottom:10px;">
-                                <div class="badge bg-light text-dark p-2 text-start">
-                                    <div th:text="|받는사람 : ${sendMessageList.receiverName}|"></div>
-                                    <div th:text="${#temporals.format(sendMessageList.createDate, 'yyyy-MM-dd HH:mm')}"></div>
-                                </div>
-                                <a th:href="@{|/user/profile/${sendMessageList.sendUserId}|}">
-                                    <img th:src="${sendMessageList.receiveUserProfile}" alt="" width="40" height="40" class="rounded-circle me-2"
-                                         style="border:1px solid gray;">
-                                </a>
-                            </div>
-                        </div>
-                        <!-- 페이징처리 시작 -->
-                        <div th:if="${!sendMessageList.isEmpty()}">
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item" th:classappend="${!sendMessageList.hasPrevious} ? 'disabled'">
-                                    <a class="page-link"
-                                       th:href="@{|?page=${sendMessageList.number-1}|}">
-                                        <span>이전</span>
-                                    </a>
-                                </li>
-                                <li th:each="page: ${#numbers.sequence(0, sendMessageList.totalPages-1)}"
-                                    th:classappend="${page == sendMessageList.number} ? 'active'"
-                                    class="page-item">
-                                    <a th:text="${page+1}" class="page-link" th:href="@{|?page=${page}|}"></a>
-                                </li>
-                                <li class="page-item" th:classappend="${!sendMessageList.hasNext} ? 'disabled'">
-                                    <a class="page-link" th:href="@{|?page=${sendMessageList.number+1}|}">
-                                        <span>다음</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- 페이징처리 끝 -->
-
-                        <button type="submit" class="btn btn-danger btn-sm" style="margin-top:20px;">삭제</button>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
-
 
 
     <!-- tab 활성화 js -->
     <script th:inline="javascript">
         $('#bologna-list a').on('click', function (e) {
-        e.preventDefault()
         $(this).tab('show')
         });
     </script>

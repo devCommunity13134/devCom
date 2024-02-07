@@ -24,7 +24,7 @@
                         </div>
                         <div class="modal-body">
                             <div>
-                                <form th:action="@{|/message/send/${Message.receiveUserId}|}" method="post">
+                                <form th:action="@{|/message/send/reply/${Message.receiveUserId}|}" method="post">
                                     <div class="mb-3">
                                         <label for="message-text" class="col-form-label"></label>
                                         <textarea class="form-control" id="message-text" name="message-text"

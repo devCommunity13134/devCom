@@ -112,10 +112,26 @@ public class UserService {
         return user.get();
     }
 
+    public SiteUser checkUsername(String username) {
+        Optional<SiteUser> user = this.userRepository.findByUsername(username);
+        if(user.isEmpty()) {
+            return null;
+        }
+        return user.get();
+    }
+
     public SiteUser findByNickname(String usernickname) {
         Optional<SiteUser> user = this.userRepository.findByNickname(usernickname);
         if(user.isEmpty()) {
             throw new RuntimeException("존재하지 않는 사용자입니다.");
+        }
+        return user.get();
+    }
+
+    public SiteUser checkNickname(String usernickname) {
+        Optional<SiteUser> user = this.userRepository.findByNickname(usernickname);
+        if(user.isEmpty()) {
+            return null;
         }
         return user.get();
     }
@@ -133,16 +149,27 @@ public class UserService {
         if(bindingResult.hasErrors()) {
             return bindingResult;
         }
+        if(this.checkUsername(userCreateForm.getUsername())!=null) {
+            bindingResult.rejectValue("username","usernameDoubling",
+                    "이미 사용중인 ID입니다.");
+            return bindingResult;
+        }
+        if(this.checkNickname(userCreateForm.getNickname())!=null) {
+            bindingResult.rejectValue("nickname","nicknameDoubling",
+                    "이미 사용중인 닉네임입니다.");
+            return bindingResult;
+        }
         if(!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordInCorrect",
                     "2개의 패스워드가 일치하지 않습니다.");
             return bindingResult;
         }
+
         return bindingResult;
     }
 
     // 프로필 수정 시 검증
-    public BindingResult checkErrors(UserModifyForm userModifyForm, BindingResult bindingResult) {
+    public BindingResult checkModifyErrors(UserModifyForm userModifyForm, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             return bindingResult;
         }
@@ -183,6 +210,7 @@ public class UserService {
     }
 
     // 로그인한 유저가 조회하고 있는 프로필의 유저(id)를 팔로우 하는지 검증
+    // String "true", "false" 반환
     public String isFollow(SiteUser LoginedUser, Long id) {
         String isFollow = "false";
         if (LoginedUser.getFollowingList().isEmpty()) {
@@ -198,6 +226,19 @@ public class UserService {
         return isFollow;
     }
 
+    // 비밀번호 찾기 시 임시 비밀번호 발급
+    public String modifyPw(SiteUser user) {
+        int randomNum = (int) (Math.random()*1000);
+        String pw = String.valueOf(randomNum);
+        SiteUser modifyUserPw = user.toBuilder()
+                .password(passwordEncoder.encode(pw))
+                .build();
+
+        this.userRepository.save(modifyUserPw);
+
+        return pw;
+    }
+
 
     @Transactional
     public SiteUser whenSocialLogin(String providerTypeCode, String username, String nickname) {
@@ -208,6 +249,8 @@ public class UserService {
         // 최초 로그인 시 딱 한번 실행
         return findByUsername(username);
     }
+
+
 }
 
 
