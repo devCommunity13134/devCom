@@ -30,6 +30,6 @@ public class TeamInvite extends BaseEntity {
 
     private LocalDateTime expireDate;
 
-    @OneToOne(orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private ReceiveMessage receiveMessage;
 }

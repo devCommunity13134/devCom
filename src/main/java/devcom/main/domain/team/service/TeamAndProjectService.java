@@ -201,34 +201,30 @@ public class TeamAndProjectService {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-        // 이미 초대 되었다면 시간 갱신
+        LocalDateTime dateTime = LocalDateTime.now().plusDays(3);
+        String formattedDateTime = dateTime.format(formatter);
+
+        // 이미 초대 되었다면 삭제 후 재 전송
         Optional<TeamInvite> ti = teamInviteService.getTeamInviteByTeamAndSiteUser(team, invitedUser);
         if(ti.isPresent()) {
-            if(ti.get().getReceiveMessage() != null){
-                List<String> rmList = new ArrayList<>();
-                rmList.add(ti.get().getReceiveMessage().getId().toString());
-                messageService.removeReceiveMessage(rmList);
-            }
+            teamInviteService.delete(ti.get());
 
-            LocalDateTime dateTime = ti.get().getExpireDate();
-            String formattedDateTime = dateTime.format(formatter);
+            TeamInvite invite = teamInviteService.create(team, invitedUser,dateTime);
 
             String message =  "<br>" + team.getName() +
-                            "에서 재 초대 요청을 보냈습니다.<br>"+
+                    "에서 재 초대 요청을 보냈습니다.<br>"+
                     formattedDateTime+
                     "까지 아래 수락 거절 버튼을 눌러주세요. <br>"+
-                    "<a class=\"btn btn-sm btn-primary\" href=\"/teamInvite/inviteRes/"+ti.get().getId()+"/Y\">수락</a>&nbsp;<a class=\"btn btn-sm btn-danger\" href=\"/teamInvite/inviteRes/"+ti.get().getId()+"/N\">거절</a>";
+                    "<a class=\"btn btn-sm btn-primary\" href=\"/teamInvite/inviteRes/"+invite.getId()+"/Y\">수락</a>&nbsp;<a class=\"btn btn-sm btn-danger\" href=\"/teamInvite/inviteRes/"+invite.getId()+"/N\">거절</a>";
 
             ReceiveMessage rm = messageService.addReceiveMessage(invitedUser,team.getTeamAdmin().getId(),message);
 
-            teamInviteService.reInvite(ti.get(), dateTime,rm);
+            teamInviteService.setMessage(invite, rm);
+
             return new TeamInviteController.TeamInviteResponse(true, "초대 메세지를 갱신 했습니다.");
         }
 
-        LocalDateTime dateTime = LocalDateTime.now();
-        String formattedDateTime = dateTime.format(formatter);
-
-        TeamInvite invite = teamInviteService.create(team, invitedUser,dateTime.plusDays(3));
+        TeamInvite invite = teamInviteService.create(team, invitedUser,dateTime);
 
         String message =  "<br>" + team.getName() +
                 "에서 초대 요청을 보냈습니다.<br>" +
