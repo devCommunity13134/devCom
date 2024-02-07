@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +29,7 @@ public class SkillService {
 
 
     public void create(List<String> skills, SiteUser user) {
-        for(int i = 0; i < skills.size(); i++) {
+        for (int i = 0; i < skills.size(); i++) {
             Skill skill = Skill.builder()
                     .skillName(skills.get(i))
                     .user(user)
@@ -38,20 +39,31 @@ public class SkillService {
         }
     }
 
-    public void modify(List<String> skills, SiteUser user) {
-        for(int i = 0; i < skills.size(); i++) {
-            Skill skill = user.getSkillList().get(i).toBuilder()
+    public List<Skill> modify(List<String> skills, SiteUser user) {
+        // 기존 user가 가지고 있던 skill 객체 삭제
+        for (int i = 0; i < user.getSkillList().size(); i++) {
+            if (Objects.equals(user.getSkillList().get(i).getUser().getId(), user.getId())) {
+                this.skillRepository.delete(user.getSkillList().get(i));
+            }
+        }
+
+        // 수정한 skill 새로 생성
+        List<Skill> skillList = new ArrayList<>();
+        for (int i = 0; i < skills.size(); i++) {
+            Skill skill = Skill.builder()
                     .skillName(skills.get(i))
                     .user(user)
                     .build();
 
+            skillList.add(skill);
             this.skillRepository.save(skill);
         }
+        return skillList;
     }
 
     public List<Skill> findByskillList(List<String> skills) {
         List<Skill> skillList = new ArrayList<>();
-        for(int i = 0; i < skills.size(); i++) {
+        for (int i = 0; i < skills.size(); i++) {
             Skill skill = Skill.builder()
                     .skillName(skills.get(i))
                     .build();
@@ -59,19 +71,4 @@ public class SkillService {
         }
         return skillList;
     }
-
-    public List<Skill> modifyskillList(List<Skill> skillList, SiteUser user) {
-        for(int i =0; i < skillList.size(); i++) {
-            skillList.removeFirst();
-        }
-        for(int i = 0; i < skillList.size(); i++) {
-            Skill modifySkill = Skill.builder()
-                    .skillName(skillList.get(i).getSkillName())
-                    .build();
-            skillList.add(modifySkill);
-        }
-        return skillList;
-    }
-
-    public Skill findByskillName(String skillName) { return this.skillRepository.findByskillName(skillName);}
 }
