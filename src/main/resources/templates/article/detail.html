@@ -145,6 +145,7 @@
             <!-- comment Modify Form -->
             <div class="collapse" th:id="'collapseModify' + ${answer.id}">
                 <div class="ps-5">
+
                     <form th:action="@{|/answer/modify/${answer.id}|}" method="post" th:object="${answerForm}"
                           style="max-width: 1200px;"
                           class="mb-3">
