@@ -151,7 +151,7 @@ public class UserController {
             // facade pattern : userService + skillService
             this.userService.modify(userModifyForm, modifyUser, skillList, file);
             SiteUser user = this.userService.findByUsername(modifyUser.getUsername());
-            this.skillService.create(userModifyForm.getSkill(), user);
+            this.skillService.modify(userModifyForm.getSkill(), user);
             //
         } catch(DataIntegrityViolationException e) {
             bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");

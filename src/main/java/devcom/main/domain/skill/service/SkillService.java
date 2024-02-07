@@ -60,5 +60,18 @@ public class SkillService {
         return skillList;
     }
 
+    public List<Skill> modifyskillList(List<Skill> skillList, SiteUser user) {
+        for(int i =0; i < skillList.size(); i++) {
+            skillList.removeFirst();
+        }
+        for(int i = 0; i < skillList.size(); i++) {
+            Skill modifySkill = Skill.builder()
+                    .skillName(skillList.get(i).getSkillName())
+                    .build();
+            skillList.add(modifySkill);
+        }
+        return skillList;
+    }
+
     public Skill findByskillName(String skillName) { return this.skillRepository.findByskillName(skillName);}
 }
