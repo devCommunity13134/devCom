@@ -45,6 +45,8 @@ public class ArticleController {
             , @RequestParam(value = "keyword", defaultValue = "") String keyword, @RequestParam(value = "sortBy", defaultValue = "createDate") String sortBy) {
         Category category1 = this.categoryService.getCategory(category);
         Page<Article> paging = this.articleService.getArticleList(page, keyword, category1, sortBy);
+
+        model.addAttribute("sortBy", sortBy);
         model.addAttribute("paging", paging);
         model.addAttribute("categoryName", category1.getCategoryName());
         model.addAttribute("keyword", keyword);
