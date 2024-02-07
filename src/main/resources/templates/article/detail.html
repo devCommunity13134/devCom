@@ -12,7 +12,7 @@
             <div>
                 <span class="fs-3 fw-bold">[[${article.subject}]]</span>
                 <div style="font-size: 14px;" class="d-flex flex-grow-1 text-secondary flex-wrap">
-                    <div>by <a href="#" style="text-decoration:none; color: gray;" class="fw-bold">[[${article.author.nickname}]]</a>
+                    <div>by <a th:href="@{|/user/profile/${article.author.id}|}" style="text-decoration:none; color: gray;" class="fw-bold">[[${article.author.nickname}]]</a>
                         <span
                                 class="mx-2">•</span></div>
                     <!--   createDate  -->
@@ -42,10 +42,8 @@
         </div>
         <!-- content -->
         <div>
-            <img style="max-width:800px; max-height:auto; object-fit: cover;" th:if="${article.thumbnailImg != null}"
-                 th:src="@{|/file/${article.thumbnailImg}|}" alt="사진">
             <img th:if="${article.thumbnailImg != null}" th:src="@{|/file/${article.thumbnailImg}|}"
-                 style="max-width:100%; max-height:100%; object-fit: cover;" alt="사진">
+                 style="max-width:800px; max-height:auto; object-fit: cover;" alt="사진">
             <p th:utext="${@commonUtil.markdown(article.content)}"></p>
         </div>
         <!-- like button-->
