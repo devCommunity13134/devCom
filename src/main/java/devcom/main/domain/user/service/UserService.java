@@ -6,6 +6,7 @@ import devcom.main.domain.message.entity.SendMessage;
 import devcom.main.domain.message.repository.SendMessageRepository;
 import devcom.main.domain.message.service.MessageService;
 import devcom.main.domain.skill.entity.Skill;
+import devcom.main.domain.skill.service.SkillService;
 import devcom.main.domain.user.ConfirmNumberForm;
 import devcom.main.domain.user.EmailConfirmForm;
 import devcom.main.domain.user.UserCreateForm;
@@ -35,6 +36,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final FollowingRepository followingRepository;
+
+    private final SkillService skillService;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -88,6 +91,7 @@ public class UserService {
         String localProfileImg = UUID.randomUUID().toString() + file.getOriginalFilename();
         file.transferTo(new File("C:\\Work\\devCom\\src\\main\\resources\\static\\images\\" + localProfileImg));
         String localProfileImgPath = "/images/" + localProfileImg;
+        this.removeSkillList(modifyUser);
         // 외부 저장
         // String outOflocalProfileImg = fileDirPath + UUID.randomUUID().toString() + file.getOriginalFilename();
         // file.transferTo(new File(outOflocalProfileImg));
@@ -237,6 +241,12 @@ public class UserService {
         this.userRepository.save(modifyUserPw);
 
         return pw;
+    }
+
+    public void removeSkillList(SiteUser user) {
+        user.getSkillList().removeAll(user.getSkillList());
+
+        this.userRepository.save(user);
     }
 
 

@@ -146,13 +146,11 @@ public class UserController {
         if (this.userService.checkModifyErrors(userModifyForm, bindingResult).hasErrors()) {
             return "/user/modify_profile";
         }
-        List<Skill> skillList = this.skillService.findByskillList(userModifyForm.getSkill());
+        List<Skill> skillList = this.skillService.modify(userModifyForm.getSkill(), modifyUser);
         try {
-            // facade pattern : userService + skillService
             this.userService.modify(userModifyForm, modifyUser, skillList, file);
             SiteUser user = this.userService.findByUsername(modifyUser.getUsername());
-            this.skillService.create(userModifyForm.getSkill(), user);
-            //
+            this.skillService.modify(userModifyForm.getSkill(), user);
         } catch(DataIntegrityViolationException e) {
             bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
             return "/user/modify_profile";
