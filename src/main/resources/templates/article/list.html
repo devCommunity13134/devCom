@@ -59,9 +59,9 @@
                                 data-bs-toggle="popover" data-bs-trigger="focus"
                                 data-bs-content="profile"
                                 th:text="${article.author.nickname}">
-                            <a href="">profile</a>
+                            <a th:href="@{|/user/profile/${article.author.id}|}"></a>
                         </button>
-                        > <span class="mx-2">•</span>
+                         <span class="mx-2">•</span>
                     </div>
                     <!--   createDate  -->
                     <div th:text="${#temporals.format(article.createDate, 'yyyy-MM-dd')}"></div>

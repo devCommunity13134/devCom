@@ -12,21 +12,30 @@
         <div class="form-floating">
             <select class="form-select" id="floatingSelect" name="categoryName" aria-label="Floating label select example">
                 <option value="frontEnd">카테고리를 선택하세요</option>
-                <option selected value="frontEnd">FrontEnd</option>
-                <option value="backEnd">BackEnd</option>
-                <option value="dataEngineer">DataEngineer</option>
-                <option value="AI">AI</option>
+                <option id="frontEnd" value="frontEnd">FrontEnd</option>
+                <option id="backEnd" value="backEnd">BackEnd</option>
+                <option id="dataEngineer" value="dataEngineer">DataEngineer</option>
+                <option id="AI" value="AI">AI</option>
             </select>
             <label for="floatingSelect">카테고리</label>
         </div>
         <div class="mb-3">
             <label for="content" class="form-label">내용</label>
-                <textarea style="resize: none;" th:field="*{content}" id="content" cols="30" rows="10"
+            <textarea style="resize: none;" th:field="*{content}" id="content" cols="30" rows="10"
                       class="form-control"></textarea>
         </div>
         <h3>사진</h3>
         <input type="file" name="thumbnail" accept="image/png, image/gif, image/jpeg">
         <button type="submit" class="btn btn-primary">등록하기</button>
     </form>
+    <script th:inline="javascript">
+        $(document).ready(function(){
+            if([[${articleForm.categoryName}]] != null){
+                $("#"+[[${articleForm.categoryName}]]).attr("selected","selected");
+            }else{
+                $("#frontEnd").attr("selected","selected");
+            }
+        });
+    </script>
 </div>
 </html>
