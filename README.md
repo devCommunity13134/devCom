@@ -102,69 +102,7 @@ controller와 service 레이어 사이에 해당 파사드 서비스를 추가�
 
 ---
 
-## 트러블슈팅 
-
 ### 🚨 Issue 3
-### 🚧 javax.mail.internet.AddressException
-
-#### 💭 [이슈 내역]
-
-프로그램 실행 > ID찾기 > 이메일 발송 실패 알림 생성 후 프로그램 로직 멈추지 않음
-![](https://velog.velcdn.com/images/asdf4321/post/40818471-fe05-40da-bcf9-28a3cbd8ab1a/image.png)
-
-
-#### 🛑 원인
-1. SendMail.naverMailSend()의 메서드가 void기 때문에 반환하는 값이 없어 조건에 제약을 걸어 로직을 멈출 수 없다.
-
-#### 🚥 해결
-1. SendMail.naverMailSend() 메서드를 String값을 반환하도록 변경하고 이메일 발송에 성공했을 경우, "성공"을 반환시키고, 예외가 발생하여 실패하게 되면 알림을 출력하고 "실패"를 반환하도록 수정함
-
-- 수정전 코드
-1. SendMail
-```java
-public static void naverMailSend(String emailAddress) {
-	try {
-    	...이메일 발송 로직
-    } catch {
-    	...이메일 발송 실패 알림 출력
-    }
-}
-
-```
-2. MemberController
-```java
-        SendMail.naverMailSend(member.getEmail());
-
-        System.out.println("<알림> 등록하신 이메일 주소로 보안코드를 발송하였습니다.");
-```
-
-- 수정후 코드
-1. SendMail
-```java
-    public static String naverMailSend(String emailAddress) {
-    	try{
-        	...이메일 발송 로직
-            return "성공";
-        } catch {
-        	...이메일 발송 실패 알림 출력
-            return "실패";
-        }
-    }
-```
-2.MemberController
-```java
-        String sendEmail = SendMail.naverMailSend(member.getEmail());
-        if (sendEmail.equals("실패")) {
-            return;
-        }
-
-
-```
-- 수정 후 프로그램 로직
-![](https://velog.velcdn.com/images/asdf4321/post/d64c104c-7678-459d-9bc9-853eb4a0b150/image.png)
-진행되던 로직은 중단되고 초기 동작으로 돌아간다.
-
-### 🚨 Issue 4
 ### 🚧 정렬 버튼의 기능 구현
 
 A. 이슈 내역
