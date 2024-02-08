@@ -23,7 +23,7 @@
 
 ---
 
-## ☁️ ERD ([링크]([https://www.erdcloud.com/d/moGHLYeCHND3PMxie](https://dbdiagram.io/d/TeamA-devCom_project-65c49ed0ac844320aeb7d9fa))
+## ☁️ ERD ([링크](https://dbdiagram.io/d/TeamA-devCom_project-65c49ed0ac844320aeb7d9fa))
 
 
 ![Untitled](https://github.com/devCommunity13134/devCom/assets/144447216/5c128d0f-f679-463d-91af-058ce7f8c6a4)
