@@ -102,7 +102,7 @@ controller와 service 레이어 사이에 해당 파사드 서비스를 추가�
 
 ---
 
-## 트러블슈팅 예시
+## 트러블슈팅 
 
 ### 🚨 Issue 3
 ### 🚧 javax.mail.internet.AddressException
@@ -157,7 +157,128 @@ public static void naverMailSend(String emailAddress) {
         if (sendEmail.equals("실패")) {
             return;
         }
+
+
 ```
 - 수정 후 프로그램 로직
 ![](https://velog.velcdn.com/images/asdf4321/post/d64c104c-7678-459d-9bc9-853eb4a0b150/image.png)
 진행되던 로직은 중단되고 초기 동작으로 돌아간다.
+
+### 🚨 Issue 4
+### 🚧 정렬 버튼의 기능 구현
+
+A. 이슈 내역
+<br>
+#### 문제
+- 게시글 정렬을 위해 get 요청으로 파라미터로 좋아요(like)와 조회수(popular)를 보내고자 하였다.
+- 점프 투 스프링 부트의 자바스크립트 예시를 따라하고자 했지만 원리를 이해하지 못해 시도에 난항을 겪었다.
+![정렬 트러블 슈팅 예시](https://velog.velcdn.com/images/twinogre/post/b251c23c-11df-4582-9dc5-23b1d95c71ea/image.png)
+
+
+<br>
+문제점 설명
+1. addEventListner 자바스크립트를 이해하지 못하고 사용하여 자바스크립트가 원활히 실행되지 않았다.
+
+<br>
+
+## 🛑 원인
+
+
+<br>
+1. 예외처리를 하지 않음
+<br>
+
+## 🚥 해결
+- 점프 투 스프링부트의 검색을 위한 자바스크립트를 해체분석하여 addEventListner를 이해한 뒤에 사용하였다.
+참고한 [점프 투 스프링부트 3-13_2.4](https://wikidocs.net/162799#_9)
+#### addEventListner 소개
+사용한 자바스크립트
+- 게시글 목록의 정렬버튼(좋아요, 조회수 순)의 기능 구현에 사용
+```javascript
+        const btn_sort = document.getElementById("btn_sort");
+        btn_sort.addEventListener('click', function() {
+            document.getElementById('sortBy').value = document.getElementById('sort_param').value;
+            document.getElementById('page').value = 0;
+            document.getElementById('searchForm').submit();
+        });
+
+        const btn_sort2 = document.getElementById("btn_sort2");
+        btn_sort2.addEventListener('click', function() {
+            document.getElementById('sortBy').value = document.getElementById('sort_param2').value;
+            document.getElementById('page').value = 0;
+            document.getElementById('searchForm').submit();
+        });
+```
+
+
+사용한 html
+- input과 button의 서로 다른 id, 그리고  input의 th:value에 주목
+
+```html
+                <input type="hidden" id="sort_param" class=" form-control" th:value="popular">
+                <button  class="btn fw-bold" role="button" id="btn_sort">
+                    <span class="mx-1" >💥</span>Popular</button>
+
+                <input type="hidden" id="sort_param2" class=" form-control" th:value="like">
+                <button  class=" btn fw-bold" role="button" id="btn_sort2">
+                    <span class="mx-1">👍</span>Like</button>
+```
+- 전송을 위해 숨겨진 폼태그
+- 3번째 `input`태그의 name과 th:value에 주목.
+```html 
+        <form th:action="@{|/article/${categoryName}|}" method="get" id="searchForm">
+            <input type="hidden" id="keyword" name="keyword" th:value="${keyword}">
+            <input type="hidden" id="page" name="page" th:value="${paging.number}">
+            <input type="hidden" id="sortBy" name="sortBy" th:value="${sortBy}">
+        </form>
+```
+
+이를 종합하여 보면
+
+```javascript
+											//1
+       const btn_sort = document.getElementById("btn_sort");
+									// 사용자가 클릭할 때 함수 실행
+        btn_sort.addEventListener('click', function() {
+          								//2
+            document.getElementById('sortBy').value = document.getElementById('sort_param').value;
+          							 //3
+            document.getElementById('page').value = 0;
+          							//4
+            document.getElementById('searchForm').submit();
+        });
+```
+
+1. 버튼의 id는 변수에 담는다.
+2. 폼태그에 전송할 `sortBy` 의 값을 사용자가 정렬버튼(`btn_sort`) 클릭 시에 매칭되는 input 값의 th:value 값으로 할당한다.
+3. 정렬 시 0페이지로 이동하기 위해 `page` 값을 0으로 초기화
+4. `searchForm`  폼 태그를 컨트롤러에 전송한다.
+
+
+기본 문법은 다음과 같다.
+```javascript
+const btn = document.getElementById("btnId"); 
+ 
+btn.addEventListener("이벤트종류", 함수이름)
+```
+
+이벤트의 종류:
+> - **mouseover**	해당 객체의 영역 위에 마우스 커서가 진입하는 순간
+- **mouseout**	해당 객체의 영역 위에 마우스 커서가 빠져나가는 순간
+- **mousedown**	해당 객체의 영역 위에서 마우스 버튼을 누르는 순간
+- **mouseup**	해당 객체의 영역 위에서 마우스 버튼을 떼는 순간
+- **mousemove**	해당 객체의 영역 위에서 마우스 커서가 움직이는 순간
+- **keydown**	키를 눌렀을 때 발생
+- **keyup**	키를 뗐을 때 발생
+- **keypress**	키를 눌렀을 때 발생 (잘 안 쓰임)
+- ✅ **click**	마우스 버튼을 클릭하고 버튼에서 손가락을 떼면 발생 (**이번에 사용한 이벤트**) ✅
+- **resize** 	브라우저 창의 크기를 조절할때 발생한다.
+- **scroll** 	스크롤바를 드래그하거나 키보드(up, down)를 사용하거나 마우스 휠을 사용해서 웹페이지를 스크롤 할 때 발생
+- **change**	변동이 있을 때 발생
+- **focus**	포커스를 얻었을 때 발생
+- **load**	로드가 완료 되었을 때 발생
+- **select**	option 태그 등에서 선택을 했을 때 발생
+- **submit**	submit 실행 시 발생
+
+참고 링크
+- [자바스크립트 이벤트 등록](https://lakelouise.tistory.com/35)
