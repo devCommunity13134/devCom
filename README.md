@@ -71,7 +71,7 @@ team, teamMember, teamInvite, project, projectState 엔티티를 관리하는데
 
 
 #### 🚥 해결
-MVC에 Parcade pattern을 추가하여 TeamAndProject Farcade Service를 만들어 구현하였다.
+MVC에 Facade pattern을 추가하여 TeamAndProject Facade Service를 만들어 구현하였다.
 ![image](https://github.com/devCommunity13134/devCom/assets/37567402/3d5fa04c-c7c8-4cdc-93e9-96e369cc75fb)
 
 controller와 service 레이어 사이에 해당 파사드 서비스를 추가하여 필요한 서비스들을 종속성 주입을 받고 상위 컨트롤러에서 teamAndProejct Service를 호출하여 사용한다.
