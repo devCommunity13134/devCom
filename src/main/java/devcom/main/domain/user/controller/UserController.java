@@ -2,6 +2,7 @@ package devcom.main.domain.user.controller;
 
 
 import devcom.main.domain.follow.service.FollowService;
+import devcom.main.domain.message.RemoveMessageForm;
 import devcom.main.domain.message.entity.ReceiveMessage;
 import devcom.main.domain.message.entity.SendMessage;
 import devcom.main.domain.message.service.MessageService;
@@ -14,14 +15,10 @@ import devcom.main.domain.user.UserModifyForm;
 import devcom.main.domain.user.entity.SiteUser;
 import devcom.main.domain.user.service.UserService;
 import devcom.main.global.email.service.EmailService;
-import devcom.main.global.rq.Rq;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -233,7 +230,7 @@ public class UserController {
 
     @GetMapping("/message")
     // 받은 쪽지 화면(default)
-    public String messageList(Model model, Principal principal, @RequestParam(value = "sendpage", defaultValue = "0") int sendpage, @RequestParam(value = "receivepage", defaultValue = "0") int receivepage) {
+    public String messageList(RemoveMessageForm removeMessageForm, Model model, Principal principal, @RequestParam(value = "sendpage", defaultValue = "0") int sendpage, @RequestParam(value = "receivepage", defaultValue = "0") int receivepage) {
         SiteUser user = this.userService.findByUsername(principal.getName());
         Page<ReceiveMessage> receiveMessageList = this.messageService.getReceiveMessageList(receivepage,user);
         model.addAttribute("receiveMessageList", receiveMessageList);
@@ -242,7 +239,7 @@ public class UserController {
 
     @GetMapping("/message/send")
     // 보낸 쪽지 화면
-    public String sendMessageList(Model model, Principal principal, @RequestParam(value = "page", defaultValue = "0") int page) {
+    public String sendMessageList(RemoveMessageForm removeMessageForm, Model model, Principal principal, @RequestParam(value = "page", defaultValue = "0") int page) {
         SiteUser user = this.userService.findByUsername(principal.getName());
         Page<SendMessage> sendMessageList = this.messageService.getSendMessageList(page, user);
         model.addAttribute("sendMessageList", sendMessageList);
