@@ -18,4 +18,4 @@ spring:
       ddl-auto: update
     defer-datasource-initialization: true
 custom:
-  fileDirPath: C:\file_upload
+  fileDirPath: C:\devcom\file_upload
