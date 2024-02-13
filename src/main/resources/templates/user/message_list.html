@@ -17,7 +17,8 @@
 
             <div class="tab-content mt-3">
                 <div class="tab-pane active" id="receivemessage" role="tabpanel">
-                    <form th:action="@{/message/remove/receive}" method="post">
+                    <form th:action="@{/message/remove/receive}" method="post" th:object="${removeMessageForm}">
+                        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
                         <div class="form-check position-relative boder-bottom"
                              th:each="receiveMessageList : ${receiveMessageList}"
                              style="border-bottom:1px solid rgba(0,0,0,0.2);">
