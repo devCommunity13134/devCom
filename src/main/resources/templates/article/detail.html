@@ -97,11 +97,11 @@
                 <div class="ms-2 d-flex align-items-center">
                     <!-- img-box -->
                     <div>
-                        <a href="#">
+                        <a th:href="@{|/user/profile/${article.author.id}|}">
                             <div style="width: 32px; height: 32px; border-radius: 70%; overflow: hidden; "
                                  class="border border-secondary">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSToCu3S6GQE6FFDA1NT5bw4O7vHiWctYcbhg&usqp=CAU"
-                                     alt="testImg">
+                                <img th:src="${answer.author.profileImg}"
+                                     alt="userProfileImg">
                             </div>
                         </a>
                     </div>
@@ -203,11 +203,11 @@
                     <div class="ms-2 d-flex align-items-center">
                         <!-- img-box -->
                         <div>
-                            <a href="#">
+                            <a th:href="@{|/user/profile/${article.author.id}|}">
                                 <div style="width: 32px; height: 32px; border-radius: 70%; overflow: hidden; "
                                      class="border border-secondary">
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSToCu3S6GQE6FFDA1NT5bw4O7vHiWctYcbhg&usqp=CAU"
-                                         alt="testImg">
+                                    <img th:src="${reply.author.profileImg}"
+                                         alt="userProfileImg">
                                 </div>
                             </a>
                         </div>
