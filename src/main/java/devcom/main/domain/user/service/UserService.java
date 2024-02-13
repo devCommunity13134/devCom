@@ -46,13 +46,20 @@ public class UserService {
 
 
     public void signup(UserCreateForm userCreateForm, List<Skill> skillList, MultipartFile file) throws IOException {
-        // 프로젝트 내부 저장
-        String localProfileImg = UUID.randomUUID().toString() + file.getOriginalFilename();
-        file.transferTo(new File("C:\\Work\\devCom\\src\\main\\resources\\static\\images\\" + localProfileImg));
-        String localProfileImgPath = "/images/" + localProfileImg;
-        // 외부 저장
-        // String outOflocalProfileImg = fileDirPath + UUID.randomUUID().toString() + file.getOriginalFilename();
-        // file.transferTo(new File(outOflocalProfileImg));
+        // 프로젝트 외부 저장
+        // C://file_upload//user
+        String profileImgPath = "";
+        String profileImg = "";
+
+        if (file.isEmpty()) {
+            profileImgPath = "/images/기본프로필.jpg";
+        } else if (!file.isEmpty()) {
+            profileImg = "user/" + UUID.randomUUID().toString() + ".jpg";
+            File profileImgFile = new File(fileDirPath + "/" + profileImg);
+            file.transferTo(profileImgFile);
+            profileImgPath = "/file/" + profileImg;
+        }
+
         SiteUser user = SiteUser.builder()
                 .username(userCreateForm.getUsername())
                 .nickname(userCreateForm.getNickname())
@@ -62,7 +69,7 @@ public class UserService {
                 .sex(userCreateForm.getSex())
                 .age(userCreateForm.getAge())
                 .salary(userCreateForm.getSalary())
-                .profileImg(localProfileImgPath)
+                .profileImg(profileImgPath)
                 .skillList(skillList)
                 .build();
 
@@ -87,21 +94,28 @@ public class UserService {
     }
 
     public void modify(UserModifyForm userModifyForm, SiteUser modifyUser, List<Skill> skillList, MultipartFile file) throws IOException {
-        // 프로젝트 내부 저장
-        String localProfileImg = UUID.randomUUID().toString() + file.getOriginalFilename();
-        file.transferTo(new File("C:\\Work\\devCom\\src\\main\\resources\\static\\images\\" + localProfileImg));
-        String localProfileImgPath = "/images/" + localProfileImg;
         this.removeSkillList(modifyUser);
-        // 외부 저장
-        // String outOflocalProfileImg = fileDirPath + UUID.randomUUID().toString() + file.getOriginalFilename();
-        // file.transferTo(new File(outOflocalProfileImg));
+
+        String profileImgPath = "";
+        String profileImg = "";
+
+
+        if (file.isEmpty()) {
+            profileImgPath = "/images/기본프로필.jpg";
+        } else if (!file.isEmpty()) {
+            profileImg = "user/" + UUID.randomUUID().toString() + ".jpg";
+            File profileImgFile = new File(fileDirPath + "/" + profileImg);
+            file.transferTo(profileImgFile);
+            profileImgPath = "/file/" + profileImg;
+        }
+
         SiteUser user = modifyUser.toBuilder()
                 .nickname(userModifyForm.getNickname())
                 .password(passwordEncoder.encode(userModifyForm.getPassword2()))
                 .phoneNumber(userModifyForm.getPhoneNumber())
                 .email(userModifyForm.getEmail())
                 .salary(userModifyForm.getSalary())
-                .profileImg(localProfileImgPath)
+                .profileImg(profileImgPath)
                 .skillList(skillList)
                 .build();
 

@@ -31,6 +31,7 @@
 //import java.io.File;
 //import java.io.IOException;
 //import java.io.InputStream;
+//import java.nio.file.*;
 //import java.util.ArrayList;
 //import java.util.List;
 //import java.util.Map;
@@ -52,6 +53,7 @@
 //    @Override
 //    public void afterPropertiesSet() throws Exception {
 //        init();
+//        this.createDirectory();
 //    }
 //
 //    public void init() throws IOException {
@@ -60,14 +62,14 @@
 //
 //        List<Skill> sl = skillService.findByskillList(skillList);
 //
-//        for(int i = 1; i<=10; i++){
+//        for (int i = 1; i <= 10; i++) {
 //            UserCreateForm userCreateForm1 = new UserCreateForm();
-//            userCreateForm1.setUsername("user"+i);
+//            userCreateForm1.setUsername("user" + i);
 //            userCreateForm1.setSkill(skillList);
 //            userCreateForm1.setPassword2("1234");
 //            userCreateForm1.setPassword1("1234");
-//            userCreateForm1.setEmail("user"+i+"@gmai.com");
-//            userCreateForm1.setNickname("유저"+i);
+//            userCreateForm1.setEmail("user" + i + "@gmai.com");
+//            userCreateForm1.setNickname("유저" + i);
 //            userCreateForm1.setAge(21);
 //            userCreateForm1.setPhoneNumber("01010047979");
 //            userCreateForm1.setSex("남".charAt(0));
@@ -115,15 +117,15 @@
 //            });
 //
 //            TeamCreateForm team1 = new TeamCreateForm();
-//            team1.setName("팀"+i);
-//            team1.setDescription("팀"+i+" 설명");
+//            team1.setName("팀" + i);
+//            team1.setDescription("팀" + i + " 설명");
 //
 //            SiteUser st = userService.findByUsername("user1");
 //
 //            teamMemberService.createTeamMember(teamService.create(team1, st), st);
 //        }
 //
-//        for(long i = 1; i <10; i++) {
+//        for (long i = 1; i < 10; i++) {
 //            BindingResult br = new BindingResult() {
 //                @Override
 //                public String getObjectName() {
@@ -199,7 +201,8 @@
 //                public void addError(ObjectError error) {
 //
 //                }
-//                public boolean hasErrors(){
+//
+//                public boolean hasErrors() {
 //                    return false;
 //                }
 //            };
@@ -210,7 +213,7 @@
 //            tf.setNickname(userService.findByUsername("user2").getNickname());
 //            tf.setTeamId(team.getId());
 //
-//            teamAndProjectService.inviteMember(tf, team.getTeamAdmin() , br);
+//            teamAndProjectService.inviteMember(tf, team.getTeamAdmin(), br);
 //        }
 //
 //        this.categoryService.create("frontEnd");
@@ -272,6 +275,24 @@
 //            this.articleService.create(category4, subject, content, author4);
 //        }
 //        Article article1 = this.articleService.getArticle(1);
-//        this.answerService.create(article1,"testAnswerContent", author);
+//        this.answerService.create(article1, "testAnswerContent", author);
+//    }
+//
+//    public void createDirectory() {
+//        Path directoryArticle = Paths.get("C:\\devcom\\file_upload\\article");
+//        Path directoryUser = Paths.get("C:\\devcom\\file_upload\\user");
+//
+//        try {
+//            Files.createDirectories(directoryArticle);
+//            Files.createDirectories(directoryUser);
+//        } catch (FileAlreadyExistsException e) {
+//            System.out.println("디렉토리가 이미 존재합니다");
+//        } catch (NoSuchFileException e) {
+//            System.out.println("디렉토리 경로가 존재하지 않습니다");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//
 //    }
 //}
