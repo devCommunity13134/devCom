@@ -34,7 +34,7 @@
 
 ## 👀 시연영상
 
-[![Video Label]()
+[![Video Label](https://youtu.be/25aUKf_JJrs?si=Z4C8VWP5fyL9EfXl)
 
 제작 후 업로드 예정
 
