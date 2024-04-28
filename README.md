@@ -34,7 +34,7 @@
 
 ## 👀 시연영상
 
-[![Video Label](https://img.youtube.com/25aUKf_JJrs/0.jpg)](https://youtu.be/25aUKf_JJrs?si=Z4C8VWP5fyL9EfXl)
+[![Video Label](https://img.youtube.com/vi/25aUKf_JJrs/0.jpg)](https://youtu.be/25aUKf_JJrs)
 
 ---
 
